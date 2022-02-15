@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: maroly <maroly@student.42.fr>              +#+  +:+       +#+         #
+#    By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/19 13:36:30 by maroly            #+#    #+#              #
-#    Updated: 2022/02/03 23:02:50 by maroly           ###   ########.fr        #
+#    Updated: 2022/02/15 14:34:39 by hkovac           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -98,22 +98,18 @@ NAME		= 	libft.a
 
 all			:	$(NAME)
 		
-.c.o		:		
-				@echo "\t\t    \033[33;32mCreation of $(NAME) in progress...\033[33;32m"
-				@$(CC) $(FLAGS) -c $<
+$(OBJS)		:	$(SRCS) libft.h
+				$(CC) $(FLAGS) -c $(SRCS)
 
 $(NAME)		:	$(OBJS)
-				@ar rc $(NAME) $(OBJS)
-				@ranlib $(NAME)
-				@echo "\t\t\t\t \033[33;32mDONE.\033[33;32m"
+				ar rc $(NAME) $(OBJS)
+				ranlib $(NAME)
 
 clean		:
-				@rm -rf *.o
-				@echo "\t\t      \x1b[31mfiles .o deleted successfully.\x1b[31m"
+				rm -rf *.o
 
 fclean		:	clean
-				@rm -f $(NAME)
-				@echo "\t\t       \x1b[31m$(NAME) deleted sucessfully.\x1b[31m"
+				rm -f $(NAME)
 
 re			:	fclean all
 
