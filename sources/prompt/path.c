@@ -3,51 +3,81 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:46:27 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/15 14:18:48 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/16 13:21:14 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**putsep(char **path)
+void	put_cmd(char **path, char *cmd)
 {
-	int	i;
-	int	size;
-
-	i = 0;
-	while (path[i])
+	int		i;
+	int		j;
+	int		k;
+	int		size_add;
+	char	*tmp;
+	
+	i = -1;
+	size_add = ft_strlen(cmd) + 2;
+	while (path[++i])
 	{
-		size = ft_strlen(path[i]);
-		path[i][size++] = '/';
-		path[i++][size] = '\0';
+		tmp = ft_strdup(path[i]);
+		free(path[i]);
+		path[i] = malloc(sizeof (char) * (ft_strlen(tmp) + size_add));
+		if (!path[i])
+		{
+			destroy_tab(path);
+			path = NULL;
+			return ;
+		}
+		j = -1;
+		k = 0;
+		while (tmp[++j])
+			path[i][k++] = tmp[j];
+		path[i][k++] = '/';
+		j = -1;
+		while (cmd[++j])
+			path[i][k++] = cmd[j];
+		path[i][k++] = 0;
+		free(tmp);
 	}
-	return (path);
+	path[i] = NULL;
+}
+
+static int	check(char *env_line, char *modele)
+{
+	while (*env_line && *modele)
+	{
+		if (*env_line != *modele)
+			return (0);
+		env_line++;
+		modele++;
+	}
+	return (1);
 }
 
 char	*findpath(char *cmd, char **env)
 {
 	int		i;
-	int		j;
 	char	**path;
 	char	*new;
 
 	i = 0;
-	j = -1;
 	new = NULL;
-	while (ft_strstr(env[i], "PATH=") == NULL)
+	while (!check(env[i], "PATH="))
 		i++;
-	path = ft_split(ft_strstr(env[i], "PATH="), ':');
-	putsep(path);
-	while (path[++j] != NULL)
-		path[j] = ft_strcat(path[j], cmd);
-	j = 0;
-	while (path[j] && access(path[j], X_OK) == -1)
-		j++;
-	if (path[j] != NULL)
-		new = ft_strdup(path[j]);
+	path = ft_split(env[i] + 5, ':');
+	put_cmd(path, cmd);
+	if (!path)
+		return (NULL);
+	i = 0;
+	while (path[i] && access(path[i], X_OK) != 0)
+		i++;
+	if (path[i] != NULL)
+		new = ft_strdup(path[i]);
 	destroy_tab(path);
 	return (new);
 }

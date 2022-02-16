@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 12:12:49 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/16 11:55:49 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/02/16 13:21:22 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void rl(char **env)
 {
 	char				*line;
 	struct sigaction	sa;
+	char				*cmd;
 
 	env++;
 	sa.sa_handler = handler;
@@ -42,7 +43,11 @@ void rl(char **env)
 		else
 		{
 			add_history(line);
-			//printf("%s\n", findpath(line, env));
+			cmd = findpath(line, env);
+			if (!cmd)
+				continue ;
+			else
+				printf("%s\n", cmd);//execve
 			free(line);
 		}
 		rl_on_new_line();
