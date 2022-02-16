@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rl.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 12:12:49 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/16 13:21:22 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/02/16 14:50:07 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,26 @@ void rl(char **env)
 		else
 		{
 			add_history(line);
-			cmd = findpath(line, env);
-			if (!cmd)
-				continue ;
+			char **tab = ft_split(line, ' ');
+			cmd = findpath(tab[0], env);
+			//printf("%s\n", cmd);
+			if (check_line(line) == 1)
+				printf("Syntax error!\n"); //
+			else if (!cmd)
+				printf("Command not found!\n"); //error message
 			else
-				printf("%s\n", cmd);//execve
-			free(line);
+			{
+				int child;
+				child = fork();
+				if (child == 0)
+					execve(cmd, tab, env); // check les options
+				else
+					wait(NULL);
+				free(line);
+				free(cmd);
+			}
 		}
 		rl_on_new_line();
 	}
-	//rl_clear_history(); //not recognized
+	rl_clear_history(); //not recognized
 }
