@@ -1,23 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   functions.h                                        :+:      :+:    :+:   */
+/*   find_var.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/15 13:44:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/16 14:33:36 by hkovac           ###   ########.fr       */
+/*   Created: 2022/02/16 14:17:59 by hkovac            #+#    #+#             */
+/*   Updated: 2022/02/16 14:31:32 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FUNCTIONS_H
-# define FUNCTIONS_H
+#include "minishell.h"
 
-/*prompt.c*/
-char	*findpath(char *cmd, char **env);
-void	rl(char **env);
-/*utils*/
-char    **split_quotes(char *str, char sep);
-char    *find_var(char **env, char *var);
+char    *find_var(char **env, char *var)
+{
+    int i;
+    int j;
 
-#endif
+    i = -1;
+    while (env[++i])
+    {     
+        j = -1;
+        while (env[i][++j] && var[j])
+            if (env[i][j] != var[j])
+                break ;
+        if (var[j] == 0)
+            return ((ft_strdup(env[i] + ft_strlen(var))));
+    }
+	return (NULL);
+}

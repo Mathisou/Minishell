@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 12:12:49 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/16 13:21:22 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/02/16 13:36:22 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,12 @@ void rl(char **env)
 		{
 			add_history(line);
 			cmd = findpath(line, env);
-			if (!cmd)
-				continue ;
-			else
-				printf("%s\n", cmd);//execve
+			if (execve(cmd, ft_split(line, ' '), env) != 0)
+				perror("minishell");
 			free(line);
+			free(cmd);
 		}
 		rl_on_new_line();
 	}
-	//rl_clear_history(); //not recognized
+	rl_clear_history(); //not recognized
 }
