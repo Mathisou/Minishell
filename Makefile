@@ -1,6 +1,6 @@
 NAME		=	minishell
 CC			=	gcc
-CFLAGS		=	-Wall -Werror -Wextra -Iincludes -Isources/libft/libft.h
+CFLAGS		=	-Wall -Werror -Wextra -Iincludes -Isources/libft/ -g3
 INC			=	includes/minishell.h includes/functions.h includes/define.h
 MAIN		=	main.c
 MAINS		=	$(addprefix sources/, $(MAIN)) 
@@ -11,7 +11,7 @@ LIBFT		=	$(addsuffix libft.a, $(LIBFT_PATH))
 OBJS		=	$(MAIN:.c=.o) $(PROMPT:.c=.o)
 
 $(NAME):	$(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) -lreadline -L$(LIBFT_PATH) -lft $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lreadline -L$(LIBFT_PATH) -lft
 
 $(OBJS):	$(MAINS) $(PROMPTS) $(INC)
 	$(CC) $(CFLAGS) -c $(MAINS) $(PROMPTS)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 12:50:21 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/15 13:09:09 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/16 09:39:24 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # include <sys/types.h>
 # include <sys/uio.h>
 # include <libgen.h>
-# include "get_next_line.h"
 
 typedef struct s_list
 {

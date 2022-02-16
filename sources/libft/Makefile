@@ -6,7 +6,7 @@
 #    By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/19 13:36:30 by maroly            #+#    #+#              #
-#    Updated: 2022/02/15 14:34:39 by hkovac           ###   ########.fr        #
+#    Updated: 2022/02/16 09:39:58 by hkovac           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,6 @@ SRCS		=	ft_isalpha.c				\
 	       		ft_putstr_fd.c				\
 	       		ft_putendl_fd.c				\
 	       		ft_putnbr_fd.c				\
-				get_next_line.c				\
 				ft_lstnew.c					\
 	       		ft_lstadd_front.c			\
 	       		ft_lstsize.c				\
