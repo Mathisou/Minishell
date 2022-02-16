@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rl.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/16 15:17:02 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/02/16 15:32:58 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void rl(char **env)
 	char				*line;
 	struct sigaction	sa;
 	char				*cmd;
+	char **t;
 
 	env++;
 	sa.sa_handler = handler;
@@ -43,9 +44,8 @@ void rl(char **env)
 		else
 		{
 			add_history(line);
-			char **t = ft_split(line, ' ');
+			t = ft_split(line, ' ');
 			cmd = findpath(t[0], env);
-			//printf("%s\n", cmd);
 			if (check_line(line) == 1)
 				printf("Syntax error!\n"); //
 			else if (!cmd)
@@ -60,6 +60,7 @@ void rl(char **env)
 					wait(NULL);
 				free(line);
 				free(cmd);
+				destroy_tab(t);
 			}
 		}
 		rl_on_new_line();
