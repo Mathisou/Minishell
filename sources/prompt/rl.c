@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/15 12:12:49 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/16 13:36:22 by hkovac           ###   ########.fr       */
+/*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
+/*   Updated: 2022/02/16 15:17:02 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,24 @@ void rl(char **env)
 		else
 		{
 			add_history(line);
-			cmd = findpath(line, env);
-			if (execve(cmd, ft_split(line, ' '), env) != 0)
-				perror("minishell");
-			free(line);
-			free(cmd);
+			char **t = ft_split(line, ' ');
+			cmd = findpath(t[0], env);
+			//printf("%s\n", cmd);
+			if (check_line(line) == 1)
+				printf("Syntax error!\n"); //
+			else if (!cmd)
+				printf("Command not found!\n"); //error message
+			else
+			{
+				int child;
+				child = fork();
+				if (child == 0)
+					execve(cmd, t, env); // check les options
+				else
+					wait(NULL);
+				free(line);
+				free(cmd);
+			}
 		}
 		rl_on_new_line();
 	}
