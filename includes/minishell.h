@@ -3,15 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:30:08 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/16 10:13:02 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/02/17 12:48:39 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+typedef struct s_fd
+{
+	int save_stdout;
+	int outfile;
+}	t_fd;
 
 # include "functions.h"
 # include "define.h"
