@@ -6,48 +6,11 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/17 14:28:21 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/17 17:56:37 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char *remplace_str(char *old_str)
-{
-	int i;
-	int j;
-	char *new;
-
-	i = 0;
-	j = 0;
-	new = malloc(sizeof(char) * (ft_strlen(old_str) - 1));
-	if (!new)
-		return (NULL);
-	while (old_str[++i] && old_str[i + 1])
-	{
-		new[j] = old_str[i];
-		j++;
-	}
-	new[j] = '\0';
-	return (new);
-}
-
-void check_var_and_quotes(char **t)
-{
-	int i;
-	char *tmp;
-
-	i = -1;
-	while (t[++i])
-	{
-		if (t[i][0] == 39)
-		{
-			tmp = t[i];
-			free(t[i]);
-			t[i] = remplace_str(tmp);
-		}
-	}
-}
 
 void handler(int signum)
 {
@@ -55,7 +18,7 @@ void handler(int signum)
 	{
 		write(1, "\n", 1);
 		rl_on_new_line();
-		rl_replace_line("", 0);
+		//rl_replace_line("", 0);
 		rl_redisplay();
 	}
 }
@@ -69,7 +32,6 @@ void rl(char **env)
 	t_fd *sfd;
 	char **cmdopt;
 
-	env++;
 	sfd = malloc(sizeof(t_fd *) * 1);
 	if (!sfd)
 		return ;
@@ -83,20 +45,20 @@ void rl(char **env)
 			write(1, "exit\n", 5);
 			exit(1);
 		}
-		else
+		else if (ft_strlen(line) > 0)
 		{
 			add_history(line);
-			t = ft_split(line, ' ');
+			t = split2(line, ' ');
 			cmd = findpath(t[0], env);
 			if (check_line(line) == 1)
-				printf("Syntax error!\n");//
+				ft_putstr_fd("Syntax error!", 2);
 			else if (!cmd)
-				printf("Command not found!\n"); //error message
+				ft_putstr_fd("Command not found!", 2);
 			else
 			{
-				check_var_and_quotes(t);
+				check_var_and_quotes(t); // retire les quotes et double quotes + gere les variables denv
 				cmdopt = find_opt(t); // a adapter
-				parsing_redirection(t, sfd);
+				parsing_redirection(t, sfd); // > et >>
 				int child;
 				child = fork();
 				if (child == 0)
@@ -106,11 +68,11 @@ void rl(char **env)
 				free(line);
 				free(cmd);
 				destroy_tab(t);
-				//close(sfd->outfile);
-				dup2(sfd->save_stdout, 1);
+				close(sfd->outfile);
+				dup2(sfd->save_stdout, 1); // retour sur le stdout apres avoir redirige l'output avec > et >>
 			}
 		}
 		rl_on_new_line();
 	}
-	rl_clear_history();
+	//rl_clear_history();
 }
