@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 13:58:29 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/17 15:03:28 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/02/17 16:31:19 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	create_tab(char const *s, char c)
 	size = 0;
 	while (s[i])
 	{
-		if (((s[i - 1] == c || i == 0) && s[i] != c) && s[i])
+		if (((i == 0 || s[i - 1] == c) && s[i] != c) && s[i])
 		{
 			if (s[i] == 39)
 				while (s[++i] != 39)
@@ -116,7 +116,7 @@ char	**split2(char const *s, char c)
 		return (NULL);
 	while (s[i])
 	{
-		if (((s[i - 1] == c || i == 0) && s[i] != c) && s[i])
+		if (((i == 0 || s[i - 1] == c) && s[i] != c) && s[i])
 		{
 			big_tab[string] = put_str_in_tab(&s[i], c);
 			if (!big_tab[string])
@@ -136,15 +136,3 @@ char	**split2(char const *s, char c)
 	big_tab[string] = NULL;
 	return (big_tab);
 }
-
-/*
-int main()
-{
-	char **t;
-	t = split2( "\"abc\"> file1", ' ');
-	for (int i = 0; t[i]; i++)
-		printf("%s\n", t[i]);
-	free(t);
-	
-}
-*/
