@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:44:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/18 15:20:42 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/18 15:43:58 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,12 @@ void	call_builtin(char *cmd, char **t);
 void	pwd();
 void	cd(char *directory);
 void	echo_b(char **t);
+/*own_env.c*/
+void    take_env(char   **env, t_env **envi);
+/*list*/
+t_env    *new_node(char *content);
+void    add_node_back(t_env **first, char *content);
+int        del_list(t_env **lst);
+void    echo_b(char **t);
 
 #endif

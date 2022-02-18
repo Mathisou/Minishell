@@ -13,17 +13,19 @@ BUILTIN		=	call.c pwd.c cd.c echo.c
 BUILTINS	=	$(addprefix sources/builtins/, $(BUILTIN))
 REDIRECTION =	parse_redirection.c
 REDIRECTIONS=	$(addprefix sources/redirections/, $(REDIRECTION))
-ENV			=	env_var.c find_var.c
+ENV			=	env_var.c find_var.c env_var_utils.c own_env.c
 ENVS		=	$(addprefix sources/env/, $(ENV))
+LIST        =    list.c
+LISTS       =    $(addprefix sources/list/, $(LIST))
 LIBFT_PATH	=	sources/libft/
 LIBFT		=	$(addsuffix libft.a, $(LIBFT_PATH))
-OBJS		=	$(MAIN:.c=.o) $(PROMPT:.c=.o) $(UTIL:.c=.o) $(REDIRECTION:.c=.o) $(BUILTIN:.c=.o) $(ENV:.c=.o)
+OBJS		=	$(MAIN:.c=.o) $(PROMPT:.c=.o) $(UTIL:.c=.o) $(REDIRECTION:.c=.o) $(BUILTIN:.c=.o) $(ENV:.c=.o) $(LIST:.c=.o)
 
 $(NAME):	$(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lreadline -L$(LIBFT_PATH) -lft
 
-$(OBJS):	$(MAINS) $(PROMPTS) $(UTILS) $(REDIRECTIONS) $(BUILTINS) $(ENVS) $(INC)
-	$(CC) $(CFLAGS) -c $(MAINS) $(PROMPTS) $(UTILS) $(REDIRECTIONS) $(BUILTINS) $(ENVS)
+$(OBJS):	$(MAINS) $(PROMPTS) $(UTILS) $(REDIRECTIONS) $(BUILTINS) $(ENVS) $(LISTS) $(INC)
+	$(CC) $(CFLAGS) -c $(MAINS) $(PROMPTS) $(UTILS) $(REDIRECTIONS) $(BUILTINS) $(ENVS) $(LISTS)
 
 $(LIBFT):
 	@make -C $(LIBFT_PATH)
