@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/17 17:56:37 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/18 01:14:04 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,20 +49,25 @@ void rl(char **env)
 		{
 			add_history(line);
 			t = split2(line, ' ');
-			cmd = findpath(t[0], env);
+			check_var_and_quotes(t); // retire les quotes et double quotes + gere les variables denv
+			cmd = findpath(t[0], env); //
 			if (check_line(line) == 1)
-				ft_putstr_fd("Syntax error!", 2);
+				ft_putstr_fd("Syntax error!\n", 2);
 			else if (!cmd)
-				ft_putstr_fd("Command not found!", 2);
+				ft_putstr_fd("Command not found!\n", 2);
 			else
 			{
-				check_var_and_quotes(t); // retire les quotes et double quotes + gere les variables denv
 				cmdopt = find_opt(t); // a adapter
 				parsing_redirection(t, sfd); // > et >>
 				int child;
 				child = fork();
 				if (child == 0)
-					execve(cmd, cmdopt, env);
+				{
+					if (ft_strcmp(cmd, "/bin/pwd") != 0 && ft_strcmp(cmd, "/usr/bin/cd") != 0)
+						execve(cmd, cmdopt, env);
+					else
+						call_builtin(cmd, t[1]);
+				}
 				else
 					wait(NULL);
 				free(line);
