@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/18 13:00:47 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/18 18:56:07 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void handler(int signum)
 	{
 		write(1, "\n", 1);
 		rl_on_new_line();
-		//rl_replace_line("", 0);
+		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 }
@@ -56,25 +56,28 @@ void rl(char **env)
 				cmd = findpath(t[0], env); //
 				if (!cmd)
 					ft_putstr_fd("Command not found!\n", 2);
-				check_var_and_quotes(t); // retire les quotes et double quotes + gere les variables denv
-				cmdopt = find_opt(t); // a adapter
-				parsing_redirection(t, sfd); // > et >>
-				int child;
-				child = fork();
-				if (child == 0)
-				{
-					if (ft_strcmp(cmd, "/bin/pwd") != 0 && ft_strcmp(cmd, "/usr/bin/cd") != 0 && ft_strcmp(cmd, "/bin/echo") != 0)
-						execve(cmd, cmdopt, env);
-					else
-						call_builtin(cmd, t);
-				}
 				else
-					wait(NULL);
-				free(line);
-				free(cmd);
-				destroy_tab(t);
-				close(sfd->outfile);
-				dup2(sfd->save_stdout, 1); // retour sur le stdout apres avoir redirige l'output avec > et >>
+				{
+					check_var_and_quotes(t); // retire les quotes et double quotes + gere les variables denv
+					cmdopt = find_opt(t); // a adapter
+					parsing_redirection(t, sfd); // > et >>
+					int child;
+					child = fork();
+					if (child == 0)
+					{
+						if (ft_strcmp(cmd, "/bin/pwd") != 0 && ft_strcmp(cmd, "/bin/echo") != 0) //cd pas trouvable
+							execve(cmd, cmdopt, env);
+						else
+							call_builtin(cmd, t);
+					}
+					else
+						wait(NULL);
+					free(line);
+					free(cmd);
+					destroy_tab(t);
+					close(sfd->outfile);
+					dup2(sfd->save_stdout, 1); // retour sur le stdout apres avoir redirige l'output avec > et >>
+				}
 			}
 		}
 		rl_on_new_line();

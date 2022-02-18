@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 17:55:26 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/18 15:14:27 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/18 16:38:34 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,10 +156,8 @@ char *remove_quotes(char *old_str)
 void check_var_and_quotes(char **t)
 {
 	int i;
-	int j;
 
 	i = -1;
-	j = 0;
 	while (t[++i])
 	{
 		if (is_there_dollar(t[i]) == 1)
