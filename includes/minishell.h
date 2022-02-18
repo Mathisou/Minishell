@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:30:08 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/17 12:48:39 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/17 23:55:23 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,11 @@ typedef struct s_fd
 	int save_stdout;
 	int outfile;
 }	t_fd;
+
+typedef struct s_curr_dir
+{
+	char *curr_dir;
+}	t_curr;
 
 # include "functions.h"
 # include "define.h"

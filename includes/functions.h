@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:44:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/18 00:41:14 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/18 12:47:26 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,13 @@ int      check_line(char *line);
 char	**find_opt(char **t);
 char	**split2(char const *s, char c);
 void	check_var_and_quotes(char **t);
+int		check_limiter(char *str);
 /*redirections*/
 void	parsing_redirection(char **t, t_fd *sfd);
 /*builtins*/
-void	call_builtin(char *cmd, char *dir);
+void	call_builtin(char *cmd, char **t);
 void	pwd();
 void	cd(char *directory);
+void	echo_b(char **t);
 
 #endif

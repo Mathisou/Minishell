@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/18 01:14:04 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/18 13:00:47 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,25 +48,25 @@ void rl(char **env)
 		else if (ft_strlen(line) > 0)
 		{
 			add_history(line);
-			t = split2(line, ' ');
-			check_var_and_quotes(t); // retire les quotes et double quotes + gere les variables denv
-			cmd = findpath(t[0], env); //
 			if (check_line(line) == 1)
 				ft_putstr_fd("Syntax error!\n", 2);
-			else if (!cmd)
-				ft_putstr_fd("Command not found!\n", 2);
 			else
 			{
+				t = split2(line, ' ');
+				cmd = findpath(t[0], env); //
+				if (!cmd)
+					ft_putstr_fd("Command not found!\n", 2);
+				check_var_and_quotes(t); // retire les quotes et double quotes + gere les variables denv
 				cmdopt = find_opt(t); // a adapter
 				parsing_redirection(t, sfd); // > et >>
 				int child;
 				child = fork();
 				if (child == 0)
 				{
-					if (ft_strcmp(cmd, "/bin/pwd") != 0 && ft_strcmp(cmd, "/usr/bin/cd") != 0)
+					if (ft_strcmp(cmd, "/bin/pwd") != 0 && ft_strcmp(cmd, "/usr/bin/cd") != 0 && ft_strcmp(cmd, "/bin/echo") != 0)
 						execve(cmd, cmdopt, env);
 					else
-						call_builtin(cmd, t[1]);
+						call_builtin(cmd, t);
 				}
 				else
 					wait(NULL);

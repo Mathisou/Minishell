@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_var.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 14:17:59 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/16 14:31:32 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/02/17 14:41:06 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,5 @@ char    *find_var(char **env, char *var)
         if (var[j] == 0)
             return ((ft_strdup(env[i] + ft_strlen(var))));
     }
-	return (NULL);
+	return (NULL); // \n quand pas trouver
 }

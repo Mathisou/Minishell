@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 17:55:26 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/17 17:58:45 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/18 13:30:02 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ char *replace_var(char *old_str)
 	while (old_str[++i])
 	{
 		j = 1;
-		if (old_str[i] == '$')
+		if (old_str[i] == '$' && (i == 0 || old_str[i - 1] != 39))
 		{
 			ref_var = find_ref_var(&old_str[i]);
 			if (ref_var == NULL)
@@ -123,7 +123,7 @@ char *replace_var(char *old_str)
 	return (new);
 }
 
-char *replace_str(char *old_str)
+char *remove_quotes(char *old_str)
 {
 	int i;
 	int j;
@@ -141,21 +141,45 @@ char *replace_str(char *old_str)
 	}
 	new[j] = '\0';
 	free(old_str); //
-	return (new);
+	return (new);         //a refaire
+}
+
+int is_there_quotes(char *str)
+{
+	int i;
+
+	i = -1;
+	while (str[++i])
+		if (str[i] == 34 || str[i] == 39)
+			return (1);
+	return (0);
 }
 
 void check_var_and_quotes(char **t)
 {
 	int i;
+	int j;
 
 	i = -1;
+	j = 0;
 	while (t[++i])
 	{
-		if (t[i][0] == 39 || t[i][0] == 34)
+		/*if (is_there_dollar(t[i]) == 1)
+		{
+			while (t[i][j] && t[i][j] != '$')
+				j++;
+			if ((j != 0 && t[i][j - 1] != 39) || j == 0)
+				t[i] = replace_var(t[i]);
+		}*/
+		if (t[i][0] != 39 && is_there_dollar(t[i]) == 1)
+			t[i] = replace_var(t[i]);
+		if (is_there_quotes(t[i]) == 1)
+			t[i] = remove_quotes(t[i]);
+		/*if (t[i][0] == 39 || t[i][0] == 34)
 		{
 			if (t[i][0] == 34 && is_there_dollar(t[i]) == 1)
 				t[i] = replace_var(t[i]); // '$' tout seul a afficher, fonctionne aussi sans les doubles quotes
 			t[i] = replace_str(t[i]);
-		}
+		}*/
 	}
 }
