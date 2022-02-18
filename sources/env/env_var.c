@@ -6,22 +6,11 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 17:55:26 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/18 13:30:02 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/18 15:14:27 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int is_there_dollar(char *str)
-{
-	int i;
-
-	i = -1;
-	while (str[++i])
-		if (str[i] == '$')
-			return (1);
-	return (0);
-}
 
 char *replace_var2(char *old_str, int sizeofvar, char *ref_var)
 {
@@ -101,7 +90,7 @@ char *replace_var(char *old_str)
 	while (old_str[++i])
 	{
 		j = 1;
-		if (old_str[i] == '$' && (i == 0 || old_str[i - 1] != 39))
+		if(old_str[i] == '$' && should_replace_var(old_str, i) == 0)
 		{
 			ref_var = find_ref_var(&old_str[i]);
 			if (ref_var == NULL)
@@ -125,34 +114,43 @@ char *replace_var(char *old_str)
 
 char *remove_quotes(char *old_str)
 {
+	int nb_to_delete;
+	char *new;
 	int i;
 	int j;
-	char *new;
-
-	i = 0;
-	j = 0;
-	new = malloc(sizeof(char) * (ft_strlen(old_str) - 1));
-	if (!new)
-		return (NULL);
-	while (old_str[++i] && old_str[i + 1])
-	{
-		new[j] = old_str[i];
-		j++;
-	}
-	new[j] = '\0';
-	free(old_str); //
-	return (new);         //a refaire
-}
-
-int is_there_quotes(char *str)
-{
-	int i;
 
 	i = -1;
-	while (str[++i])
-		if (str[i] == 34 || str[i] == 39)
-			return (1);
-	return (0);
+	j = 0;
+	nb_to_delete = count_delete(old_str);
+	new = malloc(sizeof(char) * (ft_strlen(old_str) - nb_to_delete + 1));
+	if (!new)
+		return (NULL); //
+	while (old_str[++i])
+	{
+		if (old_str[i] == 34)
+		{
+			while (old_str[++i] && old_str[i] != 34)
+			{
+				new[j] = old_str[i];
+				j++;
+			}
+		}
+		else if (old_str[i] == 39)
+		{
+			while (old_str[++i] && old_str[i] != 39)
+			{
+				new[j] = old_str[i];
+				j++;
+			}
+		}
+		else
+		{
+			new[j] = old_str[i];
+			j++;
+		}
+	}
+	new[j] = 0;
+	return (new);
 }
 
 void check_var_and_quotes(char **t)
@@ -164,22 +162,11 @@ void check_var_and_quotes(char **t)
 	j = 0;
 	while (t[++i])
 	{
-		/*if (is_there_dollar(t[i]) == 1)
+		if (is_there_dollar(t[i]) == 1)
 		{
-			while (t[i][j] && t[i][j] != '$')
-				j++;
-			if ((j != 0 && t[i][j - 1] != 39) || j == 0)
-				t[i] = replace_var(t[i]);
-		}*/
-		if (t[i][0] != 39 && is_there_dollar(t[i]) == 1)
 			t[i] = replace_var(t[i]);
-		if (is_there_quotes(t[i]) == 1)
-			t[i] = remove_quotes(t[i]);
-		/*if (t[i][0] == 39 || t[i][0] == 34)
-		{
-			if (t[i][0] == 34 && is_there_dollar(t[i]) == 1)
-				t[i] = replace_var(t[i]); // '$' tout seul a afficher, fonctionne aussi sans les doubles quotes
-			t[i] = replace_str(t[i]);
-		}*/
+			if (is_there_quotes(t[i]) == 1)
+				t[i] = remove_quotes(t[i]);
+		}
 	}
 }

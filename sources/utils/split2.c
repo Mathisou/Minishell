@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 13:58:29 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/17 16:31:19 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/18 14:43:26 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,13 +124,11 @@ char	**split2(char const *s, char c)
 			string++;
 		}
 		if (s[i] == 39)
-			while (s[++i] != 39)
+			while (s[++i] && s[i] != 39)
 				;
 		else if (s[i] == 34)
-			while (s[++i] != 34)
+			while (s[++i] && s[i] != 34)
 				;
-		if (s[i] && s[i] != c)
-			i++;
 		i++;
 	}
 	big_tab[string] = NULL;
