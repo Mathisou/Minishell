@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:44:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/18 12:47:26 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/18 15:20:42 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@ char	**find_opt(char **t);
 char	**split2(char const *s, char c);
 void	check_var_and_quotes(char **t);
 int		check_limiter(char *str);
+int		count_delete(char *str);
+int		is_there_quotes(char *str);
+int		is_there_dollar(char *str);
+int		should_replace_var(char *str, int dollarindex);
 /*redirections*/
 void	parsing_redirection(char **t, t_fd *sfd);
 /*builtins*/
