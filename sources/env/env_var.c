@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 17:55:26 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/18 16:38:34 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/21 17:55:27 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ char *replace_var(char *old_str)
 
 	i = -1;
 	ref_var = NULL;
+	new = old_str;
 	while (old_str[++i])
 	{
 		j = 1;
@@ -112,6 +113,34 @@ char *replace_var(char *old_str)
 	return (new);
 }
 
+void remove_quotes2(char *old_str, char *new, int *i, int *j)
+{
+	while (old_str[++(*i)])
+	{
+		if (old_str[*i] == 34)
+		{
+			while (old_str[++(*i)] && old_str[*i] != 34)
+			{
+				new[*j] = old_str[*i];
+				(*j)++;
+			}
+		}
+		else if (old_str[*i] == 39)
+		{
+			while (old_str[++(*i)] && old_str[*i] != 39)
+			{
+				new[*j] = old_str[*i];
+				(*j)++;
+			}
+		}
+		else
+		{
+			new[*j] = old_str[*i];
+			(*j)++;
+		}
+	}
+}
+
 char *remove_quotes(char *old_str)
 {
 	int nb_to_delete;
@@ -125,30 +154,7 @@ char *remove_quotes(char *old_str)
 	new = malloc(sizeof(char) * (ft_strlen(old_str) - nb_to_delete + 1));
 	if (!new)
 		return (NULL); //
-	while (old_str[++i])
-	{
-		if (old_str[i] == 34)
-		{
-			while (old_str[++i] && old_str[i] != 34)
-			{
-				new[j] = old_str[i];
-				j++;
-			}
-		}
-		else if (old_str[i] == 39)
-		{
-			while (old_str[++i] && old_str[i] != 39)
-			{
-				new[j] = old_str[i];
-				j++;
-			}
-		}
-		else
-		{
-			new[j] = old_str[i];
-			j++;
-		}
-	}
+	remove_quotes2(old_str, new, &i, &j);
 	new[j] = 0;
 	return (new);
 }
@@ -161,10 +167,8 @@ void check_var_and_quotes(char **t)
 	while (t[++i])
 	{
 		if (is_there_dollar(t[i]) == 1)
-		{
 			t[i] = replace_var(t[i]);
-			if (is_there_quotes(t[i]) == 1)
-				t[i] = remove_quotes(t[i]);
-		}
+		if (is_there_quotes(t[i]) == 1)
+			t[i] = remove_quotes(t[i]);
 	}
 }

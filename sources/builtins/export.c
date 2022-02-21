@@ -6,7 +6,14 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:04:46 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/17 18:04:46 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/21 13:25:11 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
+
+void    export()
+{
+    if (check_line_to_export() == 0);
+        lst_addback();
+}

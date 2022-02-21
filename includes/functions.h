@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:44:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/18 15:43:58 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/21 17:22:42 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 /*prompt.c*/
 char	*findpath(char *cmd, char **env);
-void	rl(char **env);
+void	rl(char **env, t_global *s_global);
 /*utils*/
 char    **split_quotes(char *str, char sep, char **env);
 char    *find_var(char **env, char *var);
@@ -28,13 +28,17 @@ int		count_delete(char *str);
 int		is_there_quotes(char *str);
 int		is_there_dollar(char *str);
 int		should_replace_var(char *str, int dollarindex);
+int         tdm(char *cmd);
 /*redirections*/
 void	parsing_redirection(char **t, t_fd *sfd);
 /*builtins*/
-void	call_builtin(char *cmd, char **t);
+void	call_builtin(t_global *global);
 void	pwd();
 void	cd(char *directory);
 void	echo_b(char **t);
+void    exit_b(t_parse *parse);
+void    env(t_env **lst);
+void    unset(char *to_unset, t_env **lst);
 /*own_env.c*/
 void    take_env(char   **env, t_env **envi);
 /*list*/

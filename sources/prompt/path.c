@@ -3,48 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:46:27 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/16 15:22:48 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/02/21 17:37:33 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	put_cmd2(char **path, char *cmd, t_path *norm)
+{
+	norm->tmp = ft_strdup(path[norm->i]);
+	free(path[norm->i]);
+	path[norm->i] = malloc(sizeof (char) * (ft_strlen(norm->tmp) + norm->size_add));
+	if (!path[norm->i])
+	{
+		destroy_tab(path);
+		path = NULL;
+		return ;
+	}
+	norm->j = -1;
+	norm->k = 0;
+	while (norm->tmp[++norm->j])
+		path[norm->i][norm->k++] = norm->tmp[norm->j];
+	path[norm->i][norm->k++] = '/';
+	norm->j = -1;
+	while (cmd[++norm->j])
+		path[norm->i][norm->k++] = cmd[norm->j];
+	path[norm->i][norm->k++] = 0;
+	free(norm->tmp);
+}
+
 void	put_cmd(char **path, char *cmd)
 {
-	int		i;
-	int		j;
-	int		k;
-	int		size_add;
-	char	*tmp;
+	t_path norm;
 	
-	i = -1;
-	size_add = ft_strlen(cmd) + 2;
-	while (path[++i])
-	{
-		tmp = ft_strdup(path[i]);
-		free(path[i]);
-		path[i] = malloc(sizeof (char) * (ft_strlen(tmp) + size_add));
-		if (!path[i])
-		{
-			destroy_tab(path);
-			path = NULL;
-			return ;
-		}
-		j = -1;
-		k = 0;
-		while (tmp[++j])
-			path[i][k++] = tmp[j];
-		path[i][k++] = '/';
-		j = -1;
-		while (cmd[++j])
-			path[i][k++] = cmd[j];
-		path[i][k++] = 0;
-		free(tmp);
-	}
-	path[i] = NULL;
+	norm.i = -1;
+	norm.size_add = ft_strlen(cmd) + 2;
+	while (path[++norm.i])
+		put_cmd2(path, cmd, &norm);
+	path[norm.i] = NULL;
 }
 
 char	*findpath(char *cmd, char **env)
@@ -54,6 +53,8 @@ char	*findpath(char *cmd, char **env)
 	char	*new;
 
 	i = 0;
+	if (tdm(cmd))
+		return (cmd);
 	new = find_var(env, "PATH=");
 	path = ft_split(new, ':');
 	free(new);
@@ -67,5 +68,7 @@ char	*findpath(char *cmd, char **env)
 	if (path[i] != NULL)
 		new = ft_strdup(path[i]);
 	destroy_tab(path);
+	if (!new)
+		return (cmd);
 	return (new);
 }

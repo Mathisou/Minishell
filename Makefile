@@ -1,15 +1,16 @@
 NAME		=	minishell
 CC			=	gcc
 CFLAGS		=	-Wall -Werror -Wextra -Iincludes -Isources/libft \
--g3 -fsanitize=address -O0
+-g\
+# -fsanitize=address -O0
 INC			=	includes/minishell.h includes/functions.h includes/define.h
 MAIN		=	main.c
 MAINS		=	$(addprefix sources/, $(MAIN))
-UTIL		=	error.c split2.c check_line.c find_cmdopt.c
+UTIL		=	error.c split2.c check_line.c find_cmdopt.c truc_de_merde.c
 UTILS		=	$(addprefix sources/utils/, $(UTIL))  
 PROMPT		=	rl.c path.c
 PROMPTS		=	$(addprefix sources/prompt/, $(PROMPT))
-BUILTIN		=	call.c pwd.c cd.c echo.c
+BUILTIN		=	call.c pwd.c cd.c echo.c exit.c env.c unset.c
 BUILTINS	=	$(addprefix sources/builtins/, $(BUILTIN))
 REDIRECTION =	parse_redirection.c
 REDIRECTIONS=	$(addprefix sources/redirections/, $(REDIRECTION))

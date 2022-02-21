@@ -6,7 +6,21 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:04:42 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/17 18:04:43 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/21 16:25:33 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
+
+void    env(t_env **lst)
+{
+    t_env *tmp;
+
+    tmp = *lst;
+    while (tmp)
+    {
+        ft_putstr(tmp->var);
+        write(1, "\n", 1);
+        tmp = tmp->next;
+    }
+}

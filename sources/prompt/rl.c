@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/18 18:56:07 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/21 18:09:44 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,64 +23,72 @@ void handler(int signum)
 	}
 }
 
-void rl(char **env)
+int rl3(t_global *global, char **env)
 {
-	char				*line;
-	struct sigaction	sa;
-	char				*cmd;
-	char **t;
-	t_fd *sfd;
-	char **cmdopt;
+	int child;
 
-	sfd = malloc(sizeof(t_fd *) * 1);
-	if (!sfd)
-		return ;
+	child = fork();
+	if (child == 0)
+	{
+		if (!(tdm(global->parse->cmd)))
+			if (execve(global->parse->cmd, global->parse->cmdopt, env) == -1)
+				perror(global->parse->cmd);
+		free(global->parse->line);
+		destroy_tab(global->parse->t);
+		exit(1);
+	}
+	else
+	{
+		if (tdm(global->parse->cmd))
+			call_builtin(global);
+		wait(NULL);
+	}
+	return (0);
+}
+
+int	rl2(t_global *global, char **env)
+{
+	add_history(global->parse->line);
+	if (check_line(global->parse->line) == 1)
+		ft_putstr_fd("Syntax error!\n", 2);
+	else
+	{
+		global->parse->t = split2(global->parse->line, ' ');
+		global->parse->cmd  = findpath(global->parse->t[0], env); //
+		check_var_and_quotes(global->parse->t); // retire les quotes et double quotes + gere les variables denv
+		global->parse->cmdopt = find_opt(global->parse->t); // a adapter
+		parsing_redirection(global->parse->t, global->sfd); // > et >>
+		rl3(global, env);
+		free(global->parse->line);
+		destroy_tab(global->parse->t);
+		close(global->sfd->outfile);
+		dup2(global->sfd->save_stdout, 1); // retour sur le stdout apres avoir redirige l'output avec > et >>
+	}
+	return (0);
+}
+
+void rl(char **env, t_global *global)
+{
+	struct sigaction	sa;
+	t_fd sfd;
+	t_parse *parse;
+
+	parse = malloc(sizeof(t_parse));// a free
 	sa.sa_handler = handler;
+	global->sfd = &sfd;
+	global->parse = parse;
 	while (1)
 	{
 		sigaction(SIGINT, &sa, NULL);
-		line = readline("$> ");
-		if (!line)
+		parse->line = readline("$> ");
+		if (!parse->line)
 		{
-			write(1, "exit\n", 5);
-			exit(1);
+			write(1, "exit\n", 5); // ecrit rien
+			exit(0);// free
 		}
-		else if (ft_strlen(line) > 0)
-		{
-			add_history(line);
-			if (check_line(line) == 1)
-				ft_putstr_fd("Syntax error!\n", 2);
-			else
-			{
-				t = split2(line, ' ');
-				cmd = findpath(t[0], env); //
-				if (!cmd)
-					ft_putstr_fd("Command not found!\n", 2);
-				else
-				{
-					check_var_and_quotes(t); // retire les quotes et double quotes + gere les variables denv
-					cmdopt = find_opt(t); // a adapter
-					parsing_redirection(t, sfd); // > et >>
-					int child;
-					child = fork();
-					if (child == 0)
-					{
-						if (ft_strcmp(cmd, "/bin/pwd") != 0 && ft_strcmp(cmd, "/bin/echo") != 0) //cd pas trouvable
-							execve(cmd, cmdopt, env);
-						else
-							call_builtin(cmd, t);
-					}
-					else
-						wait(NULL);
-					free(line);
-					free(cmd);
-					destroy_tab(t);
-					close(sfd->outfile);
-					dup2(sfd->save_stdout, 1); // retour sur le stdout apres avoir redirige l'output avec > et >>
-				}
-			}
-		}
+		else if (ft_strlen(parse->line) > 0)
+			rl2(global,env);
 		rl_on_new_line();
 	}
-	//rl_clear_history();
+	rl_clear_history();
 }
