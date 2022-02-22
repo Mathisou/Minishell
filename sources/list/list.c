@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 14:29:10 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/22 15:10:33 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/22 15:25:10 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	lst_size(t_env **lst)
 	tmp = *lst;
 	while (tmp)
 	{
-		i++
+		i++;
 		tmp = tmp->next;
 	}
 	return (i);

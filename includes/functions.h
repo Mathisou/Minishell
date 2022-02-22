@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:44:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/22 15:11:13 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/22 15:25:39 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	call_builtin(t_global *global);
 void	pwd();
 void	cd(char *directory);
 void	echo_b(char **t);
-void    exit_b(t_global *parse);
+void    exit_b(t_global *global);
 void    env(t_env **lst);
 void    unset(char *to_unset, t_env **lst);
 void    export(t_env **lst, char *to_export);

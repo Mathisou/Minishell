@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/22 15:15:21 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/22 15:48:26 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,24 @@ char **convert_env(t_env **lst)
 	t_env *tmp;
 	char **big;
 	int i;
+	int size;
 
 	i = 0;
 	tmp = *lst;
-	big = malloc(sizeof(*big) * (lst_size(lst) + 1));
+	size = lst_size(lst);
+	if (size == 0)
+		return (NULL); //a securiser
+	big = malloc(sizeof(*big) * (size + 1));
 	if (!big)
-		return (NULL) // a securiser
+		return (NULL); // a securiser
 	while (tmp)
 	{
 		big[i] = ft_strdup(tmp->var);
 		tmp = tmp->next;
 		i++;
 	}
-	return ()
+	big[i] = NULL;
+	return (big);
 }
 
 int rl3(t_global *global)
@@ -82,6 +87,8 @@ int	rl2(t_global *global)
 		rl3(global);
 		free(global->parse->line);
 		destroy_tab(global->parse->t);
+		destroy_tab(global->parse->cmdopt); // pb de free
+		free(global->parse->cmd);
 		close(global->sfd->outfile);
 		dup2(global->sfd->save_stdout, 1); // retour sur le stdout apres avoir redirige l'output avec > et >>
 	}
