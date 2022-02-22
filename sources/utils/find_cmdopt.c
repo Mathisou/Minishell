@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 14:04:11 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/17 14:04:29 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/22 17:47:13 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	**find_opt(char **t)
 	if (!cmdopt)
 		return (NULL);
 	while (++j < i)
-		cmdopt[j] = t[j];
+		cmdopt[j] = ft_strdup(t[j]);
 	cmdopt[j] = NULL;
 	return (cmdopt);
 }

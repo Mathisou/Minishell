@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rl.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/22 16:07:03 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/02/22 17:49:45 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ int rl3(t_global *global)
 			call_builtin(global);
 		wait(NULL);
 	}
+			printf("apres %s\n", global->parse->cmd);
+
 	return (0);
 }
 
@@ -83,11 +85,15 @@ int	rl2(t_global *global)
 	else
 	{
 		global->parse->t = split2(global->parse->line, ' ');
-		global->parse->cmd  = findpath(global->parse->t[0], global->envi); //
+		global->parse->cmd  = findpath(ft_strdup(global->parse->t[0]), global->envi); //remplacer premier argument avc la bonne commande
 		check_var_and_quotes(global->parse->t, global->envi); // retire les quotes et double quotes + gere les variables denv
 		global->parse->cmdopt = find_opt(global->parse->t); // a adapter
 		parsing_redirection(global->parse->t, global->sfd); // > et >>
 		rl3(global);
+		free(global->parse->line);
+		destroy_tab(global->parse->t);
+		destroy_tab(global->parse->cmdopt);
+		free(global->parse->cmd);
 		close(global->sfd->outfile);
 		dup2(global->sfd->save_stdout, 1); // retour sur le stdout apres avoir redirige l'output avec > et >>
 	}
@@ -107,8 +113,8 @@ void rl(t_global *global)
 	while (1)
 	{
 		sigaction(SIGINT, &sa, NULL);
-		parse->line = readline("$> ");
-		if (!parse->line)
+		global->parse->line = readline("$> ");
+		if (!global->parse->line)
 		{
 			write(1, "exit\n", 5);
 			del_list(global->envi);
@@ -117,10 +123,7 @@ void rl(t_global *global)
 		}
 		else if (ft_strlen(parse->line) > 0)
 			rl2(global);
-		free(global->parse->line);
-		destroy_tab(global->parse->t);
-		free (global->parse->cmdopt);
-		free (global->parse->cmd);
+		//free (global->parse->cmd);
 		rl_on_new_line();
 	}
 	rl_clear_history();

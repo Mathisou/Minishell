@@ -1,8 +1,8 @@
 NAME		=	minishell
 CC			=	gcc
 CFLAGS		=	-Wall -Werror -Wextra -Iincludes -Isources/libft \
--g\
- -fsanitize=address -O0
+-g -O0\
+
 INC			=	includes/minishell.h includes/functions.h includes/define.h
 MAIN		=	main.c
 MAINS		=	$(addprefix sources/, $(MAIN))

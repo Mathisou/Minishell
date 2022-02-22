@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 18:20:12 by maroly            #+#    #+#             */
-/*   Updated: 2022/01/03 16:43:50 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/22 16:47:10 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ char	**destroy_tab(char **tab)
 {
 	int	i;
 
-	i = 0;
-	while (tab[i])
-		free(tab[i++]);
+	i = -1;
+	while (tab[++i])
+		free(tab[i]);
 	free(tab);
 	return (NULL);
 }

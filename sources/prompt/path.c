@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:46:27 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/22 15:38:36 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/22 17:52:44 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,12 @@ char	*findpath(char *cmd, t_env **lst)
 	if (tdm(cmd))
 		return (cmd);
 	new = find_var(lst, "PATH=");
-	path = ft_split(new, ':');
+	path = split2(new, ':');
 	free(new);
 	new = NULL;
 	put_cmd(path, cmd);
 	if (!path)
-		return (NULL);
+		return (NULL); // gerer les free
 	i = 0;
 	while (path[i] && access(path[i], X_OK) != 0)
 		i++;
@@ -70,5 +70,6 @@ char	*findpath(char *cmd, t_env **lst)
 	destroy_tab(path);
 	if (!new)
 		return (cmd);
+	free(cmd);
 	return (new);
 }
