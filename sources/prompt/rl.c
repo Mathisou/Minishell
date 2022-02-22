@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rl.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/22 15:56:30 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/22 16:07:03 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,6 @@ int	rl2(t_global *global)
 		global->parse->cmdopt = find_opt(global->parse->t); // a adapter
 		parsing_redirection(global->parse->t, global->sfd); // > et >>
 		rl3(global);
-		free(global->parse->line);
-		destroy_tab(global->parse->t);
-		//destroy_tab(global->parse->cmdopt); // pb de free
-		//free(global->parse->cmd);
 		close(global->sfd->outfile);
 		dup2(global->sfd->save_stdout, 1); // retour sur le stdout apres avoir redirige l'output avec > et >>
 	}
@@ -116,13 +112,15 @@ void rl(t_global *global)
 		{
 			write(1, "exit\n", 5);
 			del_list(global->envi);
-			//free_all();
 			free(global->parse);
 			exit(0);// free
 		}
 		else if (ft_strlen(parse->line) > 0)
 			rl2(global);
+		free(global->parse->line);
+		destroy_tab(global->parse->t);
 		free (global->parse->cmdopt);
+		free (global->parse->cmd);
 		rl_on_new_line();
 	}
 	rl_clear_history();
