@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:04:49 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/21 16:23:36 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/22 11:25:24 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,21 +47,24 @@ void    unset(char *to_unset, t_env **lst)
             *lst = (*lst)->next;
         else
         {
-            free(tmp->var);
             free(*lst);
             *lst = NULL;
         }
-        return ;
+       // return ;
     }
     while (tmp->next && is_var(tmp->next->var, to_unset) == 1)
         tmp = tmp->next;
     if (tmp->next)
     {
-        free(tmp->next->var);
-        free(tmp->next);
         if (tmp->next->next)
+        {
+            //free(tmp->next);
             tmp->next = tmp->next->next;
+        }
         else
+        {
+            //free(tmp->next);
             tmp->next = NULL;
+        }
     }
 }

@@ -6,13 +6,13 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 17:55:26 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/21 17:55:27 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/22 13:16:25 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char *replace_var2(char *old_str, int sizeofvar, char *ref_var)
+char *replace_var2(char *old_str, int sizeofvar, char *ref_var)//, int dollar)
 {
 	int i;
 	int j;
@@ -26,7 +26,7 @@ char *replace_var2(char *old_str, int sizeofvar, char *ref_var)
 	if (!new)
 		return (NULL);
 	new[0] = 0;
-	while (old_str[++i] && old_str[i] != '$')
+	while ((old_str[++i] && old_str[i] != '$') || (old_str[i] && old_str[i] == '$' && old_str[i + 1] == '$'))
 	{
 		new[j] = old_str[i];
 		j++;
@@ -50,7 +50,7 @@ char *replace_var2(char *old_str, int sizeofvar, char *ref_var)
 	return (new);
 }
 
-char *find_ref_var(char *old_str)
+char *find_ref_var(char *old_str, t_env **lst)
 {
 	char *var;
 	char *ref_var;
@@ -73,12 +73,13 @@ char *find_ref_var(char *old_str)
 		j++;
 	}
 	var[j] = '\0';
-	ref_var = getenv(var); //gerer le cas unset donc a ne pas use
+	ref_var = find_var(lst, var);
+	//ref_var = getenv(var); //gerer le cas unset donc a ne pas use
 	free(var);
 	return (ref_var);
 }
 
-char *replace_var(char *old_str)
+char *replace_var(char *old_str, t_env **lst)
 {
 	int i;
 	int j;
@@ -91,9 +92,9 @@ char *replace_var(char *old_str)
 	while (old_str[++i])
 	{
 		j = 1;
-		if(old_str[i] == '$' && should_replace_var(old_str, i) == 0)
+		if (old_str[i] == '$' && ft_isalnum(old_str[i + 1]) == 1 && should_replace_var(old_str, i) == 0)
 		{
-			ref_var = find_ref_var(&old_str[i]);
+			ref_var = find_ref_var(&old_str[i], lst);
 			if (ref_var == NULL)
 			{
 				free(ref_var);
@@ -159,7 +160,7 @@ char *remove_quotes(char *old_str)
 	return (new);
 }
 
-void check_var_and_quotes(char **t)
+void check_var_and_quotes(char **t, t_env **lst)
 {
 	int i;
 
@@ -167,7 +168,7 @@ void check_var_and_quotes(char **t)
 	while (t[++i])
 	{
 		if (is_there_dollar(t[i]) == 1)
-			t[i] = replace_var(t[i]);
+			t[i] = replace_var(t[i], lst);
 		if (is_there_quotes(t[i]) == 1)
 			t[i] = remove_quotes(t[i]);
 	}

@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/21 18:09:44 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/22 13:17:19 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ int	rl2(t_global *global, char **env)
 	else
 	{
 		global->parse->t = split2(global->parse->line, ' ');
-		global->parse->cmd  = findpath(global->parse->t[0], env); //
-		check_var_and_quotes(global->parse->t); // retire les quotes et double quotes + gere les variables denv
+		global->parse->cmd  = findpath(global->parse->t[0], global->envi); //
+		check_var_and_quotes(global->parse->t, global->envi); // retire les quotes et double quotes + gere les variables denv
 		global->parse->cmdopt = find_opt(global->parse->t); // a adapter
 		parsing_redirection(global->parse->t, global->sfd); // > et >>
 		rl3(global, env);
@@ -83,7 +83,9 @@ void rl(char **env, t_global *global)
 		parse->line = readline("$> ");
 		if (!parse->line)
 		{
-			write(1, "exit\n", 5); // ecrit rien
+			write(1, "exit\n", 5);
+			del_list(global->envi);
+			free(global->parse);
 			exit(0);// free
 		}
 		else if (ft_strlen(parse->line) > 0)

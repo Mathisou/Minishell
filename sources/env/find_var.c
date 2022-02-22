@@ -6,26 +6,27 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 14:17:59 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/17 14:41:06 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/22 11:26:10 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char    *find_var(char **env, char *var)
+char    *find_var(t_env **lst, char *var)
 {
-    int i;
+    t_env *tmp;
     int j;
 
-    i = -1;
-    while (env[++i])
+    tmp = *lst;
+    while (tmp)
     {     
         j = -1;
-        while (env[i][++j] && var[j])
-            if (env[i][j] != var[j])
+        while (tmp->var[++j] && var[j])
+            if (tmp->var[j] != var[j])
                 break ;
         if (var[j] == 0)
-            return ((ft_strdup(env[i] + ft_strlen(var))));
+            return ((ft_strdup(tmp->var + ft_strlen(var) + 1)));
+        tmp = tmp->next;
     }
 	return (NULL); // \n quand pas trouver
 }

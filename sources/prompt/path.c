@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:46:27 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/21 17:37:33 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/22 11:20:58 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	put_cmd(char **path, char *cmd)
 	path[norm.i] = NULL;
 }
 
-char	*findpath(char *cmd, char **env)
+char	*findpath(char *cmd, t_env **lst)
 {
 	int		i;
 	char	**path;
@@ -55,7 +55,7 @@ char	*findpath(char *cmd, char **env)
 	i = 0;
 	if (tdm(cmd))
 		return (cmd);
-	new = find_var(env, "PATH=");
+	new = find_var(lst, "PATH="); //lst pas env
 	path = ft_split(new, ':');
 	free(new);
 	new = NULL;
