@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:44:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/22 15:25:39 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/22 18:05:48 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void    unset(char *to_unset, t_env **lst);
 void    export(t_env **lst, char *to_export);
 /*own_env.c*/
 void    take_env(char   **env, t_env **envi);
+char **convert_env(t_env **lst);
 /*list*/
 t_env   *new_node(char *content);
 void    add_node_back(t_env **first, char *content);

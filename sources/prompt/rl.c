@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/22 17:49:45 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/22 18:05:27 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,31 +21,6 @@ void handler(int signum)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-}
-
-char **convert_env(t_env **lst)
-{
-	t_env *tmp;
-	char **big;
-	int i;
-	int size;
-
-	i = 0;
-	tmp = *lst;
-	size = lst_size(lst);
-	if (size == 0)
-		return (NULL); //a securiser
-	big = malloc(sizeof(*big) * (size + 1));
-	if (!big)
-		return (NULL); // a securiser
-	while (tmp)
-	{
-		big[i] = ft_strdup(tmp->var);
-		tmp = tmp->next;
-		i++;
-	}
-	big[i] = NULL;
-	return (big);
 }
 
 int rl3(t_global *global)
@@ -106,7 +81,8 @@ void rl(t_global *global)
 	t_fd sfd;
 	t_parse *parse;
 
-	parse = malloc(sizeof(t_parse));// a free
+	parse = malloc(sizeof(t_parse));
+	sa = (struct sigaction){0};
 	sa.sa_handler = handler;
 	global->sfd = &sfd;
 	global->parse = parse;
@@ -119,11 +95,10 @@ void rl(t_global *global)
 			write(1, "exit\n", 5);
 			del_list(global->envi);
 			free(global->parse);
-			exit(0);// free
+			exit(0);
 		}
 		else if (ft_strlen(parse->line) > 0)
 			rl2(global);
-		//free (global->parse->cmd);
 		rl_on_new_line();
 	}
 	rl_clear_history();
