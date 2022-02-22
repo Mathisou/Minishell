@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rl.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/22 14:38:59 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/02/22 15:15:21 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,27 @@ void handler(int signum)
 	}
 }
 
-int rl3(t_global *global, char **env)
+char **convert_env(t_env **lst)
+{
+	t_env *tmp;
+	char **big;
+	int i;
+
+	i = 0;
+	tmp = *lst;
+	big = malloc(sizeof(*big) * (lst_size(lst) + 1));
+	if (!big)
+		return (NULL) // a securiser
+	while (tmp)
+	{
+		big[i] = ft_strdup(tmp->var);
+		tmp = tmp->next;
+		i++;
+	}
+	return ()
+}
+
+int rl3(t_global *global)
 {
 	int child;
 
@@ -31,10 +51,11 @@ int rl3(t_global *global, char **env)
 	if (child == 0)
 	{
 		if (!(tdm(global->parse->cmd)))
-			if (execve(global->parse->cmd, global->parse->cmdopt, env) == -1)
+			if (execve(global->parse->cmd, global->parse->cmdopt, convert_env(global->envi)) == -1)
 				perror(global->parse->cmd);
 		free(global->parse->line);
 		destroy_tab(global->parse->t);
+		del_list(global->envi);
 		exit(1);
 	}
 	else
@@ -46,7 +67,7 @@ int rl3(t_global *global, char **env)
 	return (0);
 }
 
-int	rl2(t_global *global, char **env)
+int	rl2(t_global *global)
 {
 	add_history(global->parse->line);
 	if (check_line(global->parse->line) == 1)
@@ -58,7 +79,7 @@ int	rl2(t_global *global, char **env)
 		check_var_and_quotes(global->parse->t, global->envi); // retire les quotes et double quotes + gere les variables denv
 		global->parse->cmdopt = find_opt(global->parse->t); // a adapter
 		parsing_redirection(global->parse->t, global->sfd); // > et >>
-		rl3(global, env);
+		rl3(global);
 		free(global->parse->line);
 		destroy_tab(global->parse->t);
 		close(global->sfd->outfile);
@@ -67,7 +88,7 @@ int	rl2(t_global *global, char **env)
 	return (0);
 }
 
-void rl(char **env, t_global *global)
+void rl(t_global *global)
 {
 	struct sigaction	sa;
 	t_fd sfd;
@@ -85,12 +106,12 @@ void rl(char **env, t_global *global)
 		{
 			write(1, "exit\n", 5);
 			del_list(global->envi);
-			free_all();
+			//free_all();
 			free(global->parse);
 			exit(0);// free
 		}
 		else if (ft_strlen(parse->line) > 0)
-			rl2(global,env);
+			rl2(global);
 		free (global->parse->cmdopt);
 		rl_on_new_line();
 	}

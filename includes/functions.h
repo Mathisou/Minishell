@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:44:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/22 11:21:17 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/22 15:11:13 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 /*prompt.c*/
 char	*findpath(char *cmd, t_env **lst);
-void	rl(char **env, t_global *s_global);
+void	rl(t_global *s_global);
 /*utils*/
 char    **split_quotes(char *str, char sep, char **env);
 char    *find_var(t_env **lst, char *var);
@@ -43,9 +43,9 @@ void    export(t_env **lst, char *to_export);
 /*own_env.c*/
 void    take_env(char   **env, t_env **envi);
 /*list*/
-t_env    *new_node(char *content);
+t_env   *new_node(char *content);
 void    add_node_back(t_env **first, char *content);
-int        del_list(t_env **lst);
-void    echo_b(char **t);
+int     del_list(t_env **lst);
+int     lst_size(t_env **lst);
 
 #endif

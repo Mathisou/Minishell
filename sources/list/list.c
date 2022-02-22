@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 14:29:10 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/22 10:43:56 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/22 15:10:33 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_env	*new_node(char  *content)
 	new = malloc(sizeof (t_env));
 	if (!new)
 		return (NULL);
-	new->var = content;
+	new->var = ft_strdup(content);
 	new->next = NULL;
 	return (new);
 }
@@ -48,11 +48,28 @@ int	del_list(t_env **lst)
 		while (*lst)
 		{
 			tmp = (*lst)->next;
+			//printf("%s\n", (*lst)->var);
+			free((*lst)->var);
 			free(*lst);
 			*lst = tmp;
 		}
 	}
 	return (0);
+}
+
+int	lst_size(t_env **lst)
+{
+	t_env *tmp;
+	int i;
+
+	i = 0;
+	tmp = *lst;
+	while (tmp)
+	{
+		i++
+		tmp = tmp->next;
+	}
+	return (i);
 }
 
 // void	del_node(t_env **envi, char *content)
