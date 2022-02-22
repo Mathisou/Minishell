@@ -1,22 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   define.h                                           :+:      :+:    :+:   */
+/*   free_all.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/15 13:45:13 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/22 14:42:35 by hkovac           ###   ########.fr       */
+/*   Created: 2022/02/22 14:41:34 by hkovac            #+#    #+#             */
+/*   Updated: 2022/02/22 14:49:13 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DEFINE_H
-# define DEFINE_H
+#include "minishell.h"
 
-/*int mode for free_all()*/
-# define PARSE  42 
-# define ENV    43 
-# define GLOBAL 44
-# define ALL    420
+static int	free_parse(t_global *global)
+{
+	
+}
 
-#endif
+static int	free_env(t_global *global)
+{
+	
+}
+
+static int	free_global(t_global *global)
+{
+	
+}
+
+int	free_all(int mode, t_global *global)
+{
+	if (mode == PARSE)
+		return (free_parse(global));
+	else if (mode == ENV)
+		return (free_env(global));
+	else if (mode == GLOBAL)
+		return (free_globall(global));
+	// else if (mode == ALL)
+	
+}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rl.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/22 13:17:19 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/22 14:38:59 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,11 +85,13 @@ void rl(char **env, t_global *global)
 		{
 			write(1, "exit\n", 5);
 			del_list(global->envi);
+			free_all();
 			free(global->parse);
 			exit(0);// free
 		}
 		else if (ft_strlen(parse->line) > 0)
 			rl2(global,env);
+		free (global->parse->cmdopt);
 		rl_on_new_line();
 	}
 	rl_clear_history();
