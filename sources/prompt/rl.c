@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/22 15:48:26 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/22 15:56:30 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,19 @@ char **convert_env(t_env **lst)
 int rl3(t_global *global)
 {
 	int child;
+	char **big;
 
 	child = fork();
 	if (child == 0)
 	{
+		big = convert_env(global->envi);
 		if (!(tdm(global->parse->cmd)))
-			if (execve(global->parse->cmd, global->parse->cmdopt, convert_env(global->envi)) == -1)
+			if (execve(global->parse->cmd, global->parse->cmdopt, big) == -1)
 				perror(global->parse->cmd);
 		free(global->parse->line);
 		destroy_tab(global->parse->t);
 		del_list(global->envi);
+		destroy_tab(big);
 		exit(1);
 	}
 	else
@@ -87,8 +90,8 @@ int	rl2(t_global *global)
 		rl3(global);
 		free(global->parse->line);
 		destroy_tab(global->parse->t);
-		destroy_tab(global->parse->cmdopt); // pb de free
-		free(global->parse->cmd);
+		//destroy_tab(global->parse->cmdopt); // pb de free
+		//free(global->parse->cmd);
 		close(global->sfd->outfile);
 		dup2(global->sfd->save_stdout, 1); // retour sur le stdout apres avoir redirige l'output avec > et >>
 	}
