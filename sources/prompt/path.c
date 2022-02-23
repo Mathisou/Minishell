@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:46:27 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/22 17:52:44 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/23 16:29:04 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ char	*findpath(char *cmd, t_env **lst)
 	if (path[i] != NULL)
 		new = ft_strdup(path[i]);
 	destroy_tab(path);
-	if (!new)
-		return (cmd);
+	//if (!new)
+	//	return (cmd);
 	free(cmd);
 	return (new);
 }

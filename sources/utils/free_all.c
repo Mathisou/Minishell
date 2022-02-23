@@ -3,16 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   free_all.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:41:34 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/22 15:14:44 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/02/23 20:28:19 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	free_parse(t_global *global)
+void	free_end_line(t_global *global)
+{
+	free(global->parse->line);
+	destroy_tab(global->parse->t);
+	destroy_big_tab(global->parse->cmdopt);
+	destroy_tab(global->parse->cmd); // possible double free
+	destroy_big_tab(global->parse->bt);
+}
+
+void	free_parse(t_global *global)
 {
 	if	(global->parse)
 	{
@@ -28,12 +37,12 @@ static int	free_parse(t_global *global)
 	}
 }
 
-static int	free_env(t_global *global)
+void	free_env(t_global *global)
 {
 	del_list(global->envi);
 }
 
-int	free_all(int mode, t_global *global)
+void	free_all(int mode, t_global *global)
 {
 	if (mode == PARSE)
 		return (free_parse(global));
@@ -45,4 +54,14 @@ int	free_all(int mode, t_global *global)
 		free_env(global);
 	}
 	
+}
+
+void	destroy_big_tab(char ***bt)
+{
+	int i;
+
+	i = -1;
+	while (bt[++i])
+		destroy_tab(bt[i]);
+	free(bt);
 }

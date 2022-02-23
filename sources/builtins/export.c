@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:04:46 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/22 11:02:06 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/23 16:13:47 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,6 @@ void    export(t_env **lst, char *to_export)
 {
     if (check_line_to_export(to_export) == 0)
         add_node_back(lst, to_export);
+    else
+        ft_putstr_fd("Syntax error!\n", 2);
 }

@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 14:29:10 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/22 15:25:10 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/23 19:37:17 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ int	del_list(t_env **lst)
 		while (*lst)
 		{
 			tmp = (*lst)->next;
-			//printf("%s\n", (*lst)->var);
 			free((*lst)->var);
 			free(*lst);
 			*lst = tmp;

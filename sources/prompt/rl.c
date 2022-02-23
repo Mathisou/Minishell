@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/22 18:05:27 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/23 20:22:38 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void handler(int signum)
 	{
 		write(1, "\n", 1);
 		rl_on_new_line();
-		rl_replace_line("", 0);
+		//rl_replace_line("", 0);
 		rl_redisplay();
 	}
 }
@@ -28,13 +28,21 @@ int rl3(t_global *global)
 	int child;
 	char **big;
 
+	// int i = -1;						//print bt
+	// while (global->parse->bt[++i])
+	// {
+	// 	int j = -1;
+	// 	while(global->parse->bt[i][++j])
+	// 		printf("%s ", global->parse->bt[i][j]);
+	// 	printf("\n");
+	// }
 	child = fork();
 	if (child == 0)
 	{
 		big = convert_env(global->envi);
-		if (!(tdm(global->parse->cmd)))
-			if (execve(global->parse->cmd, global->parse->cmdopt, big) == -1)
-				perror(global->parse->cmd);
+		if (global->parse->cmd[0] != NULL && !(tdm(global->parse->cmd[0])))
+			if (execve(global->parse->cmd[0], global->parse->cmdopt[0], big) == -1)
+				perror(global->parse->cmd[0]);
 		free(global->parse->line);
 		destroy_tab(global->parse->t);
 		del_list(global->envi);
@@ -43,12 +51,10 @@ int rl3(t_global *global)
 	}
 	else
 	{
-		if (tdm(global->parse->cmd))
+		if (global->parse->cmd[0] != NULL && tdm(global->parse->cmd[0]))
 			call_builtin(global);
 		wait(NULL);
 	}
-			printf("apres %s\n", global->parse->cmd);
-
 	return (0);
 }
 
@@ -60,16 +66,15 @@ int	rl2(t_global *global)
 	else
 	{
 		global->parse->t = split2(global->parse->line, ' ');
-		global->parse->cmd  = findpath(ft_strdup(global->parse->t[0]), global->envi); //remplacer premier argument avc la bonne commande
 		check_var_and_quotes(global->parse->t, global->envi); // retire les quotes et double quotes + gere les variables denv
-		global->parse->cmdopt = find_opt(global->parse->t); // a adapter
-		parsing_redirection(global->parse->t, global->sfd); // > et >>
+		pipe_split(global);
+		find_cmd(global);
+		global->parse->cmdopt = find_opt(global->parse->bt); // to-do : 
+		parsing_redirection(global->parse->t, global->sfd); // to-do : < et <<
+		//implementer pipex a la place de rl3
 		rl3(global);
-		free(global->parse->line);
-		destroy_tab(global->parse->t);
-		destroy_tab(global->parse->cmdopt);
-		free(global->parse->cmd);
-		close(global->sfd->outfile);
+		free_end_line(global);
+		close(global->sfd->outfile); //to-do: close et dup quand il faut
 		dup2(global->sfd->save_stdout, 1); // retour sur le stdout apres avoir redirige l'output avec > et >>
 	}
 	return (0);
@@ -101,5 +106,5 @@ void rl(t_global *global)
 			rl2(global);
 		rl_on_new_line();
 	}
-	rl_clear_history();
+	//rl_clear_history();
 }

@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:44:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/22 18:05:48 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/23 19:23:51 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,18 @@ void	rl(t_global *s_global);
 char    **split_quotes(char *str, char sep, char **env);
 char    *find_var(t_env **lst, char *var);
 int      check_line(char *line);
-char	**find_opt(char **t);
+char	***find_opt(char ***bt);
 char	**split2(char const *s, char c);
-void check_var_and_quotes(char **t, t_env **lst);
+void	check_var_and_quotes(char **t, t_env **lst);
 int		check_limiter(char *str);
 int		count_delete(char *str);
 int		is_there_quotes(char *str);
 int		is_there_dollar(char *str);
 int		should_replace_var(char *str, int dollarindex);
-int         tdm(char *cmd);
+int     tdm(char *cmd);
+void	pipe_split(t_global *global);
+int		count_triple_tab(char ***t);
+int		find_cmd(t_global *global);
 /*redirections*/
 void	parsing_redirection(char **t, t_fd *sfd);
 /*builtins*/
@@ -48,5 +51,8 @@ t_env   *new_node(char *content);
 void    add_node_back(t_env **first, char *content);
 int     del_list(t_env **lst);
 int     lst_size(t_env **lst);
+/*free*/
+void	destroy_big_tab(char ***bt);
+void	free_end_line(t_global *global);
 
 #endif
