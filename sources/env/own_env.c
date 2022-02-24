@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 14:15:49 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/24 16:46:26 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/24 18:02:32 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	take_env(char   **env, t_env **envi)
 {
 	int		i;
 	char	*new_shlvl;
+	char *rtn_itoa;
 
 	i = -1;
 	new_shlvl = NULL;
@@ -23,9 +24,11 @@ void	take_env(char   **env, t_env **envi)
 	{
 		if (ft_strncmp(env[i], "SHLVL=", 6) == 0)
 		{
-			new_shlvl = strcats("SHLVL=", ft_itoa(ft_atoi(&env[i][6]) + 1));
+			rtn_itoa = ft_itoa(ft_atoi(&env[i][6]) + 1);
+			new_shlvl = strcats("SHLVL=", rtn_itoa);
 			add_node_back(envi, new_shlvl);
 			free(new_shlvl);
+			free(rtn_itoa);
 		}
 		else
 			add_node_back(envi, env[i]);

@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 16:39:59 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/23 19:19:51 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/24 18:10:26 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	pipe_split2(t_global *global)
 			global->parse->bt[k][++j] = ft_strdup(global->parse->t[i]);
 	}
 	global->parse->bt[k][++j] = NULL;
-	global->parse->bt[++k] = NULL;
+	global->parse->bt[++k] = NULL;\
 }
 
 void	pipe_split(t_global *global)

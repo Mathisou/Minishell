@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:44:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/24 15:27:07 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/24 18:22:45 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char *strcats(char *s1, char *s2);
 /*redirections*/
 void	parsing_redirection(char **t, t_fd *sfd);
 /*builtins*/
-void	call_builtin(t_global *global);
+void	call_builtin(t_global *global, int i);
 void	pwd();
 void	cd(char *directory, t_env **lst);
 void	echo_b(char **t);

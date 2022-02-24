@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 18:37:23 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/17 13:10:10 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/24 17:19:20 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	parsing_redirection(char **t, t_fd *sfd)
 			sfd->save_stdout = dup(STDOUT_FILENO);
 			dup2(sfd->outfile, STDOUT_FILENO);
 		}
-		else if (ft_strcmp(t[i], ">>") == 0 && t[i + 1]) // ne secrit pas a la suite
+		else if (ft_strcmp(t[i], ">>") == 0 && t[i + 1])
 		{
 			dup2(sfd->save_stdout, 1);
 			sfd->outfile = open(t[i + 1], O_WRONLY | O_APPEND | O_CREAT, 0644);

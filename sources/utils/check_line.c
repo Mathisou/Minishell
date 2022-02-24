@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 14:20:29 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/21 17:13:48 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/24 18:28:31 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ int check_line(char *line)
     i = -1;
     while (line[++i])
     {
+        if (line[i] == '|' && line[i + 1] == '|')
+            return (1);
         if (line[i] == 34)
         {
             if (check_line2(line, &i, &j))

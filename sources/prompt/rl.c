@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/24 16:50:57 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/24 18:30:53 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,26 +23,31 @@ void handler(int signum)
 	}
 }
 
-int rl3(t_global *global)
+int rl3(t_global *global, int i)
 {
 	int child;
 	char **big;
 
-	// int i = -1;						//print bt
-	// while (global->parse->bt[++i])
+	// int k = -1;						//print bt
+	// while (global->parse->bt[++k])
 	// {
 	// 	int j = -1;
-	// 	while(global->parse->bt[i][++j])
-	// 		printf("%s ", global->parse->bt[i][j]);
+	// 	while(global->parse->bt[k][++j])
+	// 		printf("%s ", global->parse->bt[k][j]);
 	// 	printf("\n");
 	// }
+	// printf("\n");
 	child = fork();
 	if (child == 0)
 	{
+		// int j = -1;
+		// while (global->parse->cmdopt[i][++j])
+		// 	printf("cmdopt : %s\n",  global->parse->cmdopt[i][j]);
+		// printf("\n");
 		big = convert_env(global->envi);
-		if (global->parse->cmd[0] != NULL && !(tdm(global->parse->cmd[0])))
-			if (execve(global->parse->cmd[0], global->parse->cmdopt[0], big) == -1)
-				perror(global->parse->cmd[0]);
+		if (global->parse->cmd[i] != NULL && !(tdm(global->parse->cmd[i])))
+			if (execve(global->parse->cmd[i], global->parse->cmdopt[i], big) == -1)
+				perror(global->parse->cmd[i]);
 		free(global->parse->line);
 		destroy_tab(global->parse->t);
 		del_list(global->envi);
@@ -51,8 +56,8 @@ int rl3(t_global *global)
 	}
 	else
 	{
-		if (global->parse->cmd[0] != NULL && tdm(global->parse->cmd[0]))
-			call_builtin(global);
+		if (global->parse->cmd[i] != NULL && tdm(global->parse->cmd[i]))
+			call_builtin(global, i);
 		wait(NULL);
 	}
 	return (0);
@@ -60,22 +65,28 @@ int rl3(t_global *global)
 
 int	rl2(t_global *global)
 {
+	int i = -1;
 	add_history(global->parse->line);
 	if (check_line(global->parse->line) == 1)
+	{
+		free(global->parse->line);
 		ft_putstr_fd("Syntax error!\n", 2);
+	}
 	else
 	{
 		global->parse->t = split2(global->parse->line, ' ');
-		check_var_and_quotes(global->parse->t, global->envi); // retire les quotes et double quotes + gere les variables denv
+		check_var_and_quotes(global->parse->t, global->envi);
 		pipe_split(global);
 		find_cmd(global);
 		global->parse->cmdopt = find_opt(global->parse->bt);
-		parsing_redirection(global->parse->t, global->sfd); // to-do : < et <<
-		//implementer pipex a la place de rl3
-		rl3(global);
+		while (global->parse->bt[++i])
+		{
+			parsing_redirection(global->parse->bt[i], global->sfd); // to-do : < et <<
+			rl3(global, i); //implementer pipex a la place de rl3
+			close(global->sfd->outfile); //to-do: close et dup quand il faut
+			dup2(global->sfd->save_stdout, 1); // retour sur le stdout apres avoir redirige l'output avec > et >>
+		}
 		free_end_line(global);
-		close(global->sfd->outfile); //to-do: close et dup quand il faut
-		dup2(global->sfd->save_stdout, 1); // retour sur le stdout apres avoir redirige l'output avec > et >>
 	}
 	return (0);
 }
