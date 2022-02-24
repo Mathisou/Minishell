@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:46:27 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/23 16:29:04 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/24 16:20:38 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	*findpath(char *cmd, t_env **lst)
 	char	*new;
 
 	i = 0;
-	if (tdm(cmd))
+	if (tdm(cmd) || ft_strcmp(cmd, "minishell") == 0)
 		return (cmd);
 	new = find_var(lst, "PATH=");
 	path = split2(new, ':');

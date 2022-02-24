@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 14:04:11 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/23 20:12:24 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/24 12:41:49 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	check_limiter(char *str)
 {
-	if (ft_strcmp(str, "<") == 0 || ft_strcmp(str, ">") == 0
+	if (ft_strcmp(str, "|") == 0 || ft_strcmp(str, "<") == 0 || ft_strcmp(str, ">") == 0
 		|| ft_strcmp(str, ">>") == 0 || ft_strcmp(str, "<<") == 0)
 		return (1);
 	return (0);
@@ -72,5 +72,6 @@ int	find_cmd(t_global *global)
 			ft_putstr_fd(": command not found\n", 2);
 		}
 	}
+	global->parse->cmd[i] = NULL;
 	return (0);
 }

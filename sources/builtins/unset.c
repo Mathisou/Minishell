@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:04:49 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/22 11:25:24 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/24 13:42:49 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,35 +36,47 @@ int is_var(char *var, char *to_unset)
     }
 }
 
-void    unset(char *to_unset, t_env **lst)
+void    unset(char **to_unset, t_env **lst)
 {
+    int i;
     t_env *tmp;
+    t_env *save;
 
     tmp = *lst;
-    if (is_var(tmp->var, to_unset) == 0)
+    i = 0;
+    while (to_unset[++i])
     {
+        if (is_var(tmp->var, to_unset[i]) == 0)
+        {
+            if (tmp->next)
+            {
+                //free(*lst);
+                *lst = (*lst)->next; // a free
+            }
+            else
+            {
+                free(*lst);
+                *lst = NULL;
+            }
+        }
+        while (tmp->next && is_var(tmp->next->var, to_unset[i]) == 1)
+            tmp = tmp->next;
         if (tmp->next)
-            *lst = (*lst)->next;
-        else
         {
-            free(*lst);
-            *lst = NULL;
-        }
-       // return ;
-    }
-    while (tmp->next && is_var(tmp->next->var, to_unset) == 1)
-        tmp = tmp->next;
-    if (tmp->next)
-    {
-        if (tmp->next->next)
-        {
-            //free(tmp->next);
-            tmp->next = tmp->next->next;
-        }
-        else
-        {
-            //free(tmp->next);
-            tmp->next = NULL;
+            if (tmp->next->next)
+            {
+                save = tmp->next;
+                tmp->next = tmp->next->next;
+                free(save->var);
+                free(save);
+                save = NULL;
+            }
+            else
+            {
+                free(tmp->next->var);
+                free(tmp->next);
+                tmp->next = NULL;
+            }
         }
     }
 }

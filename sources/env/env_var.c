@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 17:55:26 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/22 13:16:25 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/24 15:13:13 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ char *replace_var2(char *old_str, int sizeofvar, char *ref_var)//, int dollar)
 	new = malloc(sizeof(char) * (ft_strlen(old_str) + ft_strlen(ref_var) - sizeofvar + 1));
 	if (!new)
 		return (NULL);
-	new[0] = 0;
+	//new[0] = 0;
 	while ((old_str[++i] && old_str[i] != '$') || (old_str[i] && old_str[i] == '$' && old_str[i + 1] == '$'))
 	{
 		new[j] = old_str[i];
 		j++;
 	}
-	new[j] = 0;
+	//new[j] = 0;
 	while (old_str[++i] && ft_isalnum(old_str[i]) == 1)
 		;
 	while (ref_var[++k])
@@ -39,7 +39,7 @@ char *replace_var2(char *old_str, int sizeofvar, char *ref_var)//, int dollar)
 		new[j] = ref_var[k];
 		j++;
 	}
-	new[j] = 0;
+	//new[j] = 0;
 	while (old_str[i])
 	{
 		new[j] = old_str[i];
@@ -74,7 +74,6 @@ char *find_ref_var(char *old_str, t_env **lst)
 	}
 	var[j] = '\0';
 	ref_var = find_var(lst, var);
-	//ref_var = getenv(var); //gerer le cas unset donc a ne pas use
 	free(var);
 	return (ref_var);
 }
@@ -106,11 +105,11 @@ char *replace_var(char *old_str, t_env **lst)
 			new = replace_var2(old_str, j, ref_var);
 			i = -1;
 			free(old_str);
-			old_str = new;
-			if (ref_var[0] == 0)
-				free(ref_var);
+			old_str = ft_strdup(new); // free new ?
+			free(ref_var);
 		}
 	}
+	free(old_str);
 	return (new);
 }
 

@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 14:17:59 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/22 11:26:10 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/24 13:30:26 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,5 @@ char    *find_var(t_env **lst, char *var)
             return ((ft_strdup(tmp->var + ft_strlen(var) + 1)));
         tmp = tmp->next;
     }
-	return (NULL); // \n quand pas trouver
+	return (NULL); // \n quand pas trouver  // deja gere jpense
 }

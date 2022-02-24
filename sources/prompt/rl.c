@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/23 20:22:38 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/24 16:50:57 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void handler(int signum)
 	{
 		write(1, "\n", 1);
 		rl_on_new_line();
-		//rl_replace_line("", 0);
+		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 }
@@ -69,7 +69,7 @@ int	rl2(t_global *global)
 		check_var_and_quotes(global->parse->t, global->envi); // retire les quotes et double quotes + gere les variables denv
 		pipe_split(global);
 		find_cmd(global);
-		global->parse->cmdopt = find_opt(global->parse->bt); // to-do : 
+		global->parse->cmdopt = find_opt(global->parse->bt);
 		parsing_redirection(global->parse->t, global->sfd); // to-do : < et <<
 		//implementer pipex a la place de rl3
 		rl3(global);
@@ -102,9 +102,9 @@ void rl(t_global *global)
 			free(global->parse);
 			exit(0);
 		}
-		else if (ft_strlen(parse->line) > 0)
+		else if (ft_strlen(global->parse->line) > 0)
 			rl2(global);
 		rl_on_new_line();
 	}
-	//rl_clear_history();
+	rl_clear_history();
 }

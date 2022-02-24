@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:47:06 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/22 15:05:48 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/24 15:18:48 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int main(int ac, char **av, char **env)
 	global.envi = &envi;
 	(void)ac;
 	(void)av;
-	take_env(env, &envi); //leaks
+	take_env(env, &envi);
 	rl(&global);
 	//write(1, "exit\n", 5);
 	return (0);

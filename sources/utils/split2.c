@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 13:58:29 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/24 16:41:56 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/02/24 16:57:16 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static int	create_tab(char const *s, char c)/* compte cmb de char * dans char **
 		if (s[i])
 			i++;
 	}
-	printf("=> %d\n", size);
+	//printf("=> %d\n", size);
 	return (size);
 }
 
@@ -99,7 +99,7 @@ char	*count_mall(const char *s, char c)/* compte combien mall dans char * */
 				i++;
 		}
 	}
-	printf("str = %li\n", i);
+	//printf("str = %li\n", i);
 	str = (char *) malloc(sizeof(*str) * (i + 1));
 	if (!str)
 		return (NULL);
@@ -165,12 +165,12 @@ static char	*put_str_in_tab(const char *s, char c)/*copy de sep a sep*/
 
 char **norm1(t_norm *norm, char **big_tab)/*parcours tout str * et dispatch*/
 {
-	if (((norm->i == 0 || norm->s[norm->i - 1] == norm->c)/*sep before*/
-	&& norm->s[norm->i] != norm->c) && norm->s[norm->i]/*current sep*/
-	|| norm->s[norm->i] == 60 && norm->s[norm->i - 1] && norm->s[norm->i - 1] != ' ' && norm->s[norm->i - 1] != 60
-	|| norm->s[norm->i] == 62 && norm->s[norm->i - 1] && norm->s[norm->i - 1] != ' ' && norm->s[norm->i - 1] != 62
-	|| norm->s[norm->i - 1] == 60 && norm->s[norm->i] != 60
-	|| norm->s[norm->i - 1] == 62 && norm->s[norm->i] != 62)
+	if ((((norm->i == 0 || norm->s[norm->i - 1] == norm->c)/*sep before*/
+	&& norm->s[norm->i] != norm->c) && norm->s[norm->i])/*current sep*/
+	|| (norm->s[norm->i] == 60 && norm->s[norm->i - 1] && norm->s[norm->i - 1] != ' ' && norm->s[norm->i - 1] != 60)
+	|| (norm->s[norm->i] == 62 && norm->s[norm->i - 1] && norm->s[norm->i - 1] != ' ' && norm->s[norm->i - 1] != 62)
+	|| (norm->s[norm->i - 1] == 60 && norm->s[norm->i] != 60 && norm->s[norm->i] != ' ')
+	|| (norm->s[norm->i - 1] == 62 && norm->s[norm->i] != 62 && norm->s[norm->i] != ' '))
 	{
 		big_tab[norm->string] = put_str_in_tab(&norm->s[norm->i], norm->c);
 		if (!big_tab[norm->string])
@@ -191,7 +191,6 @@ char	**split2(char const *s, char c)
 {
 	t_norm	norm; 
 	char	**big_tab;
-	char 	**rtn;
 
 	norm.i = 0;
 	norm.string = 0;
