@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 13:58:29 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/24 16:40:37 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/02/24 16:41:56 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,21 +206,4 @@ char	**split2(char const *s, char c)
 		norm1(&norm, big_tab);
 	big_tab[norm.string] = NULL;
 	return (big_tab);
-}
-
-int main(int ac, char **av)
-{
-	char **t;
-
-	if (ac == 2)
-	{
-		t = split2(av[1], ' ');
-		for (int i = 0; t[i]; i++)
-		{
-			printf("%s\n", t[i]);
-			free(t[i]);
-		}
-		free(t);
-	}
-	return (0);	
 }
