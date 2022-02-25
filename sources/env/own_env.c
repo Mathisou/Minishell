@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 14:15:49 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/25 15:30:00 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/02/25 15:40:50 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	take_env(char   **env, t_env **envi)
 		add_node_back(envi, rtn_itoa);
 		free(rtn_itoa);
 	}
-	free(new_shlvl);
 }
 
 char **convert_env(t_env **lst)

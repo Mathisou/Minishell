@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:04:37 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/25 15:36:33 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/02/25 15:43:28 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,13 @@ char *strcats(char *s1, char *s2)
 		j++;
 	}
 	i = -1;
-	while (s2[++i])
+	if (s2)
 	{
-		new[j] = s2[i];
-		j++;
+		while (s2[++i])
+		{
+			new[j] = s2[i];
+			j++;
+		}
 	}
 	new[j] = '\0'; 
 	return (new);
@@ -48,7 +51,7 @@ void	change_env(t_env **lst)
 
 	tmp = *lst;
 	exist = 0;
-	(void)old_pwd;
+	old_pwd = NULL;
 	while (tmp)
 	{
 		if (ft_strncmp(tmp->var, "PWD=", 4) == 0)
@@ -67,7 +70,6 @@ void	change_env(t_env **lst)
 		{
 			free(tmp->var);
 			tmp->var = strcats("OLDPWD=", old_pwd);
-			free(old_pwd);
 			exist++;
 			break;
 		}
