@@ -1,7 +1,7 @@
 NAME		=	minishell
 CC			=	gcc
 CFLAGS		=	-Wall -Werror -Wextra -Iincludes -Isources/libft \
--g -O0 -fsanitize=address\
+-g -O0 #-fsanitize=address\
 
 INC			=	includes/minishell.h includes/functions.h includes/define.h
 MAIN		=	main.c
@@ -18,15 +18,17 @@ ENV			=	env_var.c find_var.c env_var_utils.c own_env.c
 ENVS		=	$(addprefix sources/env/, $(ENV))
 LIST        =   list.c
 LISTS       =   $(addprefix sources/list/, $(LIST))
+PIPEX		=	pipex.c
+PIPEXS		=	$(addprefix sources/pipex/, $(PIPEX))
 LIBFT_PATH	=	sources/libft/
 LIBFT		=	$(addsuffix libft.a, $(LIBFT_PATH))
-OBJS		=	$(MAIN:.c=.o) $(PROMPT:.c=.o) $(UTIL:.c=.o) $(REDIRECTION:.c=.o) $(BUILTIN:.c=.o) $(ENV:.c=.o) $(LIST:.c=.o)
+OBJS		=	$(MAIN:.c=.o) $(PROMPT:.c=.o) $(UTIL:.c=.o) $(REDIRECTION:.c=.o) $(BUILTIN:.c=.o) $(ENV:.c=.o) $(LIST:.c=.o) $(PIPEX:.c=.o)
 
 $(NAME):	$(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lreadline -L$(LIBFT_PATH) -lft
 
-$(OBJS):	$(MAINS) $(PROMPTS) $(UTILS) $(REDIRECTIONS) $(BUILTINS) $(ENVS) $(LISTS) $(INC)
-	$(CC) $(CFLAGS) -c $(MAINS) $(PROMPTS) $(UTILS) $(REDIRECTIONS) $(BUILTINS) $(ENVS) $(LISTS)
+$(OBJS):	$(MAINS) $(PROMPTS) $(UTILS) $(REDIRECTIONS) $(BUILTINS) $(ENVS) $(LISTS) $(PIPEXS) $(INC)
+	$(CC) $(CFLAGS) -c $(MAINS) $(PROMPTS) $(UTILS) $(REDIRECTIONS) $(BUILTINS) $(ENVS) $(LISTS) $(PIPEXS)
 
 $(LIBFT):
 	@make -C $(LIBFT_PATH)

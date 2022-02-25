@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:44:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/24 18:22:45 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/25 15:22:57 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,11 @@ t_env   *new_node(char *content);
 void    add_node_back(t_env **first, char *content);
 int     del_list(t_env **lst);
 int     lst_size(t_env **lst);
+int     pid_del_list(t_pid **lst);
 /*free*/
 void	destroy_big_tab(char ***bt);
 void	free_end_line(t_global *global);
+/*pipex*/
+void pipex(t_global *global);
 
 #endif
