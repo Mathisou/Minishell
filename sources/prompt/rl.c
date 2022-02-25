@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/24 18:30:53 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/25 15:23:20 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,11 @@ int rl3(t_global *global, int i)
 		// 	printf("cmdopt : %s\n",  global->parse->cmdopt[i][j]);
 		// printf("\n");
 		big = convert_env(global->envi);
+		free(global->parse->line);
+		destroy_tab(global->parse->t);
 		if (global->parse->cmd[i] != NULL && !(tdm(global->parse->cmd[i])))
 			if (execve(global->parse->cmd[i], global->parse->cmdopt[i], big) == -1)
 				perror(global->parse->cmd[i]);
-		free(global->parse->line);
-		destroy_tab(global->parse->t);
 		del_list(global->envi);
 		destroy_tab(big);
 		exit(1);
@@ -65,7 +65,7 @@ int rl3(t_global *global, int i)
 
 int	rl2(t_global *global)
 {
-	int i = -1;
+	//int i = -1;
 	add_history(global->parse->line);
 	if (check_line(global->parse->line) == 1)
 	{
@@ -79,13 +79,14 @@ int	rl2(t_global *global)
 		pipe_split(global);
 		find_cmd(global);
 		global->parse->cmdopt = find_opt(global->parse->bt);
-		while (global->parse->bt[++i])
-		{
-			parsing_redirection(global->parse->bt[i], global->sfd); // to-do : < et <<
-			rl3(global, i); //implementer pipex a la place de rl3
-			close(global->sfd->outfile); //to-do: close et dup quand il faut
-			dup2(global->sfd->save_stdout, 1); // retour sur le stdout apres avoir redirige l'output avec > et >>
-		}
+		pipex(global);
+		//while (global->parse->bt[++i])
+		//{
+			//parsing_redirection(global->parse->bt[i], global->sfd); // to-do : < et <<
+			//rl3(global, 0); //implementer pipex a la place de rl3
+			//close(global->sfd->outfile); //to-do: close et dup quand il faut
+			//dup2(global->sfd->save_stdout, 1); // retour sur le stdout apres avoir redirige l'output avec > et >>
+		//}
 		free_end_line(global);
 	}
 	return (0);
@@ -96,7 +97,10 @@ void rl(t_global *global)
 	struct sigaction	sa;
 	t_fd sfd;
 	t_parse *parse;
+	t_pid	*pid;
 
+	pid = NULL;
+	global->pid = &pid;
 	parse = malloc(sizeof(t_parse));
 	sa = (struct sigaction){0};
 	sa.sa_handler = handler;
