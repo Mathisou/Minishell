@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:04:37 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/24 16:46:53 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/25 15:36:33 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,14 @@ char *strcats(char *s1, char *s2)
 
 void	change_env(t_env **lst)
 {
-	t_env *tmp;
-	char *old_pwd;
-	char s[4096 + 1];
+	t_env	*tmp;
+	char	*old_pwd;
+	char	s[4096 + 1];
+	int		exist;
+	char	*str;
 
 	tmp = *lst;
+	exist = 0;
 	(void)old_pwd;
 	while (tmp)
 	{
@@ -65,11 +68,21 @@ void	change_env(t_env **lst)
 			free(tmp->var);
 			tmp->var = strcats("OLDPWD=", old_pwd);
 			free(old_pwd);
+			exist++;
 			break;
 		}
 		tmp = tmp->next;
 	}
+	if (!exist)
+	{
+		str = strcats("OLDPWD=", old_pwd);	
+		add_node_back(lst, str);
+		free(str);
+	}
+	if (old_pwd)
+		free(old_pwd);
 }
+
 void	cd(char *directory, t_env **lst)
 {
 	if (!directory)
