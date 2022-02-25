@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/25 15:31:24 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/25 17:58:56 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ int	rl2(t_global *global)
 	else
 	{
 		global->parse->t = split2(global->parse->line, ' ');
-		check_var_and_quotes(global->parse->t, global->envi);
+		check_var_and_quotes(global->parse->t, global->envi, global);
+		pid_del_list(global->pid);
 		pipe_split(global);
 		find_cmd(global);
 		global->parse->cmdopt = find_opt(global->parse->bt);
@@ -60,12 +61,13 @@ void rl(t_global *global)
 	global->parse = parse;
 	while (1)
 	{
-		sigaction(SIGINT, &sa, NULL);
+		sigaction(SIGINT, &sa, NULL); //CTRL \ PAS GERER
 		global->parse->line = readline("$> ");
 		if (!global->parse->line)
 		{
 			write(1, "exit\n", 5);
 			del_list(global->envi);
+			pid_del_list(global->pid);
 			free(global->parse);
 			exit(0);
 		}

@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 14:54:48 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/25 15:23:15 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/25 17:44:38 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ void	wait_func(t_global *global)
 	tmp = *global->pid;
 	while (tmp)
 	{
-		waitpid(tmp->pid, NULL, 0);
+		waitpid(tmp->pid, &tmp->statu, 0);
 		tmp = tmp->next;
 	}
 }

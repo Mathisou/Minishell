@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:41:34 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/25 15:23:38 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/25 17:10:52 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	free_end_line(t_global *global)
 	destroy_big_tab(global->parse->cmdopt);
 	destroy_tab(global->parse->cmd);
 	destroy_big_tab(global->parse->bt);
-	pid_del_list(global->pid);
 }
 
 void	destroy_big_tab(char ***bt)

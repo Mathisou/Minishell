@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 14:16:53 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/25 15:05:30 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/25 16:54:47 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_parse
 typedef struct s_pid
 {
 	int				pid;
+	int				statu;
 	struct s_pid	*next;
 }	t_pid;
 

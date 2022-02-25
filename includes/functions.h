@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:44:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/25 15:22:57 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/25 17:03:03 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char    *find_var(t_env **lst, char *var);
 int      check_line(char *line);
 char	***find_opt(char ***bt);
 char	**split2(char const *s, char c);
-void	check_var_and_quotes(char **t, t_env **lst);
+void	check_var_and_quotes(char **t, t_env **lst, t_global *global);
 int		check_limiter(char *str);
 int		count_delete(char *str);
 int		is_there_quotes(char *str);
