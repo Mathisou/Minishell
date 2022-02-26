@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 12:38:27 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/26 16:18:40 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/26 20:10:51 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,12 @@ int	here_doc(t_fd *sfd, char *limiter)
 	char	*line;
 
 	line = NULL;
+	sfd->is_here_doc = true;
 	while (read(0, buffer, 1) != 0)
 	{
 		buffer[1] = '\0';
 		line = ft_strjoin(line, buffer);
-		if (here_doc_check_line(line, limiter) > 0)
+		if (here_doc_check_line(line, limiter) > 0 || sfd->is_sig == true)
 		{
 			line[ft_strlen(line) - here_doc_check_line(line, limiter) - 1] = '\0';
 			break ;
@@ -92,8 +93,8 @@ int	here_doc(t_fd *sfd, char *limiter)
 		ft_putstr_fd(strerror(errno), 2);
 		return (1); //
 	}
-	ft_putstr_fd(line, sfd->here_doc_fd);
-	//close(sfd->here_doc_fd);
+	if (sfd->is_sig == false)
+		ft_putstr_fd(line, sfd->here_doc_fd);
 	free(line);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:41:34 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/25 17:10:52 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/26 20:19:06 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,20 @@ void	destroy_big_tab(char ***bt)
 			destroy_tab(bt[i]);
 		free(bt);
 	}
+}
+
+int	pid_del_list(t_pid **lst)
+{
+	t_pid	*tmp;
+
+	if (lst)
+	{
+		while (*lst)
+		{
+			tmp = (*lst)->next;
+			free(*lst);
+			*lst = tmp;
+		}
+	}
+	return (0);
 }

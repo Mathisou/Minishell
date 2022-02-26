@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 14:54:48 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/26 16:19:12 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/26 20:18:56 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,50 +64,6 @@ int	secondchild(t_global *global, int i)
 	return (1);
 }
 
-int	pid_del_list(t_pid **lst)
-{
-	t_pid	*tmp;
-
-	if (lst)
-	{
-		while (*lst)
-		{
-			tmp = (*lst)->next;
-			free(*lst);
-			*lst = tmp;
-		}
-	}
-	return (0);
-}
-
-
-t_pid	*pid_new_node(int content)
-{
-	t_pid	*new;
-
-	new = malloc(sizeof(t_pid));
-	if (!new)
-		return (NULL);
-	new->pid = content;
-	new->next = NULL;
-	return (new);
-}
-
-void	pid_add_node_back(t_pid **first, int content)
-{
-	t_pid	*tmp;
-
-	if (!*first)
-		*first = pid_new_node(content);
-	else
-	{	
-		tmp = *first;
-		while (tmp->next != NULL)
-			tmp = (tmp)->next;
-		tmp->next = pid_new_node(content);
-	}
-}
-
 void	opening_child(t_global *global, int sign, int i)
 {
 	if (sign == 1)
@@ -131,18 +87,6 @@ void	opening_child(t_global *global, int sign, int i)
 	pid_add_node_back(global->pid, global->parse->child);
 }
 
-void	wait_func(t_global *global)
-{
-	t_pid *tmp;
-
-	tmp = *global->pid;
-	while (tmp)
-	{
-		waitpid(tmp->pid, &tmp->statu, 0);
-		tmp = tmp->next;
-	}
-}
-
 void	startchildprocess(t_global *global)
 {
 	int i;
@@ -152,6 +96,8 @@ void	startchildprocess(t_global *global)
 	while (global->parse->bt[++i])
 	{
 		parsing_redirection(global->parse->bt[i], global->sfd);
+		if (global->sfd->is_here_doc == true && global->sfd->is_sig == true)
+			break;
 		if (i % 2 == 0)
 		{
 			pipe(global->sfd->p1);
@@ -162,16 +108,7 @@ void	startchildprocess(t_global *global)
 			pipe(global->sfd->p2);
 			opening_child(global, 2, i);
 		}
-		if (global->sfd->is_output_redirected == true)
-		{
-			close(global->sfd->outfile);
-			dup2(global->sfd->save_stdout, STDOUT_FILENO);
-		}
-		else if (global->sfd->is_input_redirected == true)
-		{
-			close(global->sfd->infile);
-			dup2(global->sfd->save_stdin, STDIN_FILENO);
-		}
+		reset_stdin_stdout(global);
 	}
 	wait_func(global);
 	close_fd(global);

@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:44:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/26 16:18:48 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/26 20:22:19 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,16 @@ t_env   *new_node(char *content);
 void    add_node_back(t_env **first, char *content);
 int     del_list(t_env **lst);
 int     lst_size(t_env **lst);
-int     pid_del_list(t_pid **lst);
 /*free*/
 void	destroy_big_tab(char ***bt);
 void	free_end_line(t_global *global);
+int     pid_del_list(t_pid **lst);
 /*pipex*/
 void    pipex(t_global *global);
 int     here_doc(t_fd *sfd, char *limiter);
+void	pid_add_node_back(t_pid **first, int content);
+t_pid	*pid_new_node(int content);
+void	wait_func(t_global *global);
+void	reset_stdin_stdout(t_global *global);
 
 #endif

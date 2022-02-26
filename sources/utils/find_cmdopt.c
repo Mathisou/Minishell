@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 14:04:11 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/26 16:50:44 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/26 19:28:58 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,10 @@ char	***find_opt(char ***bt)
 			if (!cmdopt[k])
 				return (NULL); //
 			cmdopt[k][0] = ft_strdup(bt[i][j]);
-			cmdopt[k][1] = ft_strdup(bt[i][j - 1]);
+			if (ft_strcmp(bt[i][j - 2], "<<") == 0)
+				cmdopt[k][1] = ft_strdup("here_doc");
+			else
+				cmdopt[k][1] = ft_strdup(bt[i][j - 1]);
 			cmdopt[k][2] = NULL;
 		}
 		k++;
