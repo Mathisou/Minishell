@@ -6,9 +6,10 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 18:23:18 by maroly            #+#    #+#             */
-/*   Updated: 2021/11/23 10:46:24 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/26 15:28:02 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
 char	*ft_strdup(const char *s)
@@ -17,6 +18,8 @@ char	*ft_strdup(const char *s)
 	size_t	size;
 	size_t	i;
 
+	if (!s)
+		return (NULL);
 	i = 0;
 	new = NULL;
 	size = ft_strlen(s);

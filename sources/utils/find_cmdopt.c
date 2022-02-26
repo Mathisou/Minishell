@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 14:04:11 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/26 14:04:46 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/26 16:50:44 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,29 @@ char	***find_opt(char ***bt)
 	while (bt[++i])
 	{
 		j = 0;
-		while (bt[i][j] && check_limiter(bt[i][j]) == 0)
-			j++;
-		cmdopt[k] = malloc(sizeof(char *) * (j + 1));
-		if (!cmdopt)
-			return (NULL);
-		m = -1;
-		while (++m < j)
-			cmdopt[k][m] = ft_strdup(bt[i][m]);
-		cmdopt[k][m] = NULL;
+		if (!(ft_strcmp(bt[i][0], "<") == 0 || ft_strcmp(bt[i][0], "<<") == 0 || ft_strcmp(bt[i][0], ">") == 0 || ft_strcmp(bt[i][0], ">>") == 0))
+		{
+			while (bt[i][j] && check_limiter(bt[i][j]) == 0)
+				j++;
+			cmdopt[k] = malloc(sizeof(char *) * (j + 1));
+			if (!cmdopt[k])
+				return (NULL); //
+			m = -1;
+			while (++m < j)
+				cmdopt[k][m] = ft_strdup(bt[i][m]);
+			cmdopt[k][m] = NULL;
+		}	
+		else
+		{
+			while (ft_strcmp(bt[i][j], "<") == 0 || ft_strcmp(bt[i][j], "<<") == 0 || ft_strcmp(bt[i][j], ">") == 0 || ft_strcmp(bt[i][j], ">>") == 0)
+				j = j + 2;
+			cmdopt[k] = malloc(sizeof(char *) * 3);
+			if (!cmdopt[k])
+				return (NULL); //
+			cmdopt[k][0] = ft_strdup(bt[i][j]);
+			cmdopt[k][1] = ft_strdup(bt[i][j - 1]);
+			cmdopt[k][2] = NULL;
+		}
 		k++;
 	}
 	cmdopt[k] = NULL;
@@ -54,6 +68,7 @@ char	***find_opt(char ***bt)
 int	find_cmd(t_global *global)
 {
 	int i;
+	int j;
 
 	i = -1;
 	global->parse->cmd = malloc(sizeof(*global->parse->cmd) * (count_triple_tab(global->parse->bt) + 1));
@@ -61,14 +76,14 @@ int	find_cmd(t_global *global)
 		return (1);
 	while (global->parse->bt[++i])
 	{
-		if (ft_strcmp(global->parse->bt[i][0], "<") != 0)
-			global->parse->cmd[i]  = findpath(global, ft_strdup(global->parse->bt[i][0]), global->envi); //need: remplacer premier argument avc la bonne commande
-		else
-			global->parse->cmd[i]  = findpath(global, ft_strdup(global->parse->bt[i][2]), global->envi);
+		j = 0;
+		while (ft_strcmp(global->parse->bt[i][j], "<") == 0 || ft_strcmp(global->parse->bt[i][j], "<<") == 0 || ft_strcmp(global->parse->bt[i][j], ">") == 0 || ft_strcmp(global->parse->bt[i][j], ">>") == 0)
+			j = j + 2;
+		global->parse->cmd[i]  = findpath(global, ft_strdup(global->parse->bt[i][j]), global->envi);
 		if (global->parse->cmd[i] == NULL)
 		{
 			ft_putstr_fd("bash: ", 2);
-			ft_putstr_fd(global->parse->bt[i][0], 2); // ou 2
+			ft_putstr_fd(global->parse->bt[i][j], 2);
 			ft_putstr_fd(": command not found\n", 2);
 		}
 	}

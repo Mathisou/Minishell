@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 14:54:48 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/26 14:42:29 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/26 16:19:12 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	close_fd(t_global *global)
 int	firstchild(t_global *global, int i)
 {
 	char **big;
-	if (i > 0)
+	if (i > 0 && global->sfd->is_input_redirected == false)
 		dup2(global->sfd->p2[0], 0);
 	if (i < global->parse->bt_size - 1 && global->sfd->is_output_redirected == false)
 		dup2(global->sfd->p1[1], 1);
@@ -45,7 +45,8 @@ int	firstchild(t_global *global, int i)
 int	secondchild(t_global *global, int i)
 {
 	char **big;
-	dup2(global->sfd->p1[0], 0);
+	if (global->sfd->is_input_redirected == false)
+		dup2(global->sfd->p1[0], 0);
 	if (i < global->parse->bt_size - 1 && global->sfd->is_output_redirected == false)
 		dup2(global->sfd->p2[1], 1);
 	close_fd(global);
@@ -161,8 +162,16 @@ void	startchildprocess(t_global *global)
 			pipe(global->sfd->p2);
 			opening_child(global, 2, i);
 		}
-		close(global->sfd->outfile); //to-do: close et dup quand il faut
-		dup2(global->sfd->save_stdout, 1); // retour sur le stdout apres avoir redirige l'output avec > et >>
+		if (global->sfd->is_output_redirected == true)
+		{
+			close(global->sfd->outfile);
+			dup2(global->sfd->save_stdout, STDOUT_FILENO);
+		}
+		else if (global->sfd->is_input_redirected == true)
+		{
+			close(global->sfd->infile);
+			dup2(global->sfd->save_stdin, STDIN_FILENO);
+		}
 	}
 	wait_func(global);
 	close_fd(global);

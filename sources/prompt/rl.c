@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/26 14:48:59 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/26 16:54:41 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,22 @@ void	exec_one_cmd(t_global *global)
 			call_builtin(global, 0);
 		wait(NULL);
 	}
+	if (global->sfd->is_output_redirected == true)
+	{
+		close(global->sfd->outfile);
+		dup2(global->sfd->save_stdout, STDOUT_FILENO);
+	}
+	else if (global->sfd->is_input_redirected == true)
+	{
+		close(global->sfd->infile);
+		dup2(global->sfd->save_stdin, STDIN_FILENO);
+	}
 }
 
 int	rl2(t_global *global)
 {
 	add_history(global->parse->line);
-	if (check_line(global->parse->line) == 1)
+	if (check_line(global->parse->line) == 1) // gerer le cas ou > >> < << suivis de rien
 	{
 		free(global->parse->line);
 		ft_putstr_fd("Syntax error!\n", 2);
@@ -72,6 +82,8 @@ int	rl2(t_global *global)
 			pipex(global);
 		else
 			exec_one_cmd(global);
+		if (access("here_doc", F_OK) == 0)
+			unlink("here_doc");
 		free_end_line(global);
 	}
 	return (0);

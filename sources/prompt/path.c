@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:46:27 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/26 14:11:44 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/26 15:30:28 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@ void	put_cmd2(char **path, char *cmd, t_path *norm)
 		path[norm->i][norm->k++] = norm->tmp[norm->j];
 	path[norm->i][norm->k++] = '/';
 	norm->j = -1;
-	while (cmd[++norm->j])
-		path[norm->i][norm->k++] = cmd[norm->j];
+	if (cmd)
+		while (cmd[++norm->j])
+			path[norm->i][norm->k++] = cmd[norm->j];
 	path[norm->i][norm->k++] = 0;
 	free(norm->tmp);
 }
@@ -38,7 +39,7 @@ void	put_cmd2(char **path, char *cmd, t_path *norm)
 void	put_cmd(char **path, char *cmd)
 {
 	t_path norm;
-	
+
 	norm.i = -1;
 	norm.size_add = ft_strlen(cmd) + 2;
 	while (path[++norm.i])

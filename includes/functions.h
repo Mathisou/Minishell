@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:44:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/26 14:05:34 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/26 16:18:48 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int     pid_del_list(t_pid **lst);
 void	destroy_big_tab(char ***bt);
 void	free_end_line(t_global *global);
 /*pipex*/
-void pipex(t_global *global);
+void    pipex(t_global *global);
+int     here_doc(t_fd *sfd, char *limiter);
 
 #endif

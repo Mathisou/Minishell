@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 14:16:53 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/26 13:43:02 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/26 16:11:57 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ typedef struct s_fd
 	bool	is_output_redirected;
 	bool	is_input_redirected;
 	int		save_stdout;
+	int		save_stdin;
 	int		outfile;
+	int		infile;
+	int		here_doc_fd;
 	int		*p1;
 	int		*p2;
 }	t_fd;
