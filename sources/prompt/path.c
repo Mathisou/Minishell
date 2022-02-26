@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:46:27 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/24 16:20:38 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/26 14:11:44 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,30 +46,36 @@ void	put_cmd(char **path, char *cmd)
 	path[norm.i] = NULL;
 }
 
-char	*findpath(char *cmd, t_env **lst)
+char	*findpath(t_global *global, char *cmd, t_env **lst)
 {
 	int		i;
 	char	**path;
 	char	*new;
 
 	i = 0;
-	if (tdm(cmd) || ft_strcmp(cmd, "minishell") == 0)
+	if (tdm(cmd))
 		return (cmd);
+	else if (ft_strcmp(cmd, "minishell") == 0)
+	{
+		free(cmd);
+		return (ft_strdup(global->parse->path_minishell));
+	}
 	new = find_var(lst, "PATH=");
-	path = split2(new, ':');
-	free(new);
-	new = NULL;
-	put_cmd(path, cmd);
-	if (!path)
-		return (NULL); // gerer les free
-	i = 0;
-	while (path[i] && access(path[i], X_OK) != 0)
-		i++;
-	if (path[i] != NULL)
-		new = ft_strdup(path[i]);
-	destroy_tab(path);
-	//if (!new)
-	//	return (cmd);
+	if (new != NULL)
+	{
+		path = split2(new, ':');
+		free(new);
+		new = NULL;
+		put_cmd(path, cmd);
+		if (!path)
+			return (NULL); // gerer les free
+		i = 0;
+		while (path[i] && access(path[i], X_OK) != 0)
+			i++;
+		if (path[i] != NULL)
+			new = ft_strdup(path[i]);
+		destroy_tab(path);
+	}
 	free(cmd);
 	return (new);
 }

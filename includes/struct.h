@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 14:16:53 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/25 16:54:47 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/26 13:43:02 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_fd
 
 typedef struct s_parse
 {
+	char	*path_minishell;
 	char    *line;
 	char    **cmd;
 	char    **t;

@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/25 17:58:56 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/26 14:48:59 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,35 @@ void handler(int signum)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
+	}
+}
+
+void	exec_one_cmd(t_global *global)
+{
+	char **big;
+
+	parsing_redirection(global->parse->bt[0], global->sfd);
+	global->parse->child = fork();
+	if (global->parse->child == 0)
+	{
+		if (!(global->parse->cmd[0] != NULL && tdm(global->parse->cmd[0])))
+		{
+			big = convert_env(global->envi);
+			execve(global->parse->cmd[0], global->parse->cmdopt[0], big);
+			free(global->parse->line);
+			destroy_tab(global->parse->t);
+			destroy_big_tab(global->parse->bt);
+			del_list(global->envi);
+			destroy_tab(big);
+			pid_del_list(global->pid);
+		}
+		exit(1);
+	}
+	else
+	{
+		if (global->parse->cmd[0] != NULL && tdm(global->parse->cmd[0]))
+			call_builtin(global, 0);
+		wait(NULL);
 	}
 }
 
@@ -39,13 +68,36 @@ int	rl2(t_global *global)
 		pipe_split(global);
 		find_cmd(global);
 		global->parse->cmdopt = find_opt(global->parse->bt);
-		pipex(global);
+		if (count_triple_tab(global->parse->bt) > 1)
+			pipex(global);
+		else
+			exec_one_cmd(global);
 		free_end_line(global);
 	}
 	return (0);
 }
 
-void rl(t_global *global)
+void	find_minishell_exec(t_global *global, char *pwd)
+{
+	char *tmp;
+	char *tmp2;
+	char *tmp3;
+
+	tmp2 = find_var(global->envi, "PWD=");
+	tmp = strcats("/", tmp2);
+	free(tmp2);
+	if (pwd[0] == '.')
+		global->parse->path_minishell = strcats(tmp, ++pwd);
+	else
+	{
+		tmp3 = strcats("/", pwd);
+		global->parse->path_minishell = strcats(tmp, tmp3);
+		free(tmp3);
+	}
+	free(tmp);
+}
+
+void rl(t_global *global, char *pwd)
 {
 	struct sigaction	sa;
 	t_fd sfd;
@@ -59,6 +111,8 @@ void rl(t_global *global)
 	sa.sa_handler = handler;
 	global->sfd = &sfd;
 	global->parse = parse;
+	find_minishell_exec(global, pwd); //marche que pour le premier appel de minishell
+	//printf("%s\n", global->parse->path_minishell);
 	while (1)
 	{
 		sigaction(SIGINT, &sa, NULL); //CTRL \ PAS GERER
@@ -68,11 +122,14 @@ void rl(t_global *global)
 			write(1, "exit\n", 5);
 			del_list(global->envi);
 			pid_del_list(global->pid);
+			free(global->parse->path_minishell);
 			free(global->parse);
 			exit(0);
 		}
 		else if (ft_strlen(global->parse->line) > 0)
 			rl2(global);
+		else
+			free(global->parse->line);
 		rl_on_new_line();
 	}
 	rl_clear_history();

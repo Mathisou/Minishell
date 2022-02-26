@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 17:55:26 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/25 18:37:51 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/26 13:22:31 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,10 +118,11 @@ char *replace_var(char *old_str, t_env **lst, t_global *global)
 			}
 			while (old_str[++i] && (ft_isalnum(old_str[i]) == 1 || (old_str[i] == '?' && i > 0 && old_str[i - 1] == '$')))
 				j++;
+			free(new);
 			new = replace_var2(old_str, j, ref_var);
 			i = -1;
 			free(old_str);
-			old_str = ft_strdup(new); // free new ?
+			old_str = ft_strdup(new);
 			free(ref_var);
 		}
 	}

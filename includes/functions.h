@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:44:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/25 17:03:03 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/26 14:05:34 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 # define FUNCTIONS_H
 
 /*prompt.c*/
-char	*findpath(char *cmd, t_env **lst);
-void	rl(t_global *s_global);
+char	*findpath(t_global *global, char *cmd, t_env **lst);
+void	rl(t_global *global, char *pwd);
 /*utils*/
 char    **split_quotes(char *str, char sep, char **env);
 char    *find_var(t_env **lst, char *var);

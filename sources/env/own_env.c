@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   own_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 14:15:49 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/25 15:40:50 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/02/26 13:31:21 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ void	take_env(char   **env, t_env **envi)
 	exist[1] = 0;
 	while (env[++i])
 	{
+		if (ft_strncmp(env[i], "PWD=", 4) == 0)
+			exist[1]++;
 		if (ft_strncmp(env[i], "SHLVL=", 6) == 0)
 		{
 			rtn_itoa = ft_itoa(ft_atoi(&env[i][6]) + 1);
@@ -34,8 +36,6 @@ void	take_env(char   **env, t_env **envi)
 			free(rtn_itoa);
 			exist[0]++;
 		}
-		if (ft_strncmp(env[i], "PWD=", 4) == 0)
-			exist[1]++;
 		else
 			add_node_back(envi, env[i]);
 	}
@@ -46,6 +46,7 @@ void	take_env(char   **env, t_env **envi)
 		new_shlvl = getcwd(NULL, 4096 + 1);
 		rtn_itoa = strcats("PWD=", new_shlvl);
 		add_node_back(envi, rtn_itoa);
+		free(new_shlvl);
 		free(rtn_itoa);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 14:54:48 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/25 17:44:38 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/26 14:42:29 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,16 @@ int	firstchild(t_global *global, int i)
 		dup2(global->sfd->p1[1], 1);
 	close_fd(global);
 	big = convert_env(global->envi);
+	if (global->parse->cmd[i] != NULL && tdm(global->parse->cmd[i]))
+		call_builtin(global, i);
+	else
+		execve(global->parse->cmd[i], global->parse->cmdopt[i], big);
 	free(global->parse->line);
 	destroy_tab(global->parse->t);
-	execve(global->parse->cmd[i], global->parse->cmdopt[i], big);
+	pid_del_list(global->pid);
+	destroy_big_tab(global->parse->bt);
 	del_list(global->envi);
 	destroy_tab(big);
-	pid_del_list(global->pid);
 	return (1);
 }
 
@@ -46,9 +50,13 @@ int	secondchild(t_global *global, int i)
 		dup2(global->sfd->p2[1], 1);
 	close_fd(global);
 	big = convert_env(global->envi);
+	if (global->parse->cmd[i] != NULL && tdm(global->parse->cmd[i]))
+		call_builtin(global, i);
+	else
+		execve(global->parse->cmd[i], global->parse->cmdopt[i], big);
 	free(global->parse->line);
 	destroy_tab(global->parse->t);
-	execve(global->parse->cmd[i], global->parse->cmdopt[i], big);
+	destroy_big_tab(global->parse->bt);
 	del_list(global->envi);
 	destroy_tab(big);
 	pid_del_list(global->pid);
@@ -108,9 +116,6 @@ void	opening_child(t_global *global, int sign, int i)
 			perror("Fork failed");
 		else if (global->parse->child == 0)
 			exit(firstchild(global, i));
-		else
-			if (global->parse->cmd[i] != NULL && tdm(global->parse->cmd[i]))
-				call_builtin(global, i);
 		close(global->sfd->p1[1]);
 	}
 	else
@@ -120,9 +125,6 @@ void	opening_child(t_global *global, int sign, int i)
 			perror("Fork failed");
 		else if (global->parse->child == 0)
 			exit(secondchild(global, i));
-		else
-			if (global->parse->cmd[i] != NULL && tdm(global->parse->cmd[i]))
-				call_builtin(global, i);
 		close(global->sfd->p2[1]);
 	}
 	pid_add_node_back(global->pid, global->parse->child);
