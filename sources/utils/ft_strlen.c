@@ -6,13 +6,13 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 13:29:30 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/28 16:21:51 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/28 18:38:11 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		ft_strlen(const char *s)
+int	ft_strlen(const char *s)
 {
 	int		i;
 

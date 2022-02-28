@@ -6,13 +6,14 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:30:08 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/28 15:44:00 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/02/28 16:43:03 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <stdbool.h>
 # include "define.h"
 # include "struct.h"
 # include "functions.h"
