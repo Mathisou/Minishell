@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:30:08 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/26 19:58:49 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/28 15:44:00 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include "define.h"
 # include "struct.h"
 # include "functions.h"
-# include "libft.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <fcntl.h>
@@ -31,5 +30,6 @@
 # include <termios.h>
 # include <curses.h>
 # include <term.h>
+# include <errno.h>
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 13:58:29 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/24 18:00:45 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/28 15:36:22 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static int	create_tab(char const *s, char c)/* compte cmb de char * dans char **
 
 char	*count_mall(const char *s, char c)/* compte combien mall dans char * */
 {
-	size_t	i;
+	int		i;
 	char	*str;
 
 	str = NULL;

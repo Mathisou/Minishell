@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functions.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:44:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/28 14:52:33 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/28 15:57:15 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,16 @@ void	pid_add_node_back(t_pid **first, int content);
 t_pid	*pid_new_node(int content);
 void	wait_func(t_global *global);
 void	reset_stdin_stdout(t_global *global);
+/*libft*/
+int	ft_atoi(const char *nptr);
+int	ft_isalnum(int c);
+char	*ft_itoa(int n);
+int	ft_strcmp(const char *s1, const char *s2);
+char	*ft_strdup(const char *s);
+int	ft_strlen(const char *s);
+int	ft_strncmp(const char *s1, const char *s2, int n);
+char	**destroy_tab(char **t);
+void	ft_putstr(char *str);
+void	ft_putstr_fd(char *s, int fd);
 
 #endif

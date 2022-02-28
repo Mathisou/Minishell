@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 13:10:25 by maroly            #+#    #+#             */
-/*   Updated: 2021/11/25 16:50:11 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/28 15:35:44 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+
+#include "minishell.h"
 
 int	ft_atoi(const char *nptr)
 {
-	size_t		i;
+	int		i;
 	int			sign;
 	long long	result;
 

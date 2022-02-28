@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 13:14:34 by maroly            #+#    #+#             */
-/*   Updated: 2021/11/24 16:57:31 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/28 15:14:48 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+
+#include "minishell.h"
 
 int	count_divide(long nb)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_var.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 17:55:26 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/26 13:22:31 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/28 15:08:36 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,6 +173,7 @@ char *remove_quotes(char *old_str)
 		return (NULL); //
 	remove_quotes2(old_str, new, &i, &j);
 	new[j] = 0;
+	free(old_str);
 	return (new);
 }
 

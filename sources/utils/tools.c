@@ -1,15 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/19 12:19:57 by maroly            #+#    #+#             */
-/*   Updated: 2021/11/25 18:53:05 by maroly           ###   ########.fr       */
+/*   Created: 2022/02/28 15:10:40 by hkovac            #+#    #+#             */
+/*   Updated: 2022/02/28 15:55:35 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+
+#include "minishell.h"
+
+char	**destroy_tab(char **t)
+{
+	int	i;
+
+	i = -1;
+	if (t)
+	{
+		while (t[++i])
+			free(t[i]);
+		free(t);
+	}
+	return (NULL);
+}
+
+void	ft_putstr(char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i])
+	{
+		write(1, &str[i], 1);
+		i++;
+	}
+}
 
 void	ft_putstr_fd(char *s, int fd)
 {

@@ -1,12 +1,12 @@
 NAME		=	minishell
 CC			=	gcc
-CFLAGS		=	-Wall -Werror -Wextra -Iincludes -Isources/libft \
--g -O0 -fsanitize=address\
-
+CFLAGS		=	-Wall -Werror -Wextra -Iincludes \
+-g -O0 -fsanitize=address
 INC			=	includes/minishell.h includes/functions.h includes/define.h
 MAIN		=	main.c
 MAINS		=	$(addprefix sources/, $(MAIN))
-UTIL		=	error.c split2.c check_line.c find_cmdopt.c truc_de_merde.c pipe_split.c free_all.c
+UTIL		=	error.c split2.c check_line.c find_cmdopt.c truc_de_merde.c pipe_split.c free_all.c \
+ft_atoi.c ft_isalnum.c ft_itoa.c ft_strncmp.c ft_strcmp_bonus.c ft_strdup.c ft_strlen.c tools.c
 UTILS		=	$(addprefix sources/utils/, $(UTIL))  
 PROMPT		=	rl.c path.c
 PROMPTS		=	$(addprefix sources/prompt/, $(PROMPT))
@@ -20,29 +20,23 @@ LIST        =   list.c
 LISTS       =   $(addprefix sources/list/, $(LIST))
 PIPEX		=	pipex.c here_doc.c utils.c
 PIPEXS		=	$(addprefix sources/pipex/, $(PIPEX))
-LIBFT_PATH	=	sources/libft/
-LIBFT		=	$(addsuffix libft.a, $(LIBFT_PATH))
 OBJS		=	$(MAIN:.c=.o) $(PROMPT:.c=.o) $(UTIL:.c=.o) $(REDIRECTION:.c=.o) $(BUILTIN:.c=.o) $(ENV:.c=.o) $(LIST:.c=.o) $(PIPEX:.c=.o)
 
-$(NAME):	$(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lreadline -L$(LIBFT_PATH) -lft
+$(NAME):	$(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lreadline
 
 $(OBJS):	$(MAINS) $(PROMPTS) $(UTILS) $(REDIRECTIONS) $(BUILTINS) $(ENVS) $(LISTS) $(PIPEXS) $(INC)
 	$(CC) $(CFLAGS) -c $(MAINS) $(PROMPTS) $(UTILS) $(REDIRECTIONS) $(BUILTINS) $(ENVS) $(LISTS) $(PIPEXS)
 
-$(LIBFT):
-	@make -C $(LIBFT_PATH)
 
 .PHONY:		all clean fclean re
 
 all:		$(NAME)
 
 clean:
-	make -C $(LIBFT_PATH) clean
 	rm -f $(OBJS)
 
 fclean:		clean
-	make -C $(LIBFT_PATH) fclean
 	rm -f $(NAME)
 
 re:			fclean	$(NAME)
