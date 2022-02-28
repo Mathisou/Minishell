@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 20:17:16 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/26 20:22:04 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/28 16:06:58 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,12 @@ void	reset_stdin_stdout(t_global *global)
 	{
 		close(global->sfd->outfile);
 		dup2(global->sfd->save_stdout, STDOUT_FILENO);
+		global->sfd->is_output_redirected = false;
 	}
-	else if (global->sfd->is_input_redirected == true)
+	if (global->sfd->is_input_redirected == true)
 	{
 		close(global->sfd->infile);
 		dup2(global->sfd->save_stdin, STDIN_FILENO);
+		global->sfd->is_input_redirected = false;
 	}
 }

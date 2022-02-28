@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 14:16:53 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/26 20:10:58 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/28 15:55:39 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_fd
 	int		*p2;
 	bool	is_sig;
 	bool	is_here_doc;
+	bool	is_stdout;
 }	t_fd;
 
 typedef struct s_parse

@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/26 20:28:04 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/28 15:56:59 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	exec_one_cmd(t_global *global)
 int	rl2(t_global *global)
 {
 	add_history(global->parse->line);
-	if (check_line(global->parse->line) == 1) // gerer le cas ou > >> < << suivis de rien
+	if (check_line(global->parse->line) == 1)
 	{
 		free(global->parse->line);
 		ft_putstr_fd("Syntax error!\n", 2);
@@ -68,6 +68,13 @@ int	rl2(t_global *global)
 	else
 	{
 		global->parse->t = split2(global->parse->line, ' ');
+		// if (check_line2(global->parse->t) == 1) // gere le cas ou > >> < <<  | suivis de rien
+		// {
+		// 	free(global->parse->line);
+		// 	free(global->parse->t)
+		// 	ft_putstr_fd("Syntax error!\n", 2);
+		// 	return (0); //
+		// }
 		check_var_and_quotes(global->parse->t, global->envi, global);
 		pid_del_list(global->pid);
 		pipe_split(global);
@@ -107,9 +114,9 @@ void	find_minishell_exec(t_global *global, char *pwd)
 void rl(t_global *global, char *pwd)
 {
 	struct sigaction	sa;
-	//t_fd sfd;
 	t_parse *parse;
 	t_pid	*pid;
+	(void)pwd;
 
 	pid = NULL;
 	global->pid = &pid;
@@ -118,14 +125,16 @@ void rl(t_global *global, char *pwd)
 	sa.sa_handler = handler;
 	global->sfd = &sfd;
 	global->parse = parse;
-	global->sfd->is_here_doc = false;
-	find_minishell_exec(global, pwd); //marche que pour le premier appel de minishell
+	//find_minishell_exec(global, pwd); //marche que pour le premier appel de minishell
 	//printf("%s\n", global->parse->path_minishell);
 	while (1)
 	{
 		sigaction(SIGINT, &sa, NULL); //CTRL \ PAS GERER
 		global->sfd->is_sig = false;
 		global->sfd->is_here_doc = false;
+		global->sfd->is_input_redirected = false;
+		global->sfd->is_output_redirected = false;
+		global->sfd->is_stdout = false;
 		global->parse->line = readline("$> ");
 		if (!global->parse->line)
 		{
