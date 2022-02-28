@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/28 15:56:59 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/28 18:34:22 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,12 @@ void handler(int signum)
 			rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
+	}
+	if (signum == SIGQUIT)
+	{
+		//rl_on_new_line();
+		//rl_replace_line("", 0);
+		//rl_redisplay();
 	}
 }
 
@@ -43,8 +49,10 @@ void	exec_one_cmd(t_global *global)
 			destroy_tab(global->parse->t);
 			destroy_big_tab(global->parse->bt);
 			del_list(global->envi);
+			free(global->parse);
 			destroy_tab(big);
 			pid_del_list(global->pid);
+			close(global->sfd->save_stdout);
 		}
 		exit(1);
 	}
@@ -57,24 +65,36 @@ void	exec_one_cmd(t_global *global)
 	reset_stdin_stdout(global);
 }
 
+int	check_line_redirection(char **t)
+{
+	int i;
+
+	i = 0;
+	while (t[i])
+	{
+		if ((ft_strcmp(t[i], ">") == 0 || ft_strcmp(t[i], ">>") == 0 || ft_strcmp(t[i], "<") == 0 || ft_strcmp(t[i], "<<") == 0 || ft_strcmp(t[i], "|") == 0) && t[i + 1] == NULL)
+			return (1);
+		else if ((ft_strcmp(t[i], ">") == 0 || ft_strcmp(t[i], ">>") == 0 || ft_strcmp(t[i], "<") == 0 || ft_strcmp(t[i], "<<") == 0 || ft_strcmp(t[i], "|") == 0) && ft_strcmp(t[i + 1], "|") == 0)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 int	rl2(t_global *global)
 {
 	add_history(global->parse->line);
 	if (check_line(global->parse->line) == 1)
-	{
-		free(global->parse->line);
 		ft_putstr_fd("Syntax error!\n", 2);
-	}
 	else
 	{
 		global->parse->t = split2(global->parse->line, ' ');
-		// if (check_line2(global->parse->t) == 1) // gere le cas ou > >> < <<  | suivis de rien
-		// {
-		// 	free(global->parse->line);
-		// 	free(global->parse->t)
-		// 	ft_putstr_fd("Syntax error!\n", 2);
-		// 	return (0); //
-		// }
+		if (check_line_redirection(global->parse->t) == 1)
+		{
+			destroy_tab(global->parse->t);
+			ft_putstr_fd("Syntax error!\n", 2);
+			return (0); //
+		}
 		check_var_and_quotes(global->parse->t, global->envi, global);
 		pid_del_list(global->pid);
 		pipe_split(global);
@@ -91,31 +111,12 @@ int	rl2(t_global *global)
 	return (0);
 }
 
-void	find_minishell_exec(t_global *global, char *pwd)
-{
-	char *tmp;
-	char *tmp2;
-	char *tmp3;
-
-	tmp2 = find_var(global->envi, "PWD=");
-	tmp = strcats("/", tmp2);
-	free(tmp2);
-	if (pwd[0] == '.')
-		global->parse->path_minishell = strcats(tmp, ++pwd);
-	else
-	{
-		tmp3 = strcats("/", pwd);
-		global->parse->path_minishell = strcats(tmp, tmp3);
-		free(tmp3);
-	}
-	free(tmp);
-}
-
 void rl(t_global *global, char *pwd)
 {
 	struct sigaction	sa;
 	t_parse *parse;
 	t_pid	*pid;
+	int i;
 	(void)pwd;
 
 	pid = NULL;
@@ -125,11 +126,11 @@ void rl(t_global *global, char *pwd)
 	sa.sa_handler = handler;
 	global->sfd = &sfd;
 	global->parse = parse;
-	//find_minishell_exec(global, pwd); //marche que pour le premier appel de minishell
-	//printf("%s\n", global->parse->path_minishell);
-	while (1)
+	i = 0;
+	while (++i)
 	{
 		sigaction(SIGINT, &sa, NULL); //CTRL \ PAS GERER
+		sigaction(SIGQUIT, &sa, NULL);
 		global->sfd->is_sig = false;
 		global->sfd->is_here_doc = false;
 		global->sfd->is_input_redirected = false;
@@ -141,15 +142,14 @@ void rl(t_global *global, char *pwd)
 			write(1, "exit\n", 5);
 			del_list(global->envi);
 			pid_del_list(global->pid);
-			free(global->parse->path_minishell);
 			free(global->parse);
+			rl_clear_history();
 			exit(0);
 		}
 		else if (ft_strlen(global->parse->line) > 0)
 			rl2(global);
-		else
-			free(global->parse->line);
-		rl_on_new_line();
+		free(global->parse->line);
+		if (i > 1)
+			close(global->sfd->save_stdout);
 	}
-	rl_clear_history();
 }

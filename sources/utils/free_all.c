@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:41:34 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/26 20:19:06 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/28 18:00:46 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	free_end_line(t_global *global)
 {
-	free(global->parse->line);
 	destroy_tab(global->parse->t);
 	destroy_big_tab(global->parse->cmdopt);
 	destroy_tab(global->parse->cmd);

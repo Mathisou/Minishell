@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 18:37:23 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/28 16:00:57 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/28 17:33:01 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@ void	parsing_redirection(char **t, t_fd *sfd)
 
 	i = -1;
 	sfd->save_stdout = dup(STDOUT_FILENO);
+	sfd->save_stdin = dup(STDIN_FILENO);
+	close(sfd->save_stdout);
+	close(sfd->save_stdin);
 	while (t[++i])
 	{
 		if (ft_strcmp(t[i], ">") == 0 && t[i + 1])
@@ -39,7 +42,7 @@ void	parsing_redirection(char **t, t_fd *sfd)
 				unlink(t[i + 1]);
 			if (ft_strcmp(t[i + 1], "/dev/stdout") == 0)
 				sfd->is_stdout = true;
-			sfd->outfile = open(t[i + 1], O_WRONLY | O_APPEND | O_CREAT, 0644);
+			sfd->outfile = open(t[i + 1], O_WRONLY | O_CREAT, 0644);
 			sfd->save_stdout = dup(STDOUT_FILENO);
 			dup2(sfd->outfile, STDOUT_FILENO);
 		}

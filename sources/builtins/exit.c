@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:04:44 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/26 14:32:11 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/28 18:26:27 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,10 @@ void    exit_b(t_global *global)
     destroy_big_tab(global->parse->cmdopt);
     destroy_big_tab(global->parse->bt);
     del_list(global->envi);
-    free(global->parse->path_minishell);
+    pid_del_list(global->pid);
 	free(global->parse);
+    close(global->sfd->save_stdout);
+    rl_clear_history();
     ft_putstr("exit\n");
     exit(0);
 }

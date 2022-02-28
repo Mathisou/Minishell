@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 13:58:29 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/28 15:36:22 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/02/28 18:08:40 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,6 @@ char	*count_mall(const char *s, char c)/* compte combien mall dans char * */
 				i++;
 		}
 	}
-	//printf("str = %li\n", i);
 	str = (char *) malloc(sizeof(*str) * (i + 1));
 	if (!str)
 		return (NULL);

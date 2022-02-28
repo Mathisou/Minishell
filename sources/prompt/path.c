@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:46:27 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/28 15:55:04 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/28 16:26:02 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,20 +47,15 @@ void	put_cmd(char **path, char *cmd)
 	path[norm.i] = NULL;
 }
 
-char	*findpath(t_global *global, char *cmd, t_env **lst)
+char	*findpath(char *cmd, t_env **lst)
 {
 	int		i;
 	char	**path;
 	char	*new;
 
 	i = 0;
-	if (tdm(cmd))
+	if (tdm(cmd) || ft_strcmp(cmd, "minishell") == 0)
 		return (cmd);
-	else if (ft_strcmp(cmd, "minishell") == 0)
-	{
-		free(cmd);
-		return (ft_strdup(global->parse->path_minishell));
-	}
 	new = find_var(lst, "PATH=");
 	if (new != NULL)
 	{

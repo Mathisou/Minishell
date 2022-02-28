@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 14:04:11 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/28 15:21:33 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/28 16:26:19 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	find_cmd(t_global *global)
 		j = 0;
 		while (ft_strcmp(global->parse->bt[i][j], "<") == 0 || ft_strcmp(global->parse->bt[i][j], "<<") == 0 || ft_strcmp(global->parse->bt[i][j], ">") == 0 || ft_strcmp(global->parse->bt[i][j], ">>") == 0)
 			j = j + 2;
-		global->parse->cmd[i]  = findpath(global, ft_strdup(global->parse->bt[i][j]), global->envi);
+		global->parse->cmd[i]  = findpath(ft_strdup(global->parse->bt[i][j]), global->envi);
 	}
 	global->parse->cmd[i] = NULL;
 	return (0);

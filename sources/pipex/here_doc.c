@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 12:38:27 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/26 20:10:51 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/28 16:41:51 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,12 @@ int	here_doc(t_fd *sfd, char *limiter)
 	if (sfd->here_doc_fd == -1)
 	{
 		ft_putstr_fd(strerror(errno), 2);
+		close(sfd->here_doc_fd);
 		return (1); //
 	}
 	if (sfd->is_sig == false)
 		ft_putstr_fd(line, sfd->here_doc_fd);
+	close(sfd->here_doc_fd);
 	free(line);
 	return (1);
 }

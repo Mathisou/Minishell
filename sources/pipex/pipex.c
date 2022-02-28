@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 14:54:48 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/28 16:07:43 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/28 18:29:14 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	firstchild(t_global *global, int i)
 	pid_del_list(global->pid);
 	destroy_big_tab(global->parse->bt);
 	del_list(global->envi);
+	free(global->parse);
 	destroy_tab(big);
 	return (1);
 }
@@ -82,6 +83,7 @@ int	secondchild(t_global *global, int i)
 	destroy_big_tab(global->parse->bt);
 	del_list(global->envi);
 	destroy_tab(big);
+	free(global->parse);
 	pid_del_list(global->pid);
 	return (1);
 }
