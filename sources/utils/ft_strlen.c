@@ -6,13 +6,13 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 13:29:30 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/28 15:37:45 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/02/28 16:45:15 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		ft_strlen(const char *s)
+int	ft_strlen(const char *s)
 {
 	int		i;
 

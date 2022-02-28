@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:04:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/21 13:00:43 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/28 17:08:43 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	pwd()
+void	pwd(void)
 {
-	char s[4096 + 1];
+	char	s[4096 + 1];
 
 	ft_putstr(getcwd(s, 4096 + 1));
 	write(1, "\n", 1);
-} 
+}

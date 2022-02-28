@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 14:16:53 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/26 20:10:58 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/28 17:51:57 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define STRUCT_H
 
 # include "minishell.h"
-# include <stdbool.h>
 
 /*path.c*/
 typedef struct s_path
@@ -25,15 +24,6 @@ typedef struct s_path
 	int		size_add;
 	char	*tmp;
 }	t_path;
-
-/*split2*/
-typedef struct s_norm
-{
-	int			i;
-	int			string;
-	char const	*s;
-	char		c;
-} t_norm;
 
 /*struct spe*/
 typedef struct s_fd
@@ -54,14 +44,14 @@ typedef struct s_fd
 typedef struct s_parse
 {
 	char	*path_minishell;
-	char    *line;
-	char    **cmd;
-	char    **t;
+	char	*line;
+	char	**cmd;
+	char	**t;
 	char	***bt;
 	int		bt_size;
 	int		child;
-	char    ***cmdopt;
-}   t_parse;
+	char	***cmdopt;
+}	t_parse;
 
 /*link list pid*/
 typedef struct s_pid
@@ -74,9 +64,9 @@ typedef struct s_pid
 /*link list env*/
 typedef struct s_env
 {
-	char            *var;
-	struct s_env    *next;
-}   t_env;
+	char			*var;
+	struct s_env	*next;
+}	t_env;
 
 /*struct global*/
 typedef struct s_global
@@ -86,5 +76,32 @@ typedef struct s_global
 	struct s_env	**envi;
 	struct s_pid	**pid;
 }	t_global;
+
+/*split2.c*/
+typedef struct s_norm
+{
+	int			i;
+	int			string;
+	char const	*s;
+	char		c;
+}	t_norm;
+
+/*export.c*/
+typedef struct s_norm2
+{
+	t_env	*tmp;
+	int		i;
+	char	*str;
+}	t_norm2;
+
+/*cd.c*/
+typedef struct s_norm3
+{
+	t_env	*tmp;
+	char	*old_pwd;
+	char	s[4096 + 1];
+	int		exist;
+	char	*str;
+}	t_norm3;
 
 #endif
