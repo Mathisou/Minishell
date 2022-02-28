@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 14:04:11 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/26 19:28:58 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/28 15:21:33 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,6 @@ int	find_cmd(t_global *global)
 		while (ft_strcmp(global->parse->bt[i][j], "<") == 0 || ft_strcmp(global->parse->bt[i][j], "<<") == 0 || ft_strcmp(global->parse->bt[i][j], ">") == 0 || ft_strcmp(global->parse->bt[i][j], ">>") == 0)
 			j = j + 2;
 		global->parse->cmd[i]  = findpath(global, ft_strdup(global->parse->bt[i][j]), global->envi);
-		if (global->parse->cmd[i] == NULL)
-		{
-			ft_putstr_fd("bash: ", 2);
-			ft_putstr_fd(global->parse->bt[i][j], 2);
-			ft_putstr_fd(": command not found\n", 2);
-		}
 	}
 	global->parse->cmd[i] = NULL;
 	return (0);

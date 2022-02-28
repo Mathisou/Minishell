@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 14:54:48 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/26 20:18:56 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/28 16:07:43 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,24 @@ int	firstchild(t_global *global, int i)
 	char **big;
 	if (i > 0 && global->sfd->is_input_redirected == false)
 		dup2(global->sfd->p2[0], 0);
+	if (global->sfd->is_stdout == true)
+		reset_stdin_stdout(global);
 	if (i < global->parse->bt_size - 1 && global->sfd->is_output_redirected == false)
 		dup2(global->sfd->p1[1], 1);
 	close_fd(global);
 	big = convert_env(global->envi);
-	if (global->parse->cmd[i] != NULL && tdm(global->parse->cmd[i]))
+	if (global->parse->cmd[i] == NULL)
+	{
+		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd(global->parse->cmd[i], 2);
+		ft_putstr_fd(": command not found\n", 2);
+	}
+	else if (global->parse->cmd[i] != NULL && tdm(global->parse->cmd[i]))
+	{
 		call_builtin(global, i);
+		destroy_tab(global->parse->cmd);
+		destroy_big_tab(global->parse->cmdopt);
+	}
 	else
 		execve(global->parse->cmd[i], global->parse->cmdopt[i], big);
 	free(global->parse->line);
@@ -51,8 +63,18 @@ int	secondchild(t_global *global, int i)
 		dup2(global->sfd->p2[1], 1);
 	close_fd(global);
 	big = convert_env(global->envi);
-	if (global->parse->cmd[i] != NULL && tdm(global->parse->cmd[i]))
+	if (global->parse->cmd[i] == NULL)
+	{
+		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd(global->parse->cmd[i], 2);
+		ft_putstr_fd(": command not found\n", 2);
+	}
+	else if (global->parse->cmd[i] != NULL && tdm(global->parse->cmd[i]))
+	{
 		call_builtin(global, i);
+		destroy_tab(global->parse->cmd);
+		destroy_big_tab(global->parse->cmdopt);
+	}
 	else
 		execve(global->parse->cmd[i], global->parse->cmdopt[i], big);
 	free(global->parse->line);

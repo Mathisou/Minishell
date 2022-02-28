@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 14:16:53 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/28 17:51:57 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/02/28 18:03:57 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_fd
 	int		*p2;
 	bool	is_sig;
 	bool	is_here_doc;
+	bool	is_stdout;
 }	t_fd;
 
 typedef struct s_parse

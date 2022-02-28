@@ -6,11 +6,13 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 14:20:29 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/24 18:28:31 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/28 15:26:14 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+
 
 int    check_line2(char *line, int *i, int *j)
 {
