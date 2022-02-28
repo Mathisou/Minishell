@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:44:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/26 20:22:19 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/28 14:52:33 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int		is_there_dollar(char *str);
 int		should_replace_var(char *str, int dollarindex);
 int     tdm(char *cmd);
 void	pipe_split(t_global *global);
+int     count_double_tab(char **t);
 int		count_triple_tab(char ***t);
 int		find_cmd(t_global *global);
 char *strcats(char *s1, char *s2);

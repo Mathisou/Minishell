@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 18:37:23 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/26 20:20:31 by maroly           ###   ########.fr       */
+/*   Updated: 2022/02/28 14:49:32 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	parsing_redirection(char **t, t_fd *sfd)
 			sfd->save_stdin = dup(STDIN_FILENO);
 			dup2(sfd->infile, STDIN_FILENO);
 		}
-		if (ft_strcmp(t[i], "<<") == 0 && t[i + 1]) // gerer ce genre de cas : < Makefile << tg cat
+		if (ft_strcmp(t[i], "<<") == 0 && t[i + 1]) // gerer ce genre de cas : < Makefile << tg cat //fais
 		{
 			sfd->is_input_redirected = true;
 			dup2(sfd->save_stdin, 1);
