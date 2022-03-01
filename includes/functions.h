@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functions.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:44:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/01 14:15:36 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/01 14:28:27 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ int		count_triple_tab(char ***t);
 int		find_cmd(t_global *global);
 char	*strcats(char *s1, char *s2);
 /*redirections*/
-void	parsing_redirection(char **t, t_fd *sfd);
+int     parsing_redirection(char **t, t_fd *sfd);
+void	reset_stdin_stdout(t_global *global);
 /*builtins*/
 void	call_builtin(t_global *global, int i);
 void	pwd(void);
@@ -61,13 +62,14 @@ int		lst_size(t_env **lst);
 void	destroy_big_tab(char ***bt);
 void	free_end_line(t_global *global);
 int		pid_del_list(t_pid **lst);
+void	free_in_child(t_global *global);
 /*pipex*/
 void	pipex(t_global *global);
 int		here_doc(t_fd *sfd, char *limiter);
 void	pid_add_node_back(t_pid **first, int content);
 t_pid	*pid_new_node(int content);
 void	wait_func(t_global *global);
-void	reset_stdin_stdout(t_global *global);
+void	execute(t_global *global, int sign, int i);
 /*libft*/
 int		ft_atoi(const char *nptr);
 int		ft_isalnum(int c);
