@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 14:16:53 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/28 18:03:57 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/01 13:42:13 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,5 +104,24 @@ typedef struct s_norm3
 	int		exist;
 	char	*str;
 }	t_norm3;
+
+/*env_var.c*/
+typedef struct s_rep_var
+{
+	int		i;
+	int		j;
+	int		k;
+	char	*new;
+}	t_rep_var;
+
+/*env_var.c*/
+typedef struct s_rep_var2
+{
+	int		i;
+	int		j;
+	char	*ref_var;
+	char	*new;
+}	t_rep_var2;
+
 
 #endif

@@ -6,131 +6,106 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 17:55:26 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/28 15:08:36 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/01 14:13:01 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char *replace_var2(char *old_str, int sizeofvar, char *ref_var)
+static char	*replace_var3(char *old_str, t_rep_var *nrm)
 {
-	int i;
-	int j;
-	int k;
-	char *new;
-
-	i = -1;
-	j = 0;
-	k = -1;
-	new = malloc(sizeof(char) * (ft_strlen(old_str) + ft_strlen(ref_var) - sizeofvar + 1));
-	if (!new)
+	if (!nrm->new)
 		return (NULL);
-	while ((old_str[++i] && old_str[i] != '$') || (old_str[i] && old_str[i] == '$' && old_str[i + 1] == '$'))
+	while ((old_str[++nrm->i] && old_str[nrm->i] != '$') || (old_str[nrm->i]
+			&& old_str[nrm->i] == '$' && old_str[nrm->i + 1] == '$'))
 	{
-		new[j] = old_str[i];
-		j++;
+		nrm->new[nrm->j] = old_str[nrm->i];
+		nrm->j++;
 	}
-	while (old_str[++i] && (ft_isalnum(old_str[i]) == 1 || (old_str[i] == '?' && old_str[i - 1] == '$')))
-		if (old_str[i] == '?' && old_str[i - 1] == '$')
+	while (old_str[++nrm->i] && (ft_isalnum(old_str[nrm->i]) == 1
+			|| (old_str[nrm->i] == '?' && old_str[nrm->i - 1] == '$')))
+	{
+		if (old_str[nrm->i] == '?' && old_str[nrm->i - 1] == '$')
 		{
-			i++;
-			break;
+			nrm->i++;
+			break ;
 		}
-	while (ref_var[++k])
-	{
-		new[j] = ref_var[k];
-		j++;
 	}
-	while (old_str[i])
-	{
-		new[j] = old_str[i];
-		j++;
-		i++;
-	}
-	new[j] = 0;
-	return (new);
+	return ((char *)1);
 }
 
-char *find_ref_var(char *old_str, t_env **lst)
+static char	*replace_var2(char *old_str, int sizeofvar, char *ref_var)
 {
-	char *var;
-	char *ref_var;
-	int j;
-	int i;
+	t_rep_var	nrm;
 
-	i = 0;
-	j = 0;
-	ref_var = NULL;
-	while (old_str[++i] && ft_isalnum(old_str[i]) == 1)
-			j++;
-	var = malloc(sizeof(char) * (j + 2));
-	if (!var)
+	nrm.i = -1;
+	nrm.j = 0;
+	nrm.k = -1;
+	nrm.new = malloc(sizeof(char) * (ft_strlen(old_str)
+				+ ft_strlen(ref_var) - sizeofvar + 1));
+	if (!replace_var3(old_str, &nrm))
 		return (NULL);
-	i = 0;
-	j = 0;
-	while (old_str[++i] && ft_isalnum(old_str[i]) == 1)
+	while (ref_var[++nrm.k])
 	{
-		var[j] = old_str[i];
-		j++;
+		nrm.new[nrm.j] = ref_var[nrm.k];
+		nrm.j++;
 	}
-	var[j] = '\0';
-	ref_var = find_var(lst, var);
-	free(var);
-	return (ref_var);
-}
-
-char *statu(t_global *global)
-{
-	t_pid *tmp;
-
-	tmp = *global->pid;
-	if (!tmp)
-		return (ft_itoa(WEXITSTATUS(0)));
-	while (tmp->next)
-		tmp = tmp->next;
-	return (ft_itoa(WEXITSTATUS(tmp->statu)));
-}
-
-char *replace_var(char *old_str, t_env **lst, t_global *global)
-{
-	int i;
-	int j;
-	char *ref_var;
-	char *new;
-
-	i = -1;
-	ref_var = NULL;
-	new = ft_strdup(old_str);
-	while (old_str[++i])
+	while (old_str[nrm.i])
 	{
-		j = 1;
-		if (old_str[i] == '$' && (ft_isalnum(old_str[i + 1]) == 1 || old_str[i + 1] == '?') && should_replace_var(old_str, i) == 0)
-		{
-			if (old_str[i + 1] == '?')
-				ref_var = statu(global);
-			else
-				ref_var = find_ref_var(&old_str[i], lst);
-			if (ref_var == NULL)
-			{
-				free(ref_var);
-				ref_var = malloc(sizeof(char) * 1);
-				ref_var[0] = 0;
-			}
-			while (old_str[++i] && (ft_isalnum(old_str[i]) == 1 || (old_str[i] == '?' && i > 0 && old_str[i - 1] == '$')))
-				j++;
-			free(new);
-			new = replace_var2(old_str, j, ref_var);
-			i = -1;
-			free(old_str);
-			old_str = ft_strdup(new);
-			free(ref_var);
-		}
+		nrm.new[nrm.j] = old_str[nrm.i];
+		nrm.j++;
+		nrm.i++;
+	}	
+	nrm.new[nrm.j] = 0;
+	return (nrm.new);
+}
+
+char	*replace_var4(char *old_str, t_env **lst
+, t_global *global, t_rep_var2 *nrm)
+{
+	if (old_str[nrm->i + 1] == '?')
+		nrm->ref_var = statu(global);
+	else
+		nrm->ref_var = find_ref_var(&old_str[nrm->i], lst);
+	if (nrm->ref_var == NULL)
+	{
+		free(nrm->ref_var);
+		nrm->ref_var = malloc(sizeof(char) * 1);
+		nrm->ref_var[0] = 0;
+	}
+	while (old_str[++nrm->i] && (ft_isalnum(old_str[nrm->i]) == 1
+			|| (old_str[nrm->i] == '?' && nrm->i > 0
+				&& old_str[nrm->i - 1] == '$')))
+		nrm->j++;
+	free(nrm->new);
+	nrm->new = replace_var2(old_str, nrm->j, nrm->ref_var);
+	nrm->i = -1;
+	free(old_str);
+	old_str = ft_strdup(nrm->new);
+	free(nrm->ref_var);
+	return (old_str);
+}
+
+char	*replace_var(char *old_str, t_env **lst, t_global *global)
+{
+	t_rep_var2	nrm;
+
+	nrm.i = -1;
+	nrm.ref_var = NULL;
+	nrm.new = ft_strdup(old_str);
+	while (old_str[++nrm.i])
+	{
+		nrm.j = 1;
+		if (old_str[nrm.i] == '$' && (ft_isalnum(old_str[nrm.i + 1]) == 1
+				|| old_str[nrm.i + 1] == '?')
+			&& should_replace_var(old_str, nrm.i) == 0)
+			old_str = replace_var4(old_str, lst, global, &nrm);
 	}
 	free(old_str);
-	return (new);
+	return (nrm.new);
 }
 
-void remove_quotes2(char *old_str, char *new, int *i, int *j)
+void	remove_quotes2(char *old_str, char *new, int *i, int *j)
 {
 	while (old_str[++(*i)])
 	{
@@ -155,38 +130,5 @@ void remove_quotes2(char *old_str, char *new, int *i, int *j)
 			new[*j] = old_str[*i];
 			(*j)++;
 		}
-	}
-}
-
-char *remove_quotes(char *old_str)
-{
-	int nb_to_delete;
-	char *new;
-	int i;
-	int j;
-
-	i = -1;
-	j = 0;
-	nb_to_delete = count_delete(old_str);
-	new = malloc(sizeof(char) * (ft_strlen(old_str) - nb_to_delete + 1));
-	if (!new)
-		return (NULL); //
-	remove_quotes2(old_str, new, &i, &j);
-	new[j] = 0;
-	free(old_str);
-	return (new);
-}
-
-void check_var_and_quotes(char **t, t_env **lst, t_global *global)
-{
-	int i;
-
-	i = -1;
-	while (t[++i])
-	{
-		if (is_there_dollar(t[i]) == 1)
-			t[i] = replace_var(t[i], lst, global);
-		if (is_there_quotes(t[i]) == 1)
-			t[i] = remove_quotes(t[i]);
 	}
 }
