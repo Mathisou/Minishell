@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/01 14:15:25 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/01 16:59:37 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,6 @@ void handler(int signum)
 		if (sfd.is_here_doc == false)
 			rl_on_new_line();
 		rl_replace_line("", 0);
-		rl_redisplay();
-	}
-	if (signum == SIGQUIT)
-	{
-		//rl_on_new_line();
-		//rl_replace_line("", 4098);
-		//rl_replace_line("", 2);
 		rl_redisplay();
 	}
 }
@@ -122,8 +115,8 @@ void rl(t_global *global, char *pwd)
 	i = 0;
 	while (++i)
 	{
-		sigaction(SIGINT, &sa, NULL); //CTRL \ PAS GERER
-		sigaction(SIGQUIT, &sa, NULL);
+		signal(SIGQUIT, SIG_IGN);
+		sigaction(SIGINT, &sa, NULL);
 		global->sfd->is_sig = false;
 		global->sfd->is_here_doc = false;
 		global->sfd->is_input_redirected = false;
@@ -142,7 +135,5 @@ void rl(t_global *global, char *pwd)
 		else if (ft_strlen(global->parse->line) > 0)
 			rl2(global);
 		free(global->parse->line);
-		if (i > 1)
-			close(global->sfd->save_stdout);
 	}
 }

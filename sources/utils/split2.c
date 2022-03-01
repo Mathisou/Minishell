@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 13:58:29 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/28 18:08:40 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/01 16:34:55 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ static int	create_tab(char const *s, char c)/* compte cmb de char * dans char **
 		if (s[i])
 			i++;
 	}
-	//printf("=> %d\n", size);
 	return (size);
 }
 
@@ -189,10 +188,10 @@ char **norm1(t_norm *norm, char **big_tab)/*parcours tout str * et dispatch*/
 	&& norm->s[norm->i] != norm->c) && norm->s[norm->i])/*current sep*/
 	|| (norm->s[norm->i] == 60 && norm->s[norm->i - 1] && norm->s[norm->i - 1] != ' ' && norm->s[norm->i - 1] != 60)
 	|| (norm->s[norm->i] == 62 && norm->s[norm->i - 1] && norm->s[norm->i - 1] != ' ' && norm->s[norm->i - 1] != 62)
-	|| (norm->s[norm->i - 1] == 60 && norm->s[norm->i] != 60 && norm->s[norm->i] != ' ')
-	|| (norm->s[norm->i - 1] == 62 && norm->s[norm->i] != 62 && norm->s[norm->i] != ' ')
+	|| (norm->i > 0 && norm->s[norm->i - 1] == 60 && norm->s[norm->i] != 60 && norm->s[norm->i] != ' ')
+	|| (norm->i > 0 && norm->s[norm->i - 1] == 62 && norm->s[norm->i] != 62 && norm->s[norm->i] != ' ')
 	|| (norm->s[norm->i] == '|' && norm->s[norm->i - 1] && norm->s[norm->i - 1] != ' ')
-	|| (norm->s[norm->i - 1] == '|' && norm->s[norm->i] != ' '))
+	|| (norm->i > 0 && norm->s[norm->i - 1] == '|' && norm->s[norm->i] != ' '))
 	{
 		big_tab[norm->string] = put_str_in_tab(&norm->s[norm->i], norm->c);
 		if (!big_tab[norm->string])

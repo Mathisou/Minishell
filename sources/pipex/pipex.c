@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 14:54:48 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/01 13:36:34 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/01 16:30:07 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,15 @@ void	close_fd(t_global *global)
 void	execute(t_global *global, int sign, int i)
 {
 	global->parse->big = convert_env(global->envi);
-	if (global->parse->cmd[i] == NULL)
+	if (sign == 1 && global->parse->cmd[i] != NULL && tdm(global->parse->cmd[i]))
+		call_builtin(global, i);
+	else
 	{
+		execve(global->parse->cmd[i], global->parse->cmdopt[i], global->parse->big);
 		ft_putstr_fd("bash: ", 2);
 		ft_putstr_fd(global->parse->cmdopt[i][0], 2);
 		ft_putstr_fd(": command not found\n", 2);
-
 	}
-	else if (sign == 1 && global->parse->cmd[i] != NULL && tdm(global->parse->cmd[i]))
-		call_builtin(global, i);
-	else
-		execve(global->parse->cmd[i], global->parse->cmdopt[i], global->parse->big);
 }
 
 int	firstchild(t_global *global, int i)
@@ -101,11 +99,15 @@ void	startchildprocess(t_global *global)
 			{
 				pipe(global->sfd->p1);
 				opening_child(global, 1, i);
+				close(global->sfd->p1[1]);
+				close(global->sfd->p2[0]);
 			}
 			else
 			{
 				pipe(global->sfd->p2);
 				opening_child(global, 2, i);
+				close(global->sfd->p1[0]);
+				close(global->sfd->p2[1]);
 			}
 		}
 		reset_stdin_stdout(global);
