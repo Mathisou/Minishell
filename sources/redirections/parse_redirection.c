@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redirection.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 18:37:23 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/01 17:59:39 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/01 19:49:02 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,23 @@ int	is_last(char **t, int i)
 	return (0);
 }
 
+static void	reset_stdout(t_fd *sfd)
+{
+	if (sfd->is_output_redirected == true)
+	{
+		close(sfd->outfile);
+		dup2(sfd->save_stdout, STDOUT_FILENO);
+		close(sfd->save_stdout);
+		sfd->is_output_redirected = false;
+	}
+}
+
 static void	parsing_redirection_out(char **t, t_fd *sfd, int i)
 {
 	if (ft_strcmp(t[i], ">") == 0 && t[i + 1])
 	{
-		if (sfd->is_output_redirected == false)
-			sfd->save_stdout = dup(STDOUT_FILENO);
+		reset_stdout(sfd);
+		sfd->save_stdout = dup(STDOUT_FILENO);
 		sfd->is_output_redirected = true;
 		if (access(t[i + 1], F_OK) == 0)
 			unlink(t[i + 1]);
@@ -39,8 +50,8 @@ static void	parsing_redirection_out(char **t, t_fd *sfd, int i)
 	}
 	else if (ft_strcmp(t[i], ">>") == 0 && t[i + 1])
 	{
-		if (sfd->is_output_redirected == false)
-			sfd->save_stdout = dup(STDOUT_FILENO);
+		reset_stdout(sfd);
+		sfd->save_stdout = dup(STDOUT_FILENO);
 		sfd->is_output_redirected = true;
 		if (ft_strcmp(t[i + 1], "/dev/stdout") == 0)
 			sfd->is_stdout = true;
@@ -64,8 +75,8 @@ static int	parsing_redirection_in(char **t, t_fd *sfd, int i)
 {
 	if (ft_strcmp(t[i], "<") == 0 && t[i + 1])
 	{
-		if (sfd->is_input_redirected == false)
-			sfd->save_stdin = dup(STDIN_FILENO);
+		reset_stdin(sfd);
+		sfd->save_stdin = dup(STDIN_FILENO);
 		sfd->is_input_redirected = true;
 		sfd->infile = open(t[i + 1], O_RDONLY);
 		if (sfd->infile == -1)

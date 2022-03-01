@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 17:10:11 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/01 17:15:45 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/01 19:49:23 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ static void	startchildprocess2(t_global *global, int i)
 		pipe(global->sfd->p1);
 		opening_child(global, 1, i);
 		close(global->sfd->p1[1]);
-		close(global->sfd->p2[0]);
+		if (i > 0)
+			close(global->sfd->p2[0]);
 	}
 	else
 	{
