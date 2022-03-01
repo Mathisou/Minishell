@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 15:10:40 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/28 16:45:10 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/01 13:45:41 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ char	**destroy_tab(char **t)
 	if (t)
 	{
 		while (t[++i])
+		{
+			//printf("%s\n", t[i]);
 			free(t[i]);
+		}
 		free(t);
 	}
 	return (NULL);

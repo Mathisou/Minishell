@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 18:37:23 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/28 17:33:01 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/01 13:43:39 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,15 @@ int	is_last(char **t, int i)
 	return (0);
 }
 
-void	parsing_redirection(char **t, t_fd *sfd)
+int	parsing_redirection(char **t, t_fd *sfd)
 {
 	int i;
 
 	i = -1;
-	sfd->save_stdout = dup(STDOUT_FILENO);
-	sfd->save_stdin = dup(STDIN_FILENO);
-	close(sfd->save_stdout);
-	close(sfd->save_stdin);
+	// sfd->save_stdout = dup(STDOUT_FILENO);
+	// sfd->save_stdin = dup(STDIN_FILENO);
+	// close(sfd->save_stdout);
+	// close(sfd->save_stdin);
 	while (t[++i])
 	{
 		if (ft_strcmp(t[i], ">") == 0 && t[i + 1])
@@ -61,6 +61,11 @@ void	parsing_redirection(char **t, t_fd *sfd)
 			sfd->is_input_redirected = true;
 			dup2(sfd->save_stdin, 0);
 			sfd->infile = open(t[i + 1], O_RDONLY);
+			if (sfd->infile == -1)
+			{
+				perror(t[i + 1]);
+				return (1);
+			}
 			sfd->save_stdin = dup(STDIN_FILENO);
 			dup2(sfd->infile, STDIN_FILENO);
 		}
@@ -73,4 +78,5 @@ void	parsing_redirection(char **t, t_fd *sfd)
 			dup2(sfd->infile, STDIN_FILENO);
 		}
 	}
+	return (0);
 }
