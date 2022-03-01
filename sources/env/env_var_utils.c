@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_var_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 15:13:00 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/25 16:33:09 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/01 14:46:41 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	count_delete(char *str)
 {
-	int i;
-	int count;
+	int	i;
+	int	count;
 
 	i = -1;
 	count = 0;
@@ -39,9 +39,9 @@ int	count_delete(char *str)
 	return (count);
 }
 
-int is_there_quotes(char *str)
+int	is_there_quotes(char *str)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (str[++i])
@@ -50,9 +50,9 @@ int is_there_quotes(char *str)
 	return (0);
 }
 
-int is_there_dollar(char *str)
+int	is_there_dollar(char *str)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (str[++i])
@@ -63,7 +63,7 @@ int is_there_dollar(char *str)
 
 int	should_replace_var(char *str, int dollarindex)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (str[++i])

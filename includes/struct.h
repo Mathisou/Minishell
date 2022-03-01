@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 14:16:53 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/01 14:27:47 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/01 14:32:06 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,5 +124,12 @@ typedef struct s_rep_var2
 	char	*new;
 }	t_rep_var2;
 
+typedef struct s_takee
+{
+	int		i;
+	char	*new_shlvl;
+	char	*rtn_itoa;
+	int		exist[2];
+}	t_takee;
 
 #endif
