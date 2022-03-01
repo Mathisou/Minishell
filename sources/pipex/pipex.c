@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 14:54:48 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/01 16:30:07 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/01 17:16:21 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,13 @@ void	close_fd(t_global *global)
 void	execute(t_global *global, int sign, int i)
 {
 	global->parse->big = convert_env(global->envi);
-	if (sign == 1 && global->parse->cmd[i] != NULL && tdm(global->parse->cmd[i]))
+	if (sign == 1 && global->parse->cmd[i]
+		!= NULL && tdm(global->parse->cmd[i]))
 		call_builtin(global, i);
 	else
 	{
-		execve(global->parse->cmd[i], global->parse->cmdopt[i], global->parse->big);
+		execve(global->parse->cmd[i], global->parse->cmdopt[i],
+			global->parse->big);
 		ft_putstr_fd("bash: ", 2);
 		ft_putstr_fd(global->parse->cmdopt[i][0], 2);
 		ft_putstr_fd(": command not found\n", 2);
@@ -40,7 +42,8 @@ int	firstchild(t_global *global, int i)
 		dup2(global->sfd->p2[0], 0);
 	if (global->sfd->is_stdout == true)
 		reset_stdin_stdout(global);
-	if (i < global->parse->bt_size - 1 && global->sfd->is_output_redirected == false)
+	if (i < global->parse->bt_size - 1
+		&& global->sfd->is_output_redirected == false)
 		dup2(global->sfd->p1[1], 1);
 	close_fd(global);
 	execute(global, 1, i);
@@ -52,7 +55,8 @@ int	secondchild(t_global *global, int i)
 {
 	if (global->sfd->is_input_redirected == false)
 		dup2(global->sfd->p1[0], 0);
-	if (i < global->parse->bt_size - 1 && global->sfd->is_output_redirected == false)
+	if (i < global->parse->bt_size - 1
+		&& global->sfd->is_output_redirected == false)
 		dup2(global->sfd->p2[1], 1);
 	close_fd(global);
 	execute(global, 1, i);
@@ -81,50 +85,4 @@ void	opening_child(t_global *global, int sign, int i)
 		close(global->sfd->p2[1]);
 	}
 	pid_add_node_back(global->pid, global->parse->child);
-}
-
-void	startchildprocess(t_global *global)
-{
-	int i;
-
-	i = -1;
-	close_fd(global);
-	while (global->parse->bt[++i])
-	{
-		if (parsing_redirection(global->parse->bt[i], global->sfd) == 0)
-		{
-			if (global->sfd->is_here_doc == true && global->sfd->is_sig == true)
-				break;
-			if (i % 2 == 0)
-			{
-				pipe(global->sfd->p1);
-				opening_child(global, 1, i);
-				close(global->sfd->p1[1]);
-				close(global->sfd->p2[0]);
-			}
-			else
-			{
-				pipe(global->sfd->p2);
-				opening_child(global, 2, i);
-				close(global->sfd->p1[0]);
-				close(global->sfd->p2[1]);
-			}
-		}
-		reset_stdin_stdout(global);
-	}
-	wait_func(global);
-	close_fd(global);
-}
-
-void pipex(t_global *global)
-{
-	int		p1[2];
-	int		p2[2];
-
-	global->parse->bt_size = count_triple_tab(global->parse->bt);
-	pipe(p1);
-	pipe(p2);
-	global->sfd->p1 = p1;
-	global->sfd->p2 = p2;
-	startchildprocess(global);
 }

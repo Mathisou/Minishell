@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 13:10:25 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/28 15:35:44 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/01 18:11:57 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_atoi(const char *nptr)
 {
-	int		i;
+	int			i;
 	int			sign;
 	long long	result;
 

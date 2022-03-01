@@ -3,27 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   rl.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/01 16:59:37 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/01 18:07:53 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_fd	sfd;
+t_fd	g_sfd;
 
-void handler(int signum)
+void	wait_func(t_global *global)
 {
-	if (signum == SIGINT)
+	t_pid	*tmp;
+
+	tmp = *global->pid;
+	while (tmp)
 	{
-		sfd.is_sig = true;
-		write(1, "\n", 1);
-		if (sfd.is_here_doc == false)
-			rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
+		waitpid(tmp->pid, &tmp->statu, 0);
+		tmp = tmp->next;
 	}
 }
 
@@ -53,33 +52,37 @@ void	exec_one_cmd(t_global *global)
 
 int	check_line_redirection(char **t)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (t[i])
 	{
-		if ((ft_strcmp(t[i], ">") == 0 || ft_strcmp(t[i], ">>") == 0 || ft_strcmp(t[i], "<") == 0 || ft_strcmp(t[i], "<<") == 0 || ft_strcmp(t[i], "|") == 0) && t[i + 1] == NULL)
+		if ((ft_strcmp(t[i], ">") == 0 || ft_strcmp(t[i], ">>") == 0
+				|| ft_strcmp(t[i], "<") == 0 || ft_strcmp(t[i], "<<") == 0
+				|| ft_strcmp(t[i], "|") == 0) && t[i + 1] == NULL)
 			return (1);
-		else if ((ft_strcmp(t[i], ">") == 0 || ft_strcmp(t[i], ">>") == 0 || ft_strcmp(t[i], "<") == 0 || ft_strcmp(t[i], "<<") == 0 || ft_strcmp(t[i], "|") == 0) && ft_strcmp(t[i + 1], "|") == 0)
+		else if ((ft_strcmp(t[i], ">") == 0 || ft_strcmp(t[i], ">>") == 0
+				|| ft_strcmp(t[i], "<") == 0 || ft_strcmp(t[i], "<<") == 0
+				|| ft_strcmp(t[i], "|") == 0) && ft_strcmp(t[i + 1], "|") == 0)
 			return (1);
 		i++;
 	}
 	return (0);
 }
 
-int	rl2(t_global *global)
+void	rl2(t_global *global)
 {
 	add_history(global->parse->line);
-	if (check_line(global->parse->line) == 1) // quotes
+	if (check_line(global->parse->line) == 1)
 		ft_putstr_fd("Syntax error!\n", 2);
 	else
 	{
 		global->parse->t = split2(global->parse->line, ' ');
-		if (check_line_redirection(global->parse->t) == 1) // redirection / pipe
+		if (check_line_redirection(global->parse->t) == 1)
 		{
 			destroy_tab(global->parse->t);
 			ft_putstr_fd("Syntax error!\n", 2);
-			return (0); //
+			return ;
 		}
 		check_var_and_quotes(global->parse->t, global->envi, global);
 		pid_del_list(global->pid);
@@ -94,34 +97,21 @@ int	rl2(t_global *global)
 			unlink("here_doc");
 		free_end_line(global);
 	}
-	return (0);
 }
 
-void rl(t_global *global, char *pwd)
+void	rl(t_global *global)
 {
-	struct sigaction	sa;
-	t_parse *parse;
-	t_pid	*pid;
-	int i;
-	(void)pwd;
+	t_parse				*parse;
+	t_pid				*pid;
 
 	pid = NULL;
 	global->pid = &pid;
 	parse = malloc(sizeof(t_parse));
-	sa = (struct sigaction){0};
-	sa.sa_handler = handler;
-	global->sfd = &sfd;
+	global->sfd = &g_sfd;
 	global->parse = parse;
-	i = 0;
-	while (++i)
+	while (42)
 	{
-		signal(SIGQUIT, SIG_IGN);
-		sigaction(SIGINT, &sa, NULL);
-		global->sfd->is_sig = false;
-		global->sfd->is_here_doc = false;
-		global->sfd->is_input_redirected = false;
-		global->sfd->is_output_redirected = false;
-		global->sfd->is_stdout = false;
+		init_rl(global);
 		global->parse->line = readline("$> ");
 		if (!global->parse->line)
 		{

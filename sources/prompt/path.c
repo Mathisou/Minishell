@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:46:27 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/01 16:30:25 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/01 17:23:46 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void	put_cmd2(char **path, char *cmd, t_path *norm)
 {
 	norm->tmp = ft_strdup(path[norm->i]);
 	free(path[norm->i]);
-	path[norm->i] = malloc(sizeof (char) * (ft_strlen(norm->tmp) + norm->size_add));
+	path[norm->i] = malloc(sizeof (char)
+			* (ft_strlen(norm->tmp) + norm->size_add));
 	if (!path[norm->i])
 	{
 		destroy_tab(path);
@@ -38,7 +39,7 @@ void	put_cmd2(char **path, char *cmd, t_path *norm)
 
 void	put_cmd(char **path, char *cmd)
 {
-	t_path norm;
+	t_path	norm;
 
 	norm.i = -1;
 	norm.size_add = ft_strlen(cmd) + 2;
@@ -47,13 +48,28 @@ void	put_cmd(char **path, char *cmd)
 	path[norm.i] = NULL;
 }
 
-char	*findpath(char *cmd, t_env **lst)
+char	*findpath2(char **path)
 {
 	int		i;
+	char	*new;
+
+	new = NULL;
+	i = 0;
+	while (path[i] && access(path[i], X_OK) != 0)
+		i++;
+	if (path[i] != NULL)
+		new = ft_strdup(path[i]);
+	destroy_tab(path);
+	if (new == NULL)
+		return (NULL);
+	return (new);
+}
+
+char	*findpath(char *cmd, t_env **lst)
+{
 	char	**path;
 	char	*new;
 
-	i = 0;
 	if (tdm(cmd) || ft_strcmp(cmd, "minishell") == 0)
 		return (cmd);
 	new = find_var(lst, "PATH=");
@@ -61,20 +77,14 @@ char	*findpath(char *cmd, t_env **lst)
 	{
 		path = split2(new, ':');
 		free(new);
-		new = NULL;
 		put_cmd(path, cmd);
 		if (!path)
 		{
 			free(cmd);
 			return (NULL);
 		}
-		i = 0;
-		while (path[i] && access(path[i], X_OK) != 0)
-			i++;
-		if (path[i] != NULL)
-			new = ft_strdup(path[i]);
-		destroy_tab(path);
-		if (new == NULL)
+		new = findpath2(path);
+		if (!new)
 			return (cmd);
 	}
 	free(cmd);

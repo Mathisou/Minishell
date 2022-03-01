@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 14:16:53 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/01 14:32:06 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/01 18:17:43 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef struct s_parse
 	int		bt_size;
 	int		child;
 	char	***cmdopt;
-	char **big;
+	char	**big;
 }	t_parse;
 
 /*link list pid*/
@@ -131,5 +131,15 @@ typedef struct s_takee
 	char	*rtn_itoa;
 	int		exist[2];
 }	t_takee;
+
+/*find_opt*/
+typedef struct s_opt
+{
+	int		i;
+	int		j;
+	int		k;
+	int		m;
+	char	***cmdopt;
+}	t_opt;
 
 #endif

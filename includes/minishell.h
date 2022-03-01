@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:30:08 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/28 16:43:03 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/01 17:29:22 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,7 @@
 # include <curses.h>
 # include <term.h>
 # include <errno.h>
+
+extern t_fd	g_sfd;
 
 #endif

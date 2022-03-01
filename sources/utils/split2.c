@@ -3,104 +3,46 @@
 /*                                                        :::      ::::::::   */
 /*   split2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 13:58:29 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/01 16:34:55 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/01 18:50:38 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	test62(int *i, int *size, char const *s)/* test les < > dpour split les char * */
+static int	count_mall2(const char *s, int *i)
 {
-	if (s[*i] == 62 || (s[*i] == 62 && s[(*i) + 1] == 62))
+	if (s[*i] == 62)
 	{
-		if ((*i) != 0 && s[(*i) - 1] != ' ')
-			(*size)++;
-		if (s[(*i) + 1] == 62)
+		(*i)++;
+		if (s[*i] == 62)
 			(*i)++;
-		if (s[(*i) + 1] && s[(*i) + 1] != ' ')
-			(*size)++;
 	}
-}
-
-void	test60(int *i, int *size, char const *s)
-{
-	if (s[*i] == 60 || (s[*i] == 60 && s[(*i) + 1] == 60))
+	else if (s[*i] == 60)
 	{
-		if ((*i) != 0 && s[(*i) - 1] != ' ')
-			(*size)++;
-		if (s[(*i) + 1] == 60)
-			(*i)++;
-		if (s[(*i) + 1] && s[(*i) + 1] != ' ')
-			(*size)++;
-	}
-}
-
-void	test_p(int *i, int *size, char const *s)
-{
-	if (s[*i] == '|')
-	{
-		if ((*i) != 0 && s[(*i) - 1] != ' ')
-			(*size)++;
-		if (s[(*i) + 1] && s[(*i) + 1] != ' ')
-			(*size)++;
-	}
-}
-
-static int	create_tab(char const *s, char c)/* compte cmb de char * dans char ** */
-{
-	int	i;
-	int	size;
-
-	i = 0;
-	size = 0;
-	while (s[i])
-	{
-		if (((i == 0 || s[i - 1] == c) && s[i] != c) && s[i])
-		{
-			if (s[i] == 39)
-				while (s[++i] != 39)
-					;
-			else if (s[i] == 34)
-				while (s[++i] != 34)
-					;
-			size++;
-		}
-		test62(&i, &size, s);
-		test60(&i, &size, s);
-		test_p(&i, &size, s);
-		if (s[i])
+		(*i)++;
+		if (s[*i] == 60)
 			i++;
 	}
-	return (size);
+	else if (s[*i] == '|')
+	{
+		(*i)++;
+	}
+	else
+		return (1);
+	return (0);
 }
 
-char	*count_mall(const char *s, char c)/* compte combien mall dans char * */
+char	*count_mall(const char *s, char c)
 {
 	int		i;
 	char	*str;
 
 	str = NULL;
-	i = 0;		
-	if (s[i] == 62)
-	{
-		i++;
-		if (s[i] == 62)
-			i++;
-	}
-	else if (s[i] == 60)
-	{
-		i++;
-		if (s[i] == 60)
-			i++;
-	}
-	else if (s[i] == '|')
-	{
-		i++;
-	}
-	else 
+	i = 0;
+	if (count_mall2(s, &i))
 	{	
 		while (s[i] != c && s[i] && s[i] != 60 && s[i] != 62 && s[i] != '|')
 		{
@@ -120,78 +62,29 @@ char	*count_mall(const char *s, char c)/* compte combien mall dans char * */
 	return (str);
 }
 
-void	put_str_in_tab2(char *str, int *i, const char *s)/*extension de en bas*/
+int	norm2(t_norm *norm)
 {
-	str[*i] = s[*i];
-	if (s[*i] == 39)
-	{
-		while (s[++(*i)] != 39)
-			str[*i] = s[*i];
-		str[*i] = s[*i];
-	}
-	else if (s[*i] == 34)
-	{
-		while (s[++(*i)] != 34)
-			str[*i] = s[*i];
-		str[*i] = s[*i];
-	}
-	if (s[*i])
-		(*i)++;
+	if ((((norm->i == 0 || norm->s[norm->i - 1] == norm->c)
+				&& norm->s[norm->i] != norm->c) && norm->s[norm->i])
+		|| (norm->s[norm->i] == 60 && norm->s[norm->i - 1]
+			&& norm->s[norm->i - 1] != ' ' && norm->s[norm->i - 1] != 60)
+		|| (norm->s[norm->i] == 62 && norm->s[norm->i - 1]
+			&& norm->s[norm->i - 1] != ' ' && norm->s[norm->i - 1] != 62)
+		|| (norm->i > 0 && norm->s[norm->i - 1] == 60
+			&& norm->s[norm->i] != 60 && norm->s[norm->i] != ' ')
+		|| (norm->i > 0 && norm->s[norm->i - 1] == 62
+			&& norm->s[norm->i] != 62 && norm->s[norm->i] != ' ')
+		|| (norm->s[norm->i] == '|' && norm->s[norm->i - 1]
+			&& norm->s[norm->i - 1] != ' ')
+		|| (norm->i > 0 && norm->s[norm->i - 1] == '|'
+			&& norm->s[norm->i] != ' '))
+		return (1);
+	return (0);
 }
 
-static char	*put_str_in_tab(const char *s, char c)/*copy de sep a sep*/
+char	**norm1(t_norm *norm, char **big_tab)
 {
-	int	i;
-	char	*str;
-
-	str = count_mall(s, c);
-	if (str == NULL)
-		return (NULL);
-	i = 0;
-	if (s[i] == 60)
-	{
-		str[i] = s[i];
-		i++;
-		if (s[i] == 60)
-		{
-			str[i] = s[i];
-			i++;
-		}
-	}
-	else if (s[i] == 62)
-	{
-		str[i] = s[i];
-		i++;
-		if (s[i] == 62)
-		{
-			str[i] = s[i];
-			i++;
-		}
-	}
-	else if (s[i] == '|')
-	{
-		str[i] = s[i];
-		i++;
-	}
-	else
-	{
-		while (s[i] && s[i] != c && s[i] != 60 && s[i] != 62 && s[i] != '|')
-			put_str_in_tab2(str, &i, s);
-	}
-	str[i] = '\0';
-	return (str);
-}
-
-char **norm1(t_norm *norm, char **big_tab)/*parcours tout str * et dispatch*/
-{
-	if ((((norm->i == 0 || norm->s[norm->i - 1] == norm->c)/*sep before*/
-	&& norm->s[norm->i] != norm->c) && norm->s[norm->i])/*current sep*/
-	|| (norm->s[norm->i] == 60 && norm->s[norm->i - 1] && norm->s[norm->i - 1] != ' ' && norm->s[norm->i - 1] != 60)
-	|| (norm->s[norm->i] == 62 && norm->s[norm->i - 1] && norm->s[norm->i - 1] != ' ' && norm->s[norm->i - 1] != 62)
-	|| (norm->i > 0 && norm->s[norm->i - 1] == 60 && norm->s[norm->i] != 60 && norm->s[norm->i] != ' ')
-	|| (norm->i > 0 && norm->s[norm->i - 1] == 62 && norm->s[norm->i] != 62 && norm->s[norm->i] != ' ')
-	|| (norm->s[norm->i] == '|' && norm->s[norm->i - 1] && norm->s[norm->i - 1] != ' ')
-	|| (norm->i > 0 && norm->s[norm->i - 1] == '|' && norm->s[norm->i] != ' '))
+	if (norm2(norm))
 	{
 		big_tab[norm->string] = put_str_in_tab(&norm->s[norm->i], norm->c);
 		if (!big_tab[norm->string])
@@ -210,7 +103,7 @@ char **norm1(t_norm *norm, char **big_tab)/*parcours tout str * et dispatch*/
 
 char	**split2(char const *s, char c)
 {
-	t_norm	norm; 
+	t_norm	norm;
 	char	**big_tab;
 
 	norm.i = 0;

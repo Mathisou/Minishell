@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:04:46 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/28 17:48:59 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/01 17:07:19 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	check_line_to_export(char *line, t_env **lst)
 		return (2);
 }
 
-void	export(t_env **lst, char **to_export)
+void	export_b(t_env **lst, char **to_export)
 {
 	int	i;
 	int	rtn;

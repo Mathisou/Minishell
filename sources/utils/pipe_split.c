@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_split.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 16:39:59 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/24 18:10:26 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/01 18:14:08 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int count_tab(char **t)
+int	count_tab(char **t)
 {
-	int i;
-	int count;
+	int	i;
+	int	count;
 
 	i = -1;
 	count = 0;
@@ -24,10 +24,10 @@ int count_tab(char **t)
 	return (count);
 }
 
-int count_double_tab(char **t)
+int	count_double_tab(char **t)
 {
-	int i;
-	int count;
+	int	i;
+	int	count;
 
 	i = -1;
 	count = 0;
@@ -37,9 +37,9 @@ int count_double_tab(char **t)
 	return (count);
 }
 
-int count_triple_tab(char ***t)
+int	count_triple_tab(char ***t)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (t[i])
@@ -49,9 +49,9 @@ int count_triple_tab(char ***t)
 
 void	pipe_split2(t_global *global)
 {
-	int i;
-	int j;
-	int k;
+	int	i;
+	int	j;
+	int	k;
 
 	i = -1;
 	j = -1;
@@ -62,7 +62,8 @@ void	pipe_split2(t_global *global)
 		{
 			global->parse->bt[k][++j] = NULL;
 			k++;
-			global->parse->bt[k] = malloc(sizeof(char *) * (count_tab(&global->parse->t[i + 1]) + 1));
+			global->parse->bt[k] = malloc(sizeof(char *)
+					* (count_tab(&global->parse->t[i + 1]) + 1));
 			if (!global->parse->bt[k])
 				return ;
 			j = -1;
@@ -71,15 +72,17 @@ void	pipe_split2(t_global *global)
 			global->parse->bt[k][++j] = ft_strdup(global->parse->t[i]);
 	}
 	global->parse->bt[k][++j] = NULL;
-	global->parse->bt[++k] = NULL;\
+	global->parse->bt[++k] = NULL;
 }
 
 void	pipe_split(t_global *global)
 {
-	global->parse->bt = malloc(sizeof(*global->parse->bt) * (count_double_tab(global->parse->t) + 2));
+	global->parse->bt = malloc(sizeof(*global->parse->bt)
+			* (count_double_tab(global->parse->t) + 2));
 	if (!global->parse->bt)
-		return ; //a secur
-	global->parse->bt[0] = malloc(sizeof(char *) * (count_tab(global->parse->t) + 1));
+		return ;
+	global->parse->bt[0] = malloc(sizeof(char *)
+			* (count_tab(global->parse->t) + 1));
 	if (!global->parse->bt[0])
 		return ;
 	pipe_split2(global);

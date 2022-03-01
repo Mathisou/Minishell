@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 00:36:35 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/28 16:49:38 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/01 17:07:08 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,5 @@ void	call_builtin(t_global *global, int i)
 	else if (ft_strcmp(global->parse->cmd[i], "env") == 0)
 		env(global->envi);
 	else if (ft_strcmp(global->parse->cmd[i], "export") == 0)
-		export(global->envi, global->parse->bt[i]);
+		export_b(global->envi, global->parse->bt[i]);
 }

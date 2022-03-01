@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 17:55:26 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/01 14:13:01 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/01 17:06:26 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ char	*replace_var(char *old_str, t_env **lst, t_global *global)
 	return (nrm.new);
 }
 
-void	remove_quotes2(char *old_str, char *new, int *i, int *j)
+void	remove_quotes2(char *old_str, char *n, int *i, int *j)
 {
 	while (old_str[++(*i)])
 	{
@@ -113,7 +113,7 @@ void	remove_quotes2(char *old_str, char *new, int *i, int *j)
 		{
 			while (old_str[++(*i)] && old_str[*i] != 34)
 			{
-				new[*j] = old_str[*i];
+				n[*j] = old_str[*i];
 				(*j)++;
 			}
 		}
@@ -121,13 +121,13 @@ void	remove_quotes2(char *old_str, char *new, int *i, int *j)
 		{
 			while (old_str[++(*i)] && old_str[*i] != 39)
 			{
-				new[*j] = old_str[*i];
+				n[*j] = old_str[*i];
 				(*j)++;
 			}
 		}
 		else
 		{
-			new[*j] = old_str[*i];
+			n[*j] = old_str[*i];
 			(*j)++;
 		}
 	}

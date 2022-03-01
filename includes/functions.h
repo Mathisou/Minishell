@@ -3,20 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   functions.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:44:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/01 14:28:27 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/01 18:47:11 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FUNCTIONS_H
 # define FUNCTIONS_H
 
+# include "minishell.h"
+
 /*prompt.c*/
 char	*findpath(char *cmd, t_env **lst);
-void	rl(t_global *global, char *pwd);
+void	rl(t_global *global);
 /*utils*/
+void	init_rl(t_global *global);
 char	**split_quotes(char *str, char sep, char **env);
 char	*find_var(t_env **lst, char *var);
 int		check_line(char *line);
@@ -35,7 +38,7 @@ int		count_triple_tab(char ***t);
 int		find_cmd(t_global *global);
 char	*strcats(char *s1, char *s2);
 /*redirections*/
-int     parsing_redirection(char **t, t_fd *sfd);
+int		parsing_redirection(char **t, t_fd *sfd);
 void	reset_stdin_stdout(t_global *global);
 /*builtins*/
 void	call_builtin(t_global *global, int i);
@@ -45,11 +48,11 @@ void	echo_b(char **t);
 void	exit_b(t_global *global);
 void	env(t_env **lst);
 void	unset(char **to_unset, t_env **lst);
-void	export(t_env **lst, char **to_export);
+void	export_b(t_env **lst, char **to_export);
 /*own_env.c*/
 char	*statu(t_global *global);
 char	*replace_var(char *old_str, t_env **lst, t_global *global);
-void	remove_quotes2(char *old_str, char *new, int *i, int *j);
+void	remove_quotes2(char *old_str, char *n, int *i, int *j);
 char	*find_ref_var(char *old_str, t_env **lst);
 void	take_env(char **env, t_env **envi);
 char	**convert_env(t_env **lst);
@@ -70,6 +73,8 @@ void	pid_add_node_back(t_pid **first, int content);
 t_pid	*pid_new_node(int content);
 void	wait_func(t_global *global);
 void	execute(t_global *global, int sign, int i);
+void	close_fd(t_global *global);
+void	opening_child(t_global *global, int sign, int i);
 /*libft*/
 int		ft_atoi(const char *nptr);
 int		ft_isalnum(int c);
@@ -81,5 +86,13 @@ int		ft_strncmp(const char *s1, const char *s2, int n);
 char	**destroy_tab(char **t);
 void	ft_putstr(char *str);
 void	ft_putstr_fd(char *s, int fd);
+/*split*/
+void	test62(int *i, int *size, char const *s);
+void	test60(int *i, int *size, char const *s);
+void	test_p(int *i, int *size, char const *s);
+int		create_tab(char const *s, char c);
+void	put_str_in_tab2(char *str, int *i, const char *s);
+char	*count_mall(const char *s, char c);
+char	*put_str_in_tab(const char *s, char c);
 
 #endif

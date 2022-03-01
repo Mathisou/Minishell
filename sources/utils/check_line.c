@@ -3,54 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   check_line.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 14:20:29 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/28 15:26:14 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/01 18:09:25 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-
-int    check_line2(char *line, int *i, int *j)
+int	check_line2(char *line, int *i, int *j)
 {
-    *j = *i;
-    while (line[++(*j)] && line[*j] != 34)
-        ;
-    if (line[*j] && line[*j] == 34)
-        *i = *j;
-    else
-        return (1);
-    return (0);
+	*j = *i;
+	while (line[++(*j)] && line[*j] != 34)
+		;
+	if (line[*j] && line[*j] == 34)
+		*i = *j;
+	else
+		return (1);
+	return (0);
 }
 
-int check_line(char *line)
+int	check_line(char *line)
 {
-    int i;
-    int j;
+	int	i;
+	int	j;
 
-    i = -1;
-    while (line[++i])
-    {
-        if (line[i] == '|' && line[i + 1] == '|')
-            return (1);
-        if (line[i] == 34)
-        {
-            if (check_line2(line, &i, &j))
-                return (1);
-        }
-        else if (line[i] == 39)
-        {
-            j = i;
-            while (line[++j] && line[j] != 39)
-                continue ;
-            if (line[j] && line[j] == 39)
-                i = j;
-            else
-                return (1);
-        }
-    }
-    return (0);
+	i = -1;
+	while (line[++i])
+	{
+		if (line[i] == '|' && line[i + 1] == '|')
+			return (1);
+		if (line[i] == 34)
+		{
+			if (check_line2(line, &i, &j))
+				return (1);
+		}
+		else if (line[i] == 39)
+		{
+			j = i;
+			while (line[++j] && line[j] != 39)
+				continue ;
+			if (line[j] && line[j] == 39)
+				i = j;
+			else
+				return (1);
+		}
+	}
+	return (0);
 }
