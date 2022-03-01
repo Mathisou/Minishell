@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:44:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/28 16:44:53 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/01 14:15:36 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define FUNCTIONS_H
 
 /*prompt.c*/
-char	*findpath(t_global *global, char *cmd, t_env **lst);
+char	*findpath(char *cmd, t_env **lst);
 void	rl(t_global *global, char *pwd);
 /*utils*/
 char	**split_quotes(char *str, char sep, char **env);
@@ -46,6 +46,10 @@ void	env(t_env **lst);
 void	unset(char **to_unset, t_env **lst);
 void	export(t_env **lst, char **to_export);
 /*own_env.c*/
+char	*statu(t_global *global);
+char	*replace_var(char *old_str, t_env **lst, t_global *global);
+void	remove_quotes2(char *old_str, char *new, int *i, int *j);
+char	*find_ref_var(char *old_str, t_env **lst);
 void	take_env(char **env, t_env **envi);
 char	**convert_env(t_env **lst);
 /*list*/
