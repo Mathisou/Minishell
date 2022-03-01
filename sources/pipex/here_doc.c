@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 12:38:27 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/28 16:41:51 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/01 14:55:10 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	}
 }
 
-int	here_doc(t_fd *sfd, char *limiter)
+static char	*here_doc2(t_fd *sfd, char *limiter, char *line, char buffer[])
 {
-	char	buffer[2];
-	char	*line;
-
-	line = NULL;
 	sfd->is_here_doc = true;
 	while (read(0, buffer, 1) != 0)
 	{
@@ -81,10 +77,21 @@ int	here_doc(t_fd *sfd, char *limiter)
 		line = ft_strjoin(line, buffer);
 		if (here_doc_check_line(line, limiter) > 0 || sfd->is_sig == true)
 		{
-			line[ft_strlen(line) - here_doc_check_line(line, limiter) - 1] = '\0';
+			line[ft_strlen(line)
+				- here_doc_check_line(line, limiter) - 1] = '\0';
 			break ;
 		}
 	}
+	return (line);
+}
+
+int	here_doc(t_fd *sfd, char *limiter)
+{
+	char	buffer[2];
+	char	*line;
+
+	line = NULL;
+	line = here_doc2(sfd, limiter, line, buffer);
 	if (access("here_doc", F_OK) == 0)
 		unlink("here_doc");
 	sfd->here_doc_fd = open("here_doc", O_RDWR | O_APPEND | O_CREAT, 0644);
@@ -92,7 +99,7 @@ int	here_doc(t_fd *sfd, char *limiter)
 	{
 		ft_putstr_fd(strerror(errno), 2);
 		close(sfd->here_doc_fd);
-		return (1); //
+		return (1);
 	}
 	if (sfd->is_sig == false)
 		ft_putstr_fd(line, sfd->here_doc_fd);

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 14:29:10 by hkovac            #+#    #+#             */
-/*   Updated: 2022/02/23 19:37:17 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/01 14:48:20 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env	*new_node(char  *content)
+t_env	*new_node(char *content)
 {
 	t_env	*new;
 
@@ -58,8 +58,8 @@ int	del_list(t_env **lst)
 
 int	lst_size(t_env **lst)
 {
-	t_env *tmp;
-	int i;
+	t_env	*tmp;
+	int		i;
 
 	i = 0;
 	tmp = *lst;
@@ -70,10 +70,3 @@ int	lst_size(t_env **lst)
 	}
 	return (i);
 }
-
-// void	del_node(t_env **envi, char *content)
-// {
-// 	int	check_size;
-
-// 	check_size = ft_strlen(content);
-// }
