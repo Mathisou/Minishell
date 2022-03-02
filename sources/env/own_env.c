@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 14:15:49 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/02 13:53:57 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/02 17:15:07 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ void	take_env2(char **env, t_env **envi, t_takee *nrm, t_global *global)
 				free(nrm->rtn_itoa);
 				free_n_exit(global);
 			}
-			add_node_back(envi, nrm->new_shlvl);
+			add_node_back(envi, nrm->new_shlvl, global);
 			free(nrm->new_shlvl);
 			free(nrm->rtn_itoa);
 			nrm->exist[0]++;
 		}
 		else
-			add_node_back(envi, env[nrm->i]);
+			add_node_back(envi, env[nrm->i], global);
 	}
 }
 
@@ -61,7 +61,7 @@ static void	take_env3(t_env **envi, char *av, t_takee *nrm, t_global *global)
 		free(tmp);
 		free_n_exit(global);
 	}
-	add_node_back(envi, nrm->rtn_itoa);
+	add_node_back(envi, nrm->rtn_itoa, global);
 	free(nrm->new_shlvl);
 	free(nrm->rtn_itoa);
 	free(tmp);
@@ -79,7 +79,7 @@ void	take_env(char **env, t_env **envi, char *av, t_global *global)
 	nrm.exist[2] = 0;
 	take_env2(env, envi, &nrm, global);
 	if (!nrm.exist[0])
-		add_node_back(envi, "SHLVL=1");
+		add_node_back(envi, "SHLVL=1", global);
 	if (!nrm.exist[2])
 		take_env3(envi, av, &nrm, global);
 	if (!nrm.exist[1])
@@ -91,7 +91,7 @@ void	take_env(char **env, t_env **envi, char *av, t_global *global)
 			free(nrm.new_shlvl);
 			free_n_exit(global);
 		}
-		add_node_back(envi, nrm.rtn_itoa);
+		add_node_back(envi, nrm.rtn_itoa, global);
 		free(nrm.new_shlvl);
 		free(nrm.rtn_itoa);
 	}
@@ -115,6 +115,11 @@ char	**convert_env(t_env **lst)
 	while (tmp)
 	{
 		big[i] = ft_strdup(tmp->var);
+		if (!big[i])
+		{
+			destroy_tab(big);
+			return (NULL);
+		}
 		tmp = tmp->next;
 		i++;
 	}

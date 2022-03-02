@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 14:29:10 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/02 13:42:45 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/02 17:20:24 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,33 @@ t_env	*new_node(char *content)
 	if (!new)
 		return (NULL);
 	new->var = ft_strdup(content);
+	if (!new->var)
+	{
+		free(new);
+		return (NULL);
+	}
 	new->next = NULL;
 	return (new);
 }
 
-void	add_node_back(t_env **first, char *content)
+void	add_node_back(t_env **first, char *content, t_global *global)
 {
 	t_env	*tmp;
 
 	if (!*first)
+	{
 		*first = new_node(content);
+		if (!*first)
+			free_n_exit(global);	
+	}
 	else
 	{	
 		tmp = *first;
 		while (tmp->next != NULL)
 			tmp = (tmp)->next;
 		tmp->next = new_node(content);
+		if (!tmp->next)
+			free_n_exit(global);
 	}
 }
 

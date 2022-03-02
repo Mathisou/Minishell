@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:44:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/02 16:58:23 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/02 17:53:34 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@
 # include "minishell.h"
 
 /*prompt.c*/
-char	*findpath(char *cmd, t_env **lst);
+char	*findpath(char *cmd, t_env **lst, t_global *global);
 void	rl(t_global *global);
 /*utils*/
 void	init_rl(t_global *global);
 char	**split_quotes(char *str, char sep, char **env);
 char	*find_var(t_env **lst, char *var);
 int		check_line(char *line);
-char	***find_opt(char ***bt);
+char	***find_opt(char ***bt, t_global *global);
 char	**split2(char const *s, char c);
 void	check_var_and_quotes(char **t, t_env **lst, t_global *global);
 int		check_limiter(char *str);
@@ -58,7 +58,7 @@ void	take_env(char **env, t_env **envi, char *av, t_global *global);
 char	**convert_env(t_env **lst);
 /*list*/
 t_env	*new_node(char *content);
-void	add_node_back(t_env **first, char *content);
+void	add_node_back(t_env **first, char *content, t_global *global);
 int		del_list(t_env **lst);
 int		lst_size(t_env **lst);
 /*free*/

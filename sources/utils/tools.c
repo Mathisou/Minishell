@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 15:10:40 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/02 16:46:16 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/02 19:03:18 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	ft_putstr_fd(char *s, int fd)
 
 void	free_n_exit(t_global *global)
 {
+	ft_putstr_fd("Malloc issue!\n", 2);
 	free_in_child(global);
 	exit (1);
 }

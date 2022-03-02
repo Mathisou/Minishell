@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 18:37:23 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/02 12:18:09 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/02 19:59:40 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ static int	parsing_redirection_in(char **t, t_fd *sfd, int i)
 		sfd->save_stdin = dup(STDIN_FILENO);
 		sfd->is_input_redirected = true;
 		here_doc(sfd, t[i + 1]);
+		dup2(sfd->here_doc_fd, STDIN_FILENO);
 	}
 	return (0);
 }

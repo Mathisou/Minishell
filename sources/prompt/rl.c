@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/02 16:54:15 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/02 20:00:48 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,13 +88,16 @@ void	rl2(t_global *global)
 		pid_del_list(global->pid);
 		pipe_split(global);
 		find_cmd(global);
-		global->parse->cmdopt = find_opt(global->parse->bt);
+		global->parse->cmdopt = find_opt(global->parse->bt, global);
 		if (count_triple_tab(global->parse->bt) > 1)
 			pipex(global);
 		else if (count_triple_tab(global->parse->bt) == 1)
 			exec_one_cmd(global);
 		if (access("here_doc", F_OK) == 0)
+		{
+			close(global->sfd->here_doc_fd);
 			unlink("here_doc");
+		}
 		free_end_line(global);
 	}
 }

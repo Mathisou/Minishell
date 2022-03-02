@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:04:37 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/02 14:01:22 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/02 17:14:40 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	change_env(t_env **lst, t_global *global)
 			free(nrm.old_pwd); 
 			free_n_exit(global);
 		}
-		add_node_back(lst, nrm.str);
+		add_node_back(lst, nrm.str, global);
 		free(nrm.str);
 	}
 	if (nrm.old_pwd)

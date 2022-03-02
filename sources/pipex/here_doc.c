@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 12:38:27 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/01 14:55:10 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/02 20:01:13 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,10 @@ int	here_doc(t_fd *sfd, char *limiter)
 	line = NULL;
 	line = here_doc2(sfd, limiter, line, buffer);
 	if (access("here_doc", F_OK) == 0)
+	{
+		close(global->sfd->here_doc_fd); // pb si here_doc existe deja avant execution
 		unlink("here_doc");
+	}
 	sfd->here_doc_fd = open("here_doc", O_RDWR | O_APPEND | O_CREAT, 0644);
 	if (sfd->here_doc_fd == -1)
 	{
@@ -103,7 +106,7 @@ int	here_doc(t_fd *sfd, char *limiter)
 	}
 	if (sfd->is_sig == false)
 		ft_putstr_fd(line, sfd->here_doc_fd);
-	close(sfd->here_doc_fd);
+	//close(sfd->here_doc_fd);//<< tg cat
 	free(line);
 	return (1);
 }
