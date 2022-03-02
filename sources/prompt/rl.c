@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/01 18:07:53 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/02 13:45:30 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ void	rl(t_global *global)
 	pid = NULL;
 	global->pid = &pid;
 	parse = malloc(sizeof(t_parse));
+	*parse = (t_parse){0};
 	global->sfd = &g_sfd;
 	global->parse = parse;
 	while (42)

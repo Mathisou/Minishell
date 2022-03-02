@@ -6,13 +6,13 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:04:46 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/01 17:07:19 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/02 13:50:03 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	replace_line(t_env **lst, char *to_export)
+static void	replace_line(t_env **lst, char *to_export, t_global *global)
 {
 	t_env	*tmp;
 	char	*str_export;
@@ -20,7 +20,9 @@ void	replace_line(t_env **lst, char *to_export)
 
 	tmp = *lst;
 	i = -1;
-	str_export = ft_strdup(to_export);
+	str_export = 0;//ft_strdup(to_export);
+	if (!str_export)
+		free_n_exit(global);
 	while (str_export[++i] && str_export[i] != '=')
 		;
 	str_export[i] = '\0';
@@ -70,7 +72,7 @@ int	check_line_to_export(char *line, t_env **lst)
 		return (2);
 }
 
-void	export_b(t_env **lst, char **to_export)
+void	export_b(t_env **lst, char **to_export, t_global *global)
 {
 	int	i;
 	int	rtn;
@@ -82,7 +84,7 @@ void	export_b(t_env **lst, char **to_export)
 		if (rtn == 0)
 			add_node_back(lst, to_export[i]);
 		else if (rtn == 1)
-			replace_line(lst, to_export[i]);
+			replace_line(lst, to_export[i], global);
 		else
 			ft_putstr_fd("Syntax error!\n", 2);
 	}

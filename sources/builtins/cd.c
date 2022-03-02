@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:04:37 by maroly            #+#    #+#             */
-/*   Updated: 2022/02/28 17:58:29 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/02 14:01:22 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,23 @@ char	*strcats(char *s1, char *s2)
 	return (new);
 }
 
-static void	norm(t_norm3 *nrm, t_env **lst)
+static void	norm(t_norm3 *nrm, t_env **lst, t_global *global)
 {
+	char *str;
+
 	while (nrm->tmp)
 	{
 		if (ft_strncmp(nrm->tmp->var, "PWD=", 4) == 0)
 		{
 			nrm->old_pwd = ft_strdup(nrm->tmp->var + 4);
+			if (!nrm->old_pwd)
+				free_n_exit(global);
 			free(nrm->tmp->var);
-			nrm->tmp->var = strcats("PWD=", getcwd(nrm->s, 4096 + 1));
+			str = getcwd(NULL, 4096 + 1);
+			nrm->tmp->var = strcats("PWD=", str);
+			free(str);
+			if (!nrm->tmp->var)
+				free_n_exit(global);
 			break ;
 		}
 		nrm->tmp = nrm->tmp->next;
@@ -61,6 +69,11 @@ static void	norm(t_norm3 *nrm, t_env **lst)
 		{
 			free(nrm->tmp->var);
 			nrm->tmp->var = strcats("OLDPWD=", nrm->old_pwd);
+			if (!nrm->tmp->var)
+			{
+				free(nrm->old_pwd); 
+				free_n_exit(global);
+			}
 			nrm->exist++;
 			break ;
 		}
@@ -68,17 +81,22 @@ static void	norm(t_norm3 *nrm, t_env **lst)
 	}
 }
 
-void	change_env(t_env **lst)
+void	change_env(t_env **lst, t_global *global)
 {
 	t_norm3	nrm;
 
 	nrm.tmp = *lst;
 	nrm.exist = 0;
 	nrm.old_pwd = NULL;
-	norm(&nrm, lst);
+	norm(&nrm, lst, global);
 	if (!nrm.exist)
 	{
 		nrm.str = strcats("OLDPWD=", nrm.old_pwd);
+		if (!nrm.str)
+		{
+			free(nrm.old_pwd); 
+			free_n_exit(global);
+		}
 		add_node_back(lst, nrm.str);
 		free(nrm.str);
 	}
@@ -86,11 +104,19 @@ void	change_env(t_env **lst)
 		free(nrm.old_pwd);
 }
 
-void	cd(char *directory, t_env **lst)
+void	cd(char *directory, t_env **lst, t_global *global)
 {
 	if (!directory)
-		directory = getenv("HOME");
-	if (chdir(directory) == -1)
-		perror(directory);
-	change_env(lst);
+	{
+		directory = find_var(lst, "HOME");
+		if (!directory)
+			free_n_exit(global);
+		if (chdir(directory) == -1)
+			perror(directory);
+		free(directory);
+	}
+	else
+		if (chdir(directory) == -1)
+			perror(directory);
+	change_env(lst, global);
 }

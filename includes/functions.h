@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:44:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/02 12:29:18 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/02 13:48:57 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,18 @@ void	reset_stdin_stdout(t_global *global);
 /*builtins*/
 void	call_builtin(t_global *global, int i);
 void	pwd(void);
-void	cd(char *directory, t_env **lst);
+void	cd(char *directory, t_env **lst, t_global *global);
 void	echo_b(char **t);
 void	exit_b(t_global *global);
 void	env(t_env **lst);
 void	unset(char **to_unset, t_env **lst);
-void	export_b(t_env **lst, char **to_export);
+void	export_b(t_env **lst, char **to_export, t_global *global);
 /*own_env.c*/
 char	*statu(t_global *global);
 char	*replace_var(char *old_str, t_env **lst, t_global *global);
 void	remove_quotes2(char *old_str, char *n, int *i, int *j);
 char	*find_ref_var(char *old_str, t_env **lst);
-void	take_env(char **env, t_env **envi, char *av);
+void	take_env(char **env, t_env **envi, char *av, t_global *global);
 char	**convert_env(t_env **lst);
 /*list*/
 t_env	*new_node(char *content);
@@ -66,6 +66,7 @@ void	destroy_big_tab(char ***bt);
 void	free_end_line(t_global *global);
 int		pid_del_list(t_pid **lst);
 void	free_in_child(t_global *global);
+void	free_n_exit(t_global *global);
 /*pipex*/
 void	pipex(t_global *global);
 int		here_doc(t_fd *sfd, char *limiter);

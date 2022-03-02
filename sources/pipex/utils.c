@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 20:17:16 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/01 18:08:05 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/02 13:17:07 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,20 +54,23 @@ void	handler(int signum)
 
 void	reset_stdin_stdout(t_global *global)
 {
-	if (global->sfd->is_output_redirected == true)
+	if (global->sfd)
 	{
-		close(global->sfd->outfile);
-		dup2(global->sfd->save_stdout, STDOUT_FILENO);
-		close(global->sfd->save_stdout);
-		global->sfd->is_output_redirected = false;
-	}
-	if (global->sfd->is_input_redirected == true)
-	{
-		close(global->sfd->infile);
-		dup2(global->sfd->save_stdin, STDIN_FILENO);
-		close(global->sfd->save_stdin);
-		global->sfd->is_input_redirected = false;
-	}
+		if (global->sfd->is_output_redirected == true)
+		{
+			close(global->sfd->outfile);
+			dup2(global->sfd->save_stdout, STDOUT_FILENO);
+			close(global->sfd->save_stdout);
+			global->sfd->is_output_redirected = false;
+		}
+		if (global->sfd->is_input_redirected == true)
+		{
+			close(global->sfd->infile);
+			dup2(global->sfd->save_stdin, STDIN_FILENO);
+			close(global->sfd->save_stdin);
+			global->sfd->is_input_redirected = false;
+		}
+	}		
 }
 
 void	init_rl(t_global *global)
