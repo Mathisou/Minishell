@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 14:16:53 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/02 14:37:39 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/02 22:49:02 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_fd
 {
 	bool	is_output_redirected;
 	bool	is_input_redirected;
+	bool	is_input_here_doc_redirected;
 	int		save_stdout;
 	int		save_stdin;
 	int		outfile;

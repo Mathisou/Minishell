@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_var.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 17:55:26 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/02 16:58:45 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/02 22:34:12 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,12 @@ int	dollar_count(char *str)
 	count = 0;
 	while (str[++i])
 	{
+		if (str[i] == 34)
+			while (str[++i] && str[i] != 34)
+				if (str[i] == '$')
+					count++;
 		if (str[i] == 39)
-			while (str[++i] != 39)
+			while (str[++i] && str[i] != 39)
 				;
 		if (str[i] == '$')
 			count++;

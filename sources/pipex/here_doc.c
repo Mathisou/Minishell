@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 12:38:27 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/02 20:01:13 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/02 22:23:15 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,13 +94,13 @@ int	here_doc(t_fd *sfd, char *limiter)
 	line = here_doc2(sfd, limiter, line, buffer);
 	if (access("here_doc", F_OK) == 0)
 	{
-		close(global->sfd->here_doc_fd); // pb si here_doc existe deja avant execution
+		close(sfd->here_doc_fd); // pb si here_doc existe deja avant execution
 		unlink("here_doc");
 	}
 	sfd->here_doc_fd = open("here_doc", O_RDWR | O_APPEND | O_CREAT, 0644);
 	if (sfd->here_doc_fd == -1)
 	{
-		ft_putstr_fd(strerror(errno), 2);
+		//ft_putstr_fd(strerror(errno), 2);
 		close(sfd->here_doc_fd);
 		return (1);
 	}

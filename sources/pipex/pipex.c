@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 14:54:48 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/02 19:01:47 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/02 22:51:49 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	execute(t_global *global, int sign, int i)
 
 int	firstchild(t_global *global, int i)
 {
-	if (i > 0 && global->sfd->is_input_redirected == false)
+	if (i > 0 && global->sfd->is_input_redirected == false && global->sfd->is_input_here_doc_redirected == false)
 		dup2(global->sfd->p2[0], 0);
 	if (global->sfd->is_stdout == true)
 		reset_stdin_stdout(global);
@@ -58,7 +58,7 @@ int	firstchild(t_global *global, int i)
 
 int	secondchild(t_global *global, int i)
 {
-	if (global->sfd->is_input_redirected == false)
+	if (global->sfd->is_input_redirected == false && global->sfd->is_input_here_doc_redirected == false)
 		dup2(global->sfd->p1[0], 0);
 	if (i < global->parse->bt_size - 1
 		&& global->sfd->is_output_redirected == false)
