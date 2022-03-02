@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_cmdopt.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 14:04:11 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/01 18:27:02 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/02 02:23:04 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,13 @@ static char	***find_opt3(char ***bt, t_opt *nrm)
 		|| ft_strcmp(bt[nrm->i][nrm->j], ">>") == 0)
 		nrm->j = nrm->j + 2;
 	nrm->cmdopt[nrm->k] = malloc(sizeof(char *) * 3);
+	//nrm->cmdopt[nrm->k] = 0; //segfault
 	if (!nrm->cmdopt[nrm->k])
 		return (NULL);
 	if (bt[nrm->i][nrm->j])
 	{
 		nrm->cmdopt[nrm->k][0] = ft_strdup(bt[nrm->i][nrm->j]);
-		if (ft_strcmp(bt[nrm->i][nrm->j - 2], "<<") == 0)
-			nrm->cmdopt[nrm->k][1] = ft_strdup("here_doc");
-		else
-			nrm->cmdopt[nrm->k][1] = ft_strdup(bt[nrm->i][nrm->j - 1]);
-		nrm->cmdopt[nrm->k][2] = NULL;
+		nrm->cmdopt[nrm->k][1] = NULL;
 	}
 	else
 		nrm->cmdopt[nrm->k][0] = NULL;
