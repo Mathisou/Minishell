@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 14:15:49 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/01 14:46:07 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/02 12:49:18 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	take_env2(char **env, t_env **envi, t_takee *nrm)
 {
 	while (env[++nrm->i])
 	{
+		if (ft_strncmp(env[nrm->i], "_=", 2) == 0)
+			nrm->exist[2]++;
 		if (ft_strncmp(env[nrm->i], "PWD=", 4) == 0)
 			nrm->exist[1]++;
 		if (ft_strncmp(env[nrm->i], "SHLVL=", 6) == 0)
@@ -32,17 +34,37 @@ void	take_env2(char **env, t_env **envi, t_takee *nrm)
 	}
 }
 
-void	take_env(char **env, t_env **envi)
+static void	take_env3(t_env **envi, char *av, t_takee *nrm)
+{
+	char	*tmp;
+
+	tmp = NULL;
+	tmp = getcwd(NULL, 4096 + 1);
+	nrm->new_shlvl = strcats("_=", tmp);
+	free(tmp);
+	tmp = strcats(nrm->new_shlvl, "/");
+	nrm->rtn_itoa = strcats (tmp, av);
+	add_node_back(envi, nrm->rtn_itoa);
+	free(nrm->new_shlvl);
+	free(nrm->rtn_itoa);
+	free(tmp);
+}
+
+void	take_env(char **env, t_env **envi, char *av)
 {
 	t_takee	nrm;
 
 	nrm.i = -1;
 	nrm.new_shlvl = NULL;
+	nrm.rtn_itoa = NULL;
 	nrm.exist[0] = 0;
 	nrm.exist[1] = 0;
+	nrm.exist[2] = 0;
 	take_env2(env, envi, &nrm);
 	if (!nrm.exist[0])
 		add_node_back(envi, "SHLVL=1");
+	if (!nrm.exist[2])
+		take_env3(envi, av, &nrm);
 	if (!nrm.exist[1])
 	{
 		nrm.new_shlvl = getcwd(NULL, 4096 + 1);

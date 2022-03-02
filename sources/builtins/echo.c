@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:04:40 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/02 01:50:55 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/02 12:16:09 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	double_tab_len(char **t)
 
 int	strcmp_opt(char *s)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (s)
@@ -40,6 +40,18 @@ int	strcmp_opt(char *s)
 		}
 	}
 	return (1);
+}
+
+static void	echo_b2(char **t, int *i, int size)
+{
+	while (t[*i] && check_limiter(t[*i]) == 0)
+	{
+		ft_putstr(t[*i]);
+		if (*i < size - 1)
+			write(1, " ", 1);
+		(*i)++;
+	}
+	write(1, "\n", 1);
 }
 
 void	echo_b(char **t)
@@ -62,14 +74,5 @@ void	echo_b(char **t)
 		}
 	}
 	else
-	{
-		while (t[i] && check_limiter(t[i]) == 0)
-		{
-			ft_putstr(t[i]);
-			if (i < size - 1)
-				write(1, " ", 1);
-			i++;
-		}
-		write(1, "\n", 1);
-	}
+		echo_b2(t, &i, size);
 }

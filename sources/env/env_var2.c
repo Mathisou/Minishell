@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 14:12:16 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/01 14:13:04 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/02 12:10:57 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,32 @@ char	*find_ref_var(char *old_str, t_env **lst)
 	ref_var = find_var(lst, var);
 	free(var);
 	return (ref_var);
+}
+
+void	remove_quotes2(char *old_str, char *n, int *i, int *j)
+{
+	while (old_str[++(*i)])
+	{
+		if (old_str[*i] == 34)
+		{
+			while (old_str[++(*i)] && old_str[*i] != 34)
+			{
+				n[*j] = old_str[*i];
+				(*j)++;
+			}
+		}
+		else if (old_str[*i] == 39)
+		{
+			while (old_str[++(*i)] && old_str[*i] != 39)
+			{
+				n[*j] = old_str[*i];
+				(*j)++;
+			}
+		}
+		else
+		{
+			n[*j] = old_str[*i];
+			(*j)++;
+		}
+	}
 }

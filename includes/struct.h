@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 14:16:53 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/01 18:17:43 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/02 12:25:17 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ typedef struct s_takee
 	int		i;
 	char	*new_shlvl;
 	char	*rtn_itoa;
-	int		exist[2];
+	int		exist[3];
 }	t_takee;
 
 /*find_opt*/

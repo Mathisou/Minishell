@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_cmdopt.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 14:04:11 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/02 02:23:04 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/02 12:18:48 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ static char	***find_opt3(char ***bt, t_opt *nrm)
 		|| ft_strcmp(bt[nrm->i][nrm->j], ">>") == 0)
 		nrm->j = nrm->j + 2;
 	nrm->cmdopt[nrm->k] = malloc(sizeof(char *) * 3);
-	//nrm->cmdopt[nrm->k] = 0; //segfault
 	if (!nrm->cmdopt[nrm->k])
 		return (NULL);
 	if (bt[nrm->i][nrm->j])

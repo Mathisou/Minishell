@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:44:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/01 18:47:11 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/02 12:29:18 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*statu(t_global *global);
 char	*replace_var(char *old_str, t_env **lst, t_global *global);
 void	remove_quotes2(char *old_str, char *n, int *i, int *j);
 char	*find_ref_var(char *old_str, t_env **lst);
-void	take_env(char **env, t_env **envi);
+void	take_env(char **env, t_env **envi, char *av);
 char	**convert_env(t_env **lst);
 /*list*/
 t_env	*new_node(char *content);

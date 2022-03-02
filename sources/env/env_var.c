@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_var.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 17:55:26 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/02 01:33:30 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/02 12:11:25 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ char	*replace_var4(char *old_str, t_env **lst
 
 int	dollar_count(char *str)
 {
-	int count;
-	int i;
+	int	count;
+	int	i;
 
 	i = -1;
 	count = 0;
@@ -107,8 +107,8 @@ int	dollar_count(char *str)
 char	*replace_var(char *old_str, t_env **lst, t_global *global)
 {
 	t_rep_var2	nrm;
-	int i;
-	int nb_of_replace;
+	int			i;
+	int			nb_of_replace;
 
 	nrm.i = -1;
 	i = -1;
@@ -119,38 +119,11 @@ char	*replace_var(char *old_str, t_env **lst, t_global *global)
 	{
 		nrm.j = 1;
 		if ((old_str[nrm.i] == '$' && (ft_isalnum(old_str[nrm.i + 1]) == 1
-				|| old_str[nrm.i + 1] == '?')
-			&& should_replace_var(old_str, nrm.i) == 0) && ++i < nb_of_replace)
+					|| old_str[nrm.i + 1] == '?')
+				&& should_replace_var(old_str, nrm.i) == 0)
+			&& ++i < nb_of_replace)
 			old_str = replace_var4(old_str, lst, global, &nrm);
 	}
 	free(old_str);
 	return (nrm.new);
-}
-
-void	remove_quotes2(char *old_str, char *n, int *i, int *j)
-{
-	while (old_str[++(*i)])
-	{
-		if (old_str[*i] == 34)
-		{
-			while (old_str[++(*i)] && old_str[*i] != 34)
-			{
-				n[*j] = old_str[*i];
-				(*j)++;
-			}
-		}
-		else if (old_str[*i] == 39)
-		{
-			while (old_str[++(*i)] && old_str[*i] != 39)
-			{
-				n[*j] = old_str[*i];
-				(*j)++;
-			}
-		}
-		else
-		{
-			n[*j] = old_str[*i];
-			(*j)++;
-		}
-	}
 }

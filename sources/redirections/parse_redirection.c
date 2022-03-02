@@ -3,25 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redirection.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 18:37:23 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/01 19:49:02 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/02 12:18:09 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	is_last(char **t, int i)
-{
-	int	j;
-
-	j = -1;
-	while (t[++j])
-		if (ft_strcmp(t[j], "<<") == 0 && j > i)
-			return (1);
-	return (0);
-}
 
 static void	reset_stdout(t_fd *sfd)
 {
