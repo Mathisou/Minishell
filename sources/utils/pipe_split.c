@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 16:39:59 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/01 18:14:08 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/02 16:49:23 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,10 @@ void	pipe_split(t_global *global)
 	global->parse->bt = malloc(sizeof(*global->parse->bt)
 			* (count_double_tab(global->parse->t) + 2));
 	if (!global->parse->bt)
-		return ;
+		free_n_exit(global);
 	global->parse->bt[0] = malloc(sizeof(char *)
 			* (count_tab(global->parse->t) + 1));
 	if (!global->parse->bt[0])
-		return ;
+		free_n_exit(global);
 	pipe_split2(global);
 }

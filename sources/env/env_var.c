@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 17:55:26 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/02 12:11:25 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/02 16:58:45 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*replace_var4(char *old_str, t_env **lst
 	if (old_str[nrm->i + 1] == '?')
 		nrm->ref_var = statu(global);
 	else
-		nrm->ref_var = find_ref_var(&old_str[nrm->i], lst);
+		nrm->ref_var = find_ref_var(&old_str[nrm->i], lst, global);
 	if (nrm->ref_var == NULL)
 	{
 		free(nrm->ref_var);
@@ -115,6 +115,8 @@ char	*replace_var(char *old_str, t_env **lst, t_global *global)
 	nb_of_replace = dollar_count(old_str);
 	nrm.ref_var = NULL;
 	nrm.new = ft_strdup(old_str);
+	if (!nrm.new)
+		free_n_exit(global);
 	while (old_str[++nrm.i])
 	{
 		nrm.j = 1;
@@ -122,7 +124,14 @@ char	*replace_var(char *old_str, t_env **lst, t_global *global)
 					|| old_str[nrm.i + 1] == '?')
 				&& should_replace_var(old_str, nrm.i) == 0)
 			&& ++i < nb_of_replace)
+		{
 			old_str = replace_var4(old_str, lst, global, &nrm);
+			if (!old_str)
+			{
+				free(nrm.new);
+				return (NULL);
+			}
+		}
 	}
 	free(old_str);
 	return (nrm.new);

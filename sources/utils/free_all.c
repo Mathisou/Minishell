@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:41:34 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/02 13:16:05 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/02 16:53:27 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@ void	free_end_line(t_global *global)
 	destroy_big_tab(global->parse->cmdopt);
 	destroy_tab(global->parse->cmd);
 	destroy_big_tab(global->parse->bt);
+	global->parse->t = NULL;
+	global->parse->bt = NULL;
+	global->parse->cmd = NULL;
+	global->parse->cmdopt = NULL;
 }
 
 void	free_in_child(t_global *global)

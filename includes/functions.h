@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:44:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/02 13:48:57 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/02 16:58:23 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ void	cd(char *directory, t_env **lst, t_global *global);
 void	echo_b(char **t);
 void	exit_b(t_global *global);
 void	env(t_env **lst);
-void	unset(char **to_unset, t_env **lst);
+void	unset(char **to_unset, t_env **lst,t_global *gloabl);
 void	export_b(t_env **lst, char **to_export, t_global *global);
 /*own_env.c*/
 char	*statu(t_global *global);
 char	*replace_var(char *old_str, t_env **lst, t_global *global);
 void	remove_quotes2(char *old_str, char *n, int *i, int *j);
-char	*find_ref_var(char *old_str, t_env **lst);
+char	*find_ref_var(char *old_str, t_env **lst, t_global *global);
 void	take_env(char **env, t_env **envi, char *av, t_global *global);
 char	**convert_env(t_env **lst);
 /*list*/

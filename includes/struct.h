@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 14:16:53 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/02 12:25:17 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/02 14:37:39 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ typedef struct s_rep_var2
 	int		j;
 	char	*ref_var;
 	char	*new;
+	char	*tmp;
 }	t_rep_var2;
 
 typedef struct s_takee

@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 14:12:16 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/02 12:10:57 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/02 17:00:08 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,17 @@ void	check_var_and_quotes(char **t, t_env **lst, t_global *global)
 	while (t[++i])
 	{
 		if (is_there_dollar(t[i]) == 1)
+		{
 			t[i] = replace_var(t[i], lst, global);
+			if (!t[i])
+				free_n_exit(global);
+		}
 		if (is_there_quotes(t[i]) == 1)
+		{
 			t[i] = remove_quotes(t[i]);
+			if (!t[i])
+				free_n_exit(global);
+		}
 	}
 }
 
@@ -57,7 +65,7 @@ char	*statu(t_global *global)
 	return (ft_itoa(WEXITSTATUS(tmp->statu)));
 }
 
-char	*find_ref_var(char *old_str, t_env **lst)
+char	*find_ref_var(char *old_str, t_env **lst, t_global *global)
 {
 	char	*var;
 	char	*ref_var;
@@ -81,6 +89,11 @@ char	*find_ref_var(char *old_str, t_env **lst)
 	}
 	var[j] = '\0';
 	ref_var = find_var(lst, var);
+	if (!ref_var)
+	{
+		free(var);
+		free_n_exit(global);
+	}
 	free(var);
 	return (ref_var);
 }
