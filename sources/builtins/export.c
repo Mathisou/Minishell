@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:04:46 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/03 17:26:23 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/03 18:49:21 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,12 @@ void	export_b(t_env **lst, char **to_export, t_global *global)
 		else if (rtn == 1)
 			replace_line(lst, to_export[i], global);
 		else
+		{
 			ft_putstr_fd("Syntax error!\n", 2);
+			free_in_child(global);
+			exit (130);
+		}
 	}
+	free_in_child(global);
+	exit (EXIT_SUCCESS);
 }

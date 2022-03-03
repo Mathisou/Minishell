@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:04:49 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/03 17:24:26 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/03 19:13:43 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,17 +81,32 @@ void	unset(char **to_unset, t_env **lst, t_global *global)
 {
 	int		i;
 	t_env	*tmp;
+	int		exitt;
 
 	tmp = *lst;
 	i = 0;
+	exitt = 0;
 	while (to_unset[++i])
 	{
 		if (is_var(tmp->var, to_unset[i], global) == 0)
+		{
+			exitt++;
 			first (lst);
+		}
 		tmp = *lst;
 		while (tmp->next && is_var(tmp->next->var, to_unset[i], global) == 1)
 			tmp = tmp->next;
 		if (tmp->next)
 			after (tmp);
+		else
+		{
+			if (exitt != 1)
+			{
+				free_in_child(global);
+				exit(EXIT_FAILURE);
+			}
+		}
+			
 	}
+	exit (EXIT_SUCCESS);
 }

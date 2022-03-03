@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:44:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/03 16:06:46 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/03 19:25:20 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@ int		parsing_redirection(char **t, t_fd *sfd);
 void	reset_stdin_stdout(t_global *global);
 /*builtins*/
 void	call_builtin(t_global *global, int i);
-void	pwd(void);
+void	pwd(t_global *global);
 void	cd(char *directory, t_env **lst, t_global *global);
-void	echo_b(char **t);
+void	echo_b(char **t, t_global *global);
 void	exit_b(t_global *global);
-void	env(t_env **lst);
+void	env(t_env **lst, t_global *global);
 void	unset(char **to_unset, t_env **lst,t_global *gloabl);
 void	export_b(t_env **lst, char **to_export, t_global *global);
 /*own_env.c*/
@@ -74,7 +74,7 @@ int		here_doc(t_fd *sfd, char *limiter);
 void	pid_add_node_back(t_pid **first, int content);
 t_pid	*pid_new_node(int content);
 void	wait_func(t_global *global);
-void	execute(t_global *global, int sign, int i);
+void	execute(t_global *global, int i);
 void	close_fd(t_global *global);
 void	opening_child(t_global *global, int sign, int i);
 /*libft*/

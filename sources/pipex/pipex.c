@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 14:54:48 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/03 16:06:59 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/03 19:30:36 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,18 @@ void	close_fd(t_global *global)
 		close(global->sfd->outfile);
 }
 
-void	execute(t_global *global, int sign, int i)
+void	execute(t_global *global, int i)
 {
+	//printf("%s\n")
 	global->parse->big = convert_env(global->envi);
 	if (!global->parse->big)
 		exit(1);
-	if (sign == 1 && global->parse->cmd[i]
+	if (global->parse->cmd[i]
 		!= NULL && tdm(global->parse->cmd[i]))
 		call_builtin(global, i);
+	else if (ft_strcmp(global->parse->cmd[i], "exit") == 0
+		&& count_triple_tab(global->parse->bt) > 1)
+		exit_b(global);
 	else
 	{
 		if (global->parse->cmd[i] != NULL)
@@ -55,7 +59,7 @@ int	firstchild(t_global *global, int i)
 		&& global->sfd->is_output_redirected == false)
 		dup2(global->sfd->p1[1], 1);
 	close_fd(global);
-	execute(global, 1, i);
+	execute(global, i);
 	free_in_child(global);
 	exit(1);
 }
@@ -68,7 +72,7 @@ int	secondchild(t_global *global, int i)
 		&& global->sfd->is_output_redirected == false)
 		dup2(global->sfd->p2[1], 1);
 	close_fd(global);
-	execute(global, 1, i);
+	execute(global, i);
 	free_in_child(global);
 	exit(1);
 }

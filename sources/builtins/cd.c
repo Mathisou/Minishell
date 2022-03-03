@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:04:37 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/03 17:23:31 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/03 19:17:51 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void	cd(char *directory, t_env **lst, t_global *global)
 {
 	if (!directory)
 	{
-		directory = find_var(lst, "HOME");
+		directory = 0;//find_var(lst, "HOME");
 		if (!directory)
 			free_n_exit(global);
 		if (chdir(directory) == -1)
@@ -117,6 +117,12 @@ void	cd(char *directory, t_env **lst, t_global *global)
 	}
 	else
 		if (chdir(directory) == -1)
+		{
 			perror(directory);
+			free_in_child(global);
+			exit (EXIT_FAILURE);
+		}			
 	change_env(lst, global);
+	free_in_child(global);
+	exit (EXIT_SUCCESS);
 }

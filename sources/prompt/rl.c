@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/03 16:02:45 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/03 19:32:15 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,18 +33,20 @@ void	exec_one_cmd(t_global *global)
 		global->parse->child = fork();
 		if (global->parse->child == 0)
 		{
-			if (!(global->parse->cmd[0] != NULL && tdm(global->parse->cmd[0])))
+			if (!(global->parse->cmd[0] != NULL && tdm(global->parse->cmd[0])) && ft_strcmp(global->parse->cmd[0], "exit") != 0)
 			{
-				execute(global, 0, 0);
+				execute(global, 0);
 				free_in_child(global);
 			}
 			exit(1);
 		}
 		else
 		{
-			if (global->parse->cmd[0] != NULL && tdm(global->parse->cmd[0]))
-				call_builtin(global, 0);
-			wait(NULL);
+			if (ft_strcmp(global->parse->cmd[0], "exit") == 0
+				&& count_triple_tab(global->parse->bt) == 1)
+				exit_b(global);
+			pid_add_node_back(global->pid, global->parse->child);
+			wait_func(global);
 		}
 	}
 	reset_stdin_stdout(global);
@@ -116,7 +118,7 @@ void	rl(t_global *global)
 	while (42)
 	{
 		init_rl(global);
-		global->parse->line = readline("$> ");
+		global->parse->line = readline("minishell$ ");
 		if (!global->parse->line)
 		{
 			write(1, "exit\n", 5);
