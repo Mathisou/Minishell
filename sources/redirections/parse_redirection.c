@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 18:37:23 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/02 22:53:57 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/03 11:22:30 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,6 @@ static void	reset_stdin(t_fd *sfd)
 	}
 }
 
-static void reset_stdin_here_doc(t_fd *sfd)
-{
-	if (sfd->is_input_here_doc_redirected == true)
-	{
-		close(sfd->here_doc_fd);
-		dup2(sfd->save_stdin, STDIN_FILENO);
-		close(sfd->save_stdin);
-		sfd->is_input_here_doc_redirected = false;
-	}
-}
-
 static int	parsing_redirection_in(char **t, t_fd *sfd, int i)
 {
 	if (ft_strcmp(t[i], "<") == 0 && t[i + 1])
@@ -88,11 +77,10 @@ static int	parsing_redirection_in(char **t, t_fd *sfd, int i)
 	}
 	if (ft_strcmp(t[i], "<<") == 0 && t[i + 1])
 	{
-		reset_stdin_here_doc(sfd);
+		reset_stdin(sfd);
 		sfd->save_stdin = dup(STDIN_FILENO);
-		sfd->is_input_here_doc_redirected = true;
 		here_doc(sfd, t[i + 1]);
-		dup2(sfd->here_doc_fd, STDIN_FILENO); // gros fdp marche pas fin jsp mais nsm
+		sfd->is_input_redirected = true;
 	}
 	return (0);
 }

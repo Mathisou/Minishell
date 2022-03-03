@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 14:54:48 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/02 22:51:49 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/03 11:07:28 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@ void	close_fd(t_global *global)
 	close(global->sfd->p2[1]);
 	close(global->sfd->p1[1]);
 	close(global->sfd->p2[0]);
+	if (global->sfd->is_input_redirected == true)
+		close(global->sfd->infile);
+	if (global->sfd->is_output_redirected == true)
+		close(global->sfd->outfile);
 }
 
 void	execute(t_global *global, int sign, int i)
@@ -43,7 +47,7 @@ void	execute(t_global *global, int sign, int i)
 
 int	firstchild(t_global *global, int i)
 {
-	if (i > 0 && global->sfd->is_input_redirected == false && global->sfd->is_input_here_doc_redirected == false)
+	if (i > 0 && global->sfd->is_input_redirected == false)
 		dup2(global->sfd->p2[0], 0);
 	if (global->sfd->is_stdout == true)
 		reset_stdin_stdout(global);
@@ -58,7 +62,7 @@ int	firstchild(t_global *global, int i)
 
 int	secondchild(t_global *global, int i)
 {
-	if (global->sfd->is_input_redirected == false && global->sfd->is_input_here_doc_redirected == false)
+	if (global->sfd->is_input_redirected == false)
 		dup2(global->sfd->p1[0], 0);
 	if (i < global->parse->bt_size - 1
 		&& global->sfd->is_output_redirected == false)

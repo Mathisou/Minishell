@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_cmdopt.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 14:04:11 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/02 19:06:18 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/03 11:19:51 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,26 @@ static char	***find_opt2(char ***bt, t_opt *nrm, t_global *global)
 	return ((char ***)1);
 }
 
+static int	is_last_here_doc(char **t)
+{
+	int i;
+	int sign;
+
+	i = -1;
+	sign = 0;
+	while (t[++i])
+	{
+		if (ft_strcmp(t[i], "<") == 0)
+			sign = 1;
+		else if (ft_strcmp(t[i], "<<") == 0)
+			sign = 2;
+	}
+	if (sign == 2)
+		return (1);
+	else
+		return (0);
+}
+
 static char	***find_opt3(char ***bt, t_opt *nrm, t_global *global)
 {
 	while (ft_strcmp(bt[nrm->i][nrm->j], "<") == 0
@@ -54,7 +74,13 @@ static char	***find_opt3(char ***bt, t_opt *nrm, t_global *global)
 		nrm->cmdopt[nrm->k][0] = ft_strdup(bt[nrm->i][nrm->j]);
 		if (!nrm->cmdopt[nrm->k][0])
 			free_n_exit(global);
-		nrm->cmdopt[nrm->k][1] = NULL;
+		if (is_last_here_doc(bt[nrm->i]) == 1)
+		{
+			nrm->cmdopt[nrm->k][1] = ft_strdup("here_doc");
+			nrm->cmdopt[nrm->k][2] = NULL;
+		}
+		else
+			nrm->cmdopt[nrm->k][1] = NULL;
 	}
 	else
 		nrm->cmdopt[nrm->k][0] = NULL;

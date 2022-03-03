@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 20:17:16 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/02 22:52:37 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/03 11:22:50 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	handler(int signum)
 		write(1, "\n", 1);
 		if (g_sfd.is_here_doc == false)
 			rl_on_new_line();
-	//	rl_replace_line("", 0);
+		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 }
@@ -70,13 +70,6 @@ void	reset_stdin_stdout(t_global *global)
 			close(global->sfd->save_stdin);
 			global->sfd->is_input_redirected = false;
 		}
-		if (global->sfd->is_input_here_doc_redirected == true)
-		{
-			close(global->sfd->here_doc_fd);
-			dup2(global->sfd->save_stdin, STDIN_FILENO);
-			close(global->sfd->save_stdin);
-			global->sfd->is_input_here_doc_redirected = false;
-		}
 	}		
 }
 
@@ -88,6 +81,5 @@ void	init_rl(t_global *global)
 	global->sfd->is_here_doc = false;
 	global->sfd->is_input_redirected = false;
 	global->sfd->is_output_redirected = false;
-	global->sfd->is_input_here_doc_redirected = false;
 	global->sfd->is_stdout = false;
 }

@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/02 22:23:08 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/03 11:23:06 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void	rl(t_global *global)
 			del_list(global->envi);
 			pid_del_list(global->pid);
 			free(global->parse);
-	//		rl_clear_history();
+			rl_clear_history();
 			exit(0);
 		}
 		else if (ft_strlen(global->parse->line) > 0)
