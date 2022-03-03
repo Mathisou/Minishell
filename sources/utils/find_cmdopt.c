@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_cmdopt.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 14:04:11 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/03 11:19:51 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/03 15:45:07 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,19 @@ int	check_limiter(char *str)
 	return (0);
 }
 
-static char	***find_opt2(char ***bt, t_opt *nrm, t_global *global)
+static char	***find_opt2(char **bt, t_opt *nrm, t_global *global)
 {
-	while (bt[nrm->i][nrm->j] && check_limiter(bt[nrm->i][nrm->j]) == 0)
-		nrm->j++;
-	nrm->cmdopt[nrm->k] = malloc(sizeof(char *) * (nrm->j + 1));
+	int start;
+
+	start = 0;
+	while (bt[nrm->j + start] && check_limiter(bt[nrm->j + start]) == 0)
+		start++;
+	nrm->cmdopt[nrm->k] = malloc(sizeof(char *) * (start + 1));
 	if (!nrm->cmdopt[nrm->k])
 		return (NULL);
-	nrm->m = -1;
 	while (++nrm->m < nrm->j)
 	{
-		nrm->cmdopt[nrm->k][nrm->m] = ft_strdup(bt[nrm->i][nrm->m]);
+		nrm->cmdopt[nrm->k][nrm->m] = ft_strdup(bt[nrm->m + nrm->j]);
 		if (!nrm->cmdopt[nrm->k][nrm->m])
 			free_n_exit(global);
 	}
@@ -59,6 +61,20 @@ static int	is_last_here_doc(char **t)
 		return (0);
 }
 
+int count_opt(char ***bt, t_opt *nrm)
+{
+	int count;
+
+	count = 0;
+	while (bt[nrm->i][nrm->j + 1] && (!(ft_strcmp(bt[nrm->i][nrm->j + 1], "<") == 0
+		|| ft_strcmp(bt[nrm->i][nrm->j + 1], "<<") == 0
+		|| ft_strcmp(bt[nrm->i][nrm->j + 1], ">") == 0
+		|| ft_strcmp(bt[nrm->i][nrm->j + 1], ">>") == 0
+		|| ft_strcmp(bt[nrm->i][nrm->j + 1], "|") == 0)))
+		count++;
+	return (count);
+}
+
 static char	***find_opt3(char ***bt, t_opt *nrm, t_global *global)
 {
 	while (ft_strcmp(bt[nrm->i][nrm->j], "<") == 0
@@ -66,25 +82,53 @@ static char	***find_opt3(char ***bt, t_opt *nrm, t_global *global)
 		|| ft_strcmp(bt[nrm->i][nrm->j], ">") == 0
 		|| ft_strcmp(bt[nrm->i][nrm->j], ">>") == 0)
 		nrm->j = nrm->j + 2;
-	nrm->cmdopt[nrm->k] = malloc(sizeof(char *) * 3);
-	if (!nrm->cmdopt[nrm->k])
-		return (NULL);
 	if (bt[nrm->i][nrm->j])
+		find_opt2(bt[nrm->i], nrm, global);
+	else
 	{
-		nrm->cmdopt[nrm->k][0] = ft_strdup(bt[nrm->i][nrm->j]);
-		if (!nrm->cmdopt[nrm->k][0])
-			free_n_exit(global);
+		printf("Test2\n");
+		nrm->cmdopt[nrm->k] = malloc(sizeof(char *) * 1);
+		nrm->cmdopt[nrm->k][0] = NULL;
+	}
+	if (bt[nrm->i][nrm->j] && nrm->cmdopt[nrm->k][1] == NULL)
+	{
+		printf("Test1\n");
+		destroy_tab_size(nrm->cmdopt[nrm->k], count_triple_tab(global->parse->bt));
 		if (is_last_here_doc(bt[nrm->i]) == 1)
 		{
+			nrm->cmdopt[nrm->k] = malloc(sizeof(char *) * 3);
+			nrm->cmdopt[nrm->k][0] = ft_strdup(bt[nrm->i][nrm->j]);
 			nrm->cmdopt[nrm->k][1] = ft_strdup("here_doc");
 			nrm->cmdopt[nrm->k][2] = NULL;
 		}
 		else
+		{
+			nrm->cmdopt[nrm->k] = malloc(sizeof(char *) * 2);
+			nrm->cmdopt[nrm->k][0] = ft_strdup(bt[nrm->i][nrm->j]);
 			nrm->cmdopt[nrm->k][1] = NULL;
+		}
 	}
-	else
-		nrm->cmdopt[nrm->k][0] = NULL;
-	return ((char ***)1);
+	// nrm->cmdopt[nrm->k] = malloc(sizeof(char *) * (count_opt(bt, nrm) + 1));
+	// if (!nrm->cmdopt[nrm->k])
+	// 	return (NULL);
+	// if (bt[nrm->i][nrm->j])
+	// {
+	// 	nrm->cmdopt[nrm->k][0] = ft_strdup(bt[nrm->i][nrm->j]);
+	// 	if (!nrm->cmdopt[nrm->k][0])
+	// 		free_n_exit(global);
+	// 	while (++nrm->m < count_opt(bt, nrm))
+	// 	{
+	// 		nrm->cmdopt[nrm->k][nrm->m] = ft_strdup(bt[nrm->i][nrm->j + 1]);
+	// 	}
+	// 	else if (is_last_here_doc(bt[nrm->i]) == 1)
+	// 	{
+	// 		nrm->cmdopt[nrm->k][1] = ft_strdup("here_doc");
+	// 		nrm->cmdopt[nrm->k][2] = NULL;
+	// 	}
+	// }
+	// else
+	// 	nrm->cmdopt[nrm->k][0] = NULL;
+	 return ((char ***)1);
 }
 
 char	***find_opt(char ***bt, t_global *global)
@@ -93,6 +137,7 @@ char	***find_opt(char ***bt, t_global *global)
 
 	nrm.i = -1;
 	nrm.k = 0;
+	nrm.m = -1;
 	nrm.cmdopt = malloc(sizeof(*nrm.cmdopt) * (count_triple_tab(bt) + 1));
 	if (!nrm.cmdopt)
 		return (NULL);
@@ -104,12 +149,19 @@ char	***find_opt(char ***bt, t_global *global)
 			|| ft_strcmp(bt[nrm.i][0], ">") == 0
 			|| ft_strcmp(bt[nrm.i][0], ">>") == 0))
 		{
-			if (!find_opt2(bt, &nrm, global))
+			if (!find_opt2(bt[nrm.i], &nrm, global))
 				return (NULL);
 		}
 		else
 			if (!find_opt3(bt, &nrm, global))
 				return (NULL);
+		//while (nrm.cmdopt[nrm.k])
+		//{
+		int u = -1;
+		while (nrm.cmdopt[nrm.k][++u])
+			printf("cmdopt %s\n", nrm.cmdopt[nrm.k][u]);
+		printf("mdr\n");
+		//}
 		nrm.k++;
 	}
 	nrm.cmdopt[nrm.k] = NULL;
@@ -138,6 +190,8 @@ int	find_cmd(t_global *global)
 		if (global->parse->bt[i][j])
 			global->parse->cmd[i]
 			= findpath(ft_strdup(global->parse->bt[i][j]), global->envi, global);
+		else
+			global->parse->cmd[i] = NULL;
 	}
 	global->parse->cmd[i] = NULL;
 	return (0);

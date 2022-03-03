@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 14:12:16 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/03 13:19:19 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/03 13:57:29 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +90,6 @@ char	*find_ref_var(char *old_str, t_env **lst, t_global *global)
 	var[j] = '\0';
 	(void) global;
 	ref_var = find_var(lst, var);
-	if (!ref_var)
-	{
-		free(var);
-		free_n_exit(global);
-	}
 	free(var);
 	return (ref_var);
 }

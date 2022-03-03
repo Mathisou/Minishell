@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:44:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/02 17:53:34 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/03 16:06:46 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	add_node_back(t_env **first, char *content, t_global *global);
 int		del_list(t_env **lst);
 int		lst_size(t_env **lst);
 /*free*/
+void    destroy_big_tab_size(char ***bt, int size);
 void	destroy_big_tab(char ***bt);
 void	free_end_line(t_global *global);
 int		pid_del_list(t_pid **lst);
@@ -84,7 +85,8 @@ int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strdup(const char *s);
 int		ft_strlen(const char *s);
 int		ft_strncmp(const char *s1, const char *s2, int n);
-char	**destroy_tab(char **t);
+char    **destroy_tab_size(char **t, int size);
+char    **destroy_tab(char **t);
 void	ft_putstr(char *str);
 void	ft_putstr_fd(char *s, int fd);
 /*split*/
