@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rl.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/03 11:23:06 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/03 13:49:44 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	rl2(t_global *global)
 			exec_one_cmd(global);
 		if (access("here_doc", F_OK) == 0)
 		{
-			close(global->sfd->here_doc_fd);
+			close(global->sfd->infile);
 			unlink("here_doc");
 		}
 		free_end_line(global);

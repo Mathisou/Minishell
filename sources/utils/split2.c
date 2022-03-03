@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 13:58:29 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/02 01:16:29 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/03 13:49:04 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,21 +64,30 @@ char	*count_mall(const char *s, char c)
 
 int	norm2(t_norm *norm)
 {
-	if ((((norm->i == 0 || norm->s[norm->i - 1] == norm->c)
-				&& norm->s[norm->i] != norm->c) && norm->s[norm->i])
-		|| (norm->s[norm->i] == 60 && norm->s[norm->i - 1]
-			&& norm->s[norm->i - 1] != ' ' && norm->s[norm->i - 1] != 60)
-		|| (norm->s[norm->i] == 62 && norm->s[norm->i - 1]
-			&& norm->s[norm->i - 1] != ' ' && norm->s[norm->i - 1] != 62)
-		|| (norm->i > 0 && norm->s[norm->i - 1] == 60
-			&& norm->s[norm->i] != 60 && norm->s[norm->i] != ' ')
-		|| (norm->i > 0 && norm->s[norm->i - 1] == 62
-			&& norm->s[norm->i] != 62 && norm->s[norm->i] != ' ')
-		|| (norm->s[norm->i] == '|' && norm->s[norm->i - 1]
-			&& norm->s[norm->i - 1] != ' ')
-		|| (norm->i > 0 && norm->s[norm->i - 1] == '|'
-			&& norm->s[norm->i] != ' '))
+	if (norm->i == 0)
 		return (1);
+	else if (norm->s[norm->i - 1] == norm->c
+		&& norm->s[norm->i] != norm->c
+		&& norm->s[norm->i])
+		return (2);
+	else if (norm->s[norm->i] == 60 && norm->s[norm->i - 1]
+			&& norm->s[norm->i - 1] != ' ' && norm->s[norm->i - 1] != 60)
+		return (3);
+	else if (norm->s[norm->i] == 62 && norm->s[norm->i - 1]
+			&& norm->s[norm->i - 1] != ' ' && norm->s[norm->i - 1] != 62)
+		return (4);
+	else if (norm->i > 0 && norm->s[norm->i - 1] == 60
+			&& norm->s[norm->i] != 60 && norm->s[norm->i] != ' ')
+		return (5);
+	else if (norm->i > 0 && norm->s[norm->i - 1] == 62
+			&& norm->s[norm->i] != 62 && norm->s[norm->i] != ' ')
+		return (6);
+	else if (norm->s[norm->i] == '|' && norm->s[norm->i - 1]
+			&& norm->s[norm->i - 1] != ' ')
+		return (7);
+	else if (norm->s[norm->i - 1] && norm->s[norm->i - 1] == '|'
+			&& norm->s[norm->i] != ' ')
+		return (8);
 	return (0);
 }
 

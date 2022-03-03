@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_var2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 14:12:16 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/02 22:23:32 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/03 13:19:19 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,11 @@ char	*statu(t_global *global)
 	t_pid	*tmp;
 
 	tmp = *global->pid;
-//	if (!tmp)
-//		return (ft_itoa(WEXITSTATUS(0)));
+	if (!tmp)
+		return (ft_itoa(WEXITSTATUS(0)));
 	while (tmp->next)
 		tmp = tmp->next;
-//	return (ft_itoa(WEXITSTATUS(tmp->statu)));
-	return (NULL);
+	return (ft_itoa(WEXITSTATUS(tmp->statu)));
 }
 
 char	*find_ref_var(char *old_str, t_env **lst, t_global *global)
@@ -89,6 +88,7 @@ char	*find_ref_var(char *old_str, t_env **lst, t_global *global)
 		j++;
 	}
 	var[j] = '\0';
+	(void) global;
 	ref_var = find_var(lst, var);
 	if (!ref_var)
 	{

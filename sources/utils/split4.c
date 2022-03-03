@@ -6,7 +6,7 @@
 /*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 18:44:23 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/01 18:47:42 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/03 13:46:52 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ char	*put_str_in_tab(const char *s, char c)
 			str[i] = s[i];
 			i++;
 		}
+		else
 		{
 			while (s[i] && s[i] != c && s[i] != 60 && s[i] != 62 && s[i] != '|')
 				put_str_in_tab2(str, &i, s);
