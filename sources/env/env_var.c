@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 17:55:26 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/04 17:15:24 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/04 17:19:00 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ char	*replace_var4(char *old_str, t_env **lst
 		nrm->ref_var = malloc(sizeof(char) * 1);
 		nrm->ref_var[0] = 0;
 	}
-	while (old_str[nrm->i + nrm->j] && (ft_isalnum(old_str[nrm->i + nrm->j]) == 1
+	while (old_str[nrm->i + nrm->j]
+		&& (ft_isalnum(old_str[nrm->i + nrm->j]) == 1
 			|| (old_str[nrm->i + nrm->j] == '?' && nrm->i + nrm->j > 0
 				&& old_str[nrm->i + nrm->j - 1] == '$')))
 		nrm->j++;
@@ -85,28 +86,6 @@ char	*replace_var4(char *old_str, t_env **lst
 	old_str = ft_strdup(nrm->new);
 	free(nrm->ref_var);
 	return (old_str);
-}
-
-int	dollar_count(char *str)
-{
-	int	count;
-	int	i;
-
-	i = -1;
-	count = 0;
-	while (str[++i])
-	{
-		if (str[i] == 34)
-			while (str[++i] && str[i] != 34)
-				if (str[i] == '$')
-					count++;
-		if (str[i] == 39)
-			while (str[++i] && str[i] != 39)
-				;
-		if (str[i] == '$')
-			count++;
-	}
-	return (count);
 }
 
 static void	init_norm(t_rep_var2 *nrm, int *i, char *oldstr, int *nb)
@@ -122,15 +101,17 @@ char	*replace_var(char *old_str, t_env **lst, t_global *global)
 {
 	t_rep_var2	nrm;
 	int			i;
-	int			nb_of_replace;
+	int			nb_rep;
 
-	init_norm(&nrm, &i, old_str, &nb_of_replace);
+	init_norm(&nrm, &i, old_str, &nb_rep);
 	if (!nrm.new)
 		free_n_exit(global);
 	while (old_str[++nrm.i])
 	{
 		nrm.j = 1;
-		if ((old_str[nrm.i] == '$' && (ft_isalnum(old_str[nrm.i + 1]) == 1 || old_str[nrm.i + 1] == '?') && should_replace_var(old_str, nrm.i) == 0) && ++i < nb_of_replace)
+		if ((old_str[nrm.i] == '$' && (ft_isalnum(old_str[nrm.i + 1]) == 1
+					|| old_str[nrm.i + 1] == '?')
+				&& should_replace_var(old_str, nrm.i) == 0) && ++i < nb_rep)
 		{
 			old_str = replace_var4(old_str, lst, global, &nrm);
 			if (!old_str)

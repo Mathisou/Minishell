@@ -6,9 +6,9 @@ INC			=	includes/minishell.h includes/functions.h
 MAIN		=	main.c
 MAINS		=	$(addprefix sources/, $(MAIN))
 UTIL		=	split2.c split3.c split4.c check_line.c find_cmdopt.c truc_de_merde.c pipe_split.c free_all.c \
-ft_atoi.c ft_isalnum.c ft_itoa.c ft_strncmp.c ft_strcmp_bonus.c ft_strdup.c ft_strlen.c tools.c
+ft_atoi.c ft_isalnum.c ft_itoa.c ft_strncmp.c ft_strcmp_bonus.c ft_strdup.c ft_strlen.c tools.c find_cmdopt2.c free_all2.c
 UTILS		=	$(addprefix sources/utils/, $(UTIL))  
-PROMPT		=	rl.c path.c
+PROMPT		=	rl.c path.c rl2.c
 PROMPTS		=	$(addprefix sources/prompt/, $(PROMPT))
 BUILTIN		=	call.c pwd.c cd.c echo.c exit.c env.c unset.c export.c
 BUILTINS	=	$(addprefix sources/builtins/, $(BUILTIN))

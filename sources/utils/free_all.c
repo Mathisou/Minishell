@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:41:34 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/04 15:50:19 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/04 17:53:40 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,33 +87,4 @@ void	free_in_child(t_global *global)
 	}
 	pid_del_list(global->pid);
 	reset_stdin_stdout(global);
-}
-
-void	destroy_big_tab(char ***bt)
-{
-	int	i;
-
-	i = -1;
-	if (bt)
-	{
-		while (bt[++i])
-			destroy_tab(bt[i]);
-		free(bt);
-	}
-}
-
-int	pid_del_list(t_pid **lst)
-{
-	t_pid	*tmp;
-
-	if (lst)
-	{
-		while (*lst)
-		{
-			tmp = (*lst)->next;
-			free(*lst);
-			*lst = tmp;
-		}
-	}
-	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 15:13:00 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/04 16:50:53 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/04 17:19:08 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,26 @@ int	should_replace_var(char *str, int dollarindex)
 			return (0);
 	}
 	return (0);
+}
+
+int	dollar_count(char *str)
+{
+	int	count;
+	int	i;
+
+	i = -1;
+	count = 0;
+	while (str[++i])
+	{
+		if (str[i] == 34)
+			while (str[++i] && str[i] != 34)
+				if (str[i] == '$')
+					count++;
+		if (str[i] == 39)
+			while (str[++i] && str[i] != 39)
+				;
+		if (str[i] == '$')
+			count++;
+	}
+	return (count);
 }

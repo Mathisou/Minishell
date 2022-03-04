@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/04 15:48:07 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/04 17:45:32 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,27 +49,15 @@ void	exec_one_cmd(t_global *global)
 	reset_stdin_stdout(global);
 }
 
-int	check_line_redirection(char **t)
+static void	rl3(t_global *global)
 {
-	int	i;
-
-	i = 0;
-	while (t[i])
-	{
-		if ((ft_strcmp(t[i], ">") == 0 || ft_strcmp(t[i], ">>") == 0
-				|| ft_strcmp(t[i], "<") == 0 || ft_strcmp(t[i], "<<") == 0
-				|| ft_strcmp(t[i], "|") == 0) && t[i + 1] == NULL)
-			return (1);
-		else if ((ft_strcmp(t[i], ">") == 0 || ft_strcmp(t[i], ">>") == 0
-				|| ft_strcmp(t[i], "<") == 0 || ft_strcmp(t[i], "<<") == 0
-				|| ft_strcmp(t[i], "|") == 0) && ft_strcmp(t[i + 1], "|") == 0)
-			return (1);
-		i++;
-	}
-	return (0);
+	check_var_and_quotes(global->parse->t, global->envi, global);
+	pid_del_list(global->pid);
+	pipe_split(global);
+	find_cmd(global);
 }
 
-void	rl2(t_global *global)
+static void	rl2(t_global *global)
 {
 	add_history(global->parse->line);
 	if (check_line(global->parse->line) == 1)
@@ -83,10 +71,7 @@ void	rl2(t_global *global)
 			ft_putstr_fd("Syntax error!\n", 2);
 			return ;
 		}
-		check_var_and_quotes(global->parse->t, global->envi, global);
-		pid_del_list(global->pid);
-		pipe_split(global);
-		find_cmd(global);
+		rl3(global);
 		global->parse->cmdopt = find_opt(global->parse->bt, global);
 		if (count_triple_tab(global->parse->bt) > 1)
 			pipex(global);
@@ -109,6 +94,8 @@ void	rl(t_global *global)
 	pid = NULL;
 	global->pid = &pid;
 	parse = malloc(sizeof(t_parse));
+	if (!parse)
+		free_n_exit(global);
 	*parse = (t_parse){0};
 	global->sfd = &g_sfd;
 	global->parse = parse;
@@ -117,14 +104,7 @@ void	rl(t_global *global)
 		init_rl(global);
 		global->parse->line = readline("minishell$ ");
 		if (!global->parse->line)
-		{
-			write(1, "exit\n", 5);
-			del_list(global->envi);
-			pid_del_list(global->pid);
-			free(global->parse);
-			rl_clear_history();
-			exit(0);
-		}
+			quit(global);
 		else if (ft_strlen(global->parse->line) > 0)
 			rl2(global);
 		free(global->parse->line);

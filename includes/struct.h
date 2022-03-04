@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 14:16:53 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/04 16:04:32 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/04 17:32:11 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ typedef struct s_path
 	int		i;
 	int		j;
 	int		k;
-	int		size_add;
+	int		siz;
 	char	*tmp;
 }	t_path;
 

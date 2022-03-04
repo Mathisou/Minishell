@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   own_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 14:15:49 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/03 17:30:14 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/04 17:29:26 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,16 +67,21 @@ static void	take_env3(t_env **envi, char *av, t_takee *nrm, t_global *global)
 	free(tmp);
 }
 
+static void	init_local(t_takee *nrm)
+{
+	nrm->i = -1;
+	nrm->new_shlvl = NULL;
+	nrm->rtn_itoa = NULL;
+	nrm->exist[0] = 0;
+	nrm->exist[1] = 0;
+	nrm->exist[2] = 0;
+}
+
 void	take_env(char **env, t_env **envi, char *av, t_global *global)
 {
 	t_takee	nrm;
 
-	nrm.i = -1;
-	nrm.new_shlvl = NULL;
-	nrm.rtn_itoa = NULL;
-	nrm.exist[0] = 0;
-	nrm.exist[1] = 0;
-	nrm.exist[2] = 0;
+	init_local(&nrm);
 	take_env2(env, envi, &nrm, global);
 	if (!nrm.exist[0])
 		add_node_back(envi, "SHLVL=1", global);
@@ -104,7 +109,7 @@ char	**convert_env(t_env **lst)
 	int		i;
 	int		size;
 
-	i = 0;
+	i = -1;
 	tmp = *lst;
 	size = lst_size(lst);
 	if (size == 0)
@@ -114,15 +119,14 @@ char	**convert_env(t_env **lst)
 		return (NULL);
 	while (tmp)
 	{
-		big[i] = ft_strdup(tmp->var);
+		big[++i] = ft_strdup(tmp->var);
 		if (!big[i])
 		{
 			destroy_tab(big);
 			return (NULL);
 		}
 		tmp = tmp->next;
-		i++;
 	}
-	big[i] = NULL;
+	big[++i] = NULL;
 	return (big);
 }

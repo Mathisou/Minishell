@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:44:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/04 15:45:04 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/04 17:51:51 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 /*prompt.c*/
 char	*findpath(char *cmd, t_env **lst, t_global *global);
 void	rl(t_global *global);
+int		check_line_redirection(char **t);
+void	quit(t_global *global);
 /*utils*/
 void	init_rl(t_global *global);
 char	**split_quotes(char *str, char sep, char **env);
@@ -41,6 +43,7 @@ int		cmdopt_size(char **cmdopt);
 /*redirections*/
 int		parsing_redirection(char **t, t_fd *sfd);
 void	reset_stdin_stdout(t_global *global);
+int		is_last_here_doc(char **t);
 /*builtins*/
 void	call_builtin(t_global *global, int i, int sign);
 void	pwd(t_global *global);
@@ -57,6 +60,7 @@ void	remove_quotes2(char *old_str, char *n, int *i, int *j);
 char	*find_ref_var(char *old_str, t_env **lst, t_global *global);
 void	take_env(char **env, t_env **envi, char *av, t_global *global);
 char	**convert_env(t_env **lst);
+int		dollar_count(char *str);
 /*list*/
 t_env	*new_node(char *content);
 void	add_node_back(t_env **first, char *content, t_global *global);
