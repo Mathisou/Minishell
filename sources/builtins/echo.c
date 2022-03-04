@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:04:40 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/03 18:49:52 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/04 15:40:49 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,10 @@ void	echo_b(char **t,  t_global *global)
 	int	size;
 
 	size = double_tab_len(t);
-	i = 1;
-	if (t[i] && strcmp_opt(t[i]) == 0)
+	i = 0;
+	while (t[i] && (ft_strcmp(t[i], "echo") != 0 || (ft_strcmp(t[i], "echo") == 0 && i > 0 && check_limiter(t[i - 1]) == 1)))
+		i++;
+	if (t[++i] && strcmp_opt(t[i]) == 0)
 	{
 		while (strcmp_opt(t[++i]) == 0)
 			;

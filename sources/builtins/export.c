@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:04:46 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/03 18:49:21 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/04 13:57:42 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	check_line_to_export(char *line, t_env **lst, t_global *global)
 		return (2);
 }
 
-void	export_b(t_env **lst, char **to_export, t_global *global)
+void	export_b(t_env **lst, char **to_export, t_global *global, int sign)
 {
 	int	i;
 	int	rtn;
@@ -96,6 +96,9 @@ void	export_b(t_env **lst, char **to_export, t_global *global)
 			exit (130);
 		}
 	}
-	free_in_child(global);
-	exit (EXIT_SUCCESS);
+	if (sign == 1)
+	{
+		free_in_child(global);
+		exit (EXIT_SUCCESS);
+	}
 }

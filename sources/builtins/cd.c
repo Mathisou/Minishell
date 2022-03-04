@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:04:37 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/03 19:17:51 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/04 14:10:49 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,25 +104,31 @@ void	change_env(t_env **lst, t_global *global)
 		free(nrm.old_pwd);
 }
 
-void	cd(char *directory, t_env **lst, t_global *global)
+void	cd(char *directory, t_env **lst, t_global *global, int sign)
 {
 	if (!directory)
 	{
-		directory = 0;//find_var(lst, "HOME");
-		if (!directory)
-			free_n_exit(global);
-		if (chdir(directory) == -1)
+		directory = find_var(lst, "HOME");
+		//if (!directory && sign == 1)
+		//	free_in_child(global);
+		if (!directory && sign == 0)
+			return ;
+		if (chdir(directory) == -1 && sign == 1)
 			perror(directory);
-		free(directory);
+		if (directory)
+			free(directory);
 	}
 	else
-		if (chdir(directory) == -1)
+		if (chdir(directory) == -1 && sign == 1)
 		{
 			perror(directory);
 			free_in_child(global);
 			exit (EXIT_FAILURE);
 		}			
 	change_env(lst, global);
-	free_in_child(global);
-	exit (EXIT_SUCCESS);
+	if (sign == 1)
+	{
+		free_in_child(global);
+		exit (EXIT_SUCCESS);
+	}
 }

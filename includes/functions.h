@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functions.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:44:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/03 19:25:20 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/04 15:14:15 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,19 @@ int		count_double_tab(char **t);
 int		count_triple_tab(char ***t);
 int		find_cmd(t_global *global);
 char	*strcats(char *s1, char *s2);
+int     cmdopt_size(char **cmdopt);
 /*redirections*/
 int		parsing_redirection(char **t, t_fd *sfd);
 void	reset_stdin_stdout(t_global *global);
 /*builtins*/
-void	call_builtin(t_global *global, int i);
+void	call_builtin(t_global *global, int i, int sign);
 void	pwd(t_global *global);
-void	cd(char *directory, t_env **lst, t_global *global);
+void	cd(char *directory, t_env **lst, t_global *global, int sign);
 void	echo_b(char **t, t_global *global);
-void	exit_b(t_global *global);
+void	exit_b(t_global *global, int sign);
 void	env(t_env **lst, t_global *global);
-void	unset(char **to_unset, t_env **lst,t_global *gloabl);
-void	export_b(t_env **lst, char **to_export, t_global *global);
+void	unset(char **to_unset, t_env **lst,t_global *global, int sign);
+void	export_b(t_env **lst, char **to_export, t_global *global, int sign);
 /*own_env.c*/
 char	*statu(t_global *global);
 char	*replace_var(char *old_str, t_env **lst, t_global *global);

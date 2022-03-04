@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_cmdopt.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 14:04:11 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/03 18:15:18 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/04 15:35:29 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	check_limiter(char *str)
 {
-	if (ft_strcmp(str, "|") == 0 || ft_strcmp(str, "<") == 0
+	if (ft_strcmp(str, "<") == 0
 		|| ft_strcmp(str, ">") == 0
 		|| ft_strcmp(str, ">>") == 0 || ft_strcmp(str, "<<") == 0)
 		return (1);
@@ -27,7 +27,7 @@ static char	***find_opt2(char **bt, t_opt *nrm, t_global *global)
 	int z;
 
 	start = 0;
-	while (bt[nrm->j + start] && check_limiter(bt[nrm->j + start]) == 0)
+	while (bt[nrm->j + start] && (check_limiter(bt[nrm->j + start]) == 0 || ft_strcmp(bt[nrm->j + start], "|") != 0))
 		start++;
 	nrm->cmdopt[nrm->k] = malloc(sizeof(char *) * (start + 1));
 	if (!nrm->cmdopt[nrm->k])
@@ -69,11 +69,7 @@ int count_opt(char ***bt, t_opt *nrm)
 	int count;
 
 	count = 0;
-	while (bt[nrm->i][nrm->j + 1] && (!(ft_strcmp(bt[nrm->i][nrm->j + 1], "<") == 0
-		|| ft_strcmp(bt[nrm->i][nrm->j + 1], "<<") == 0
-		|| ft_strcmp(bt[nrm->i][nrm->j + 1], ">") == 0
-		|| ft_strcmp(bt[nrm->i][nrm->j + 1], ">>") == 0
-		|| ft_strcmp(bt[nrm->i][nrm->j + 1], "|") == 0)))
+	while (bt[nrm->i][nrm->j + 1] && (!(check_limiter(bt[nrm->i][nrm->j + 1]) || ft_strcmp(bt[nrm->i][nrm->j + 1], "|") == 0)))
 		count++;
 	return (count);
 }
@@ -94,7 +90,7 @@ static char	***find_opt3(char ***bt, t_opt *nrm, t_global *global)
 	}
 	if (bt[nrm->i][nrm->j] && nrm->cmdopt[nrm->k][1] == NULL)
 	{
-		destroy_tab_size(nrm->cmdopt[nrm->k], count_triple_tab(global->parse->bt));
+		destroy_tab_size(nrm->cmdopt[nrm->k], cmdopt_size(nrm->cmdopt[nrm->k]));
 		if (is_last_here_doc(bt[nrm->i]) == 1)
 		{
 			nrm->cmdopt[nrm->k] = malloc(sizeof(char *) * 3);
@@ -109,27 +105,7 @@ static char	***find_opt3(char ***bt, t_opt *nrm, t_global *global)
 			nrm->cmdopt[nrm->k][1] = NULL;
 		}
 	}
-	// nrm->cmdopt[nrm->k] = malloc(sizeof(char *) * (count_opt(bt, nrm) + 1));
-	// if (!nrm->cmdopt[nrm->k])
-	// 	return (NULL);
-	// if (bt[nrm->i][nrm->j])
-	// {
-	// 	nrm->cmdopt[nrm->k][0] = ft_strdup(bt[nrm->i][nrm->j]);
-	// 	if (!nrm->cmdopt[nrm->k][0])
-	// 		free_n_exit(global);
-	// 	while (++nrm->m < count_opt(bt, nrm))
-	// 	{
-	// 		nrm->cmdopt[nrm->k][nrm->m] = ft_strdup(bt[nrm->i][nrm->j + 1]);
-	// 	}
-	// 	else if (is_last_here_doc(bt[nrm->i]) == 1)
-	// 	{
-	// 		nrm->cmdopt[nrm->k][1] = ft_strdup("here_doc");
-	// 		nrm->cmdopt[nrm->k][2] = NULL;
-	// 	}
-	// }
-	// else
-	// 	nrm->cmdopt[nrm->k][0] = NULL;
-	 return ((char ***)1);
+	return ((char ***)1);
 }
 
 char	***find_opt(char ***bt, t_global *global)
@@ -145,15 +121,15 @@ char	***find_opt(char ***bt, t_global *global)
 	{
 		nrm.j = 0;
 		nrm.m = 0;
-		if (!(ft_strcmp(bt[nrm.i][0], "<") == 0
-			|| ft_strcmp(bt[nrm.i][0], "<<") == 0
-			|| ft_strcmp(bt[nrm.i][0], ">") == 0
-			|| ft_strcmp(bt[nrm.i][0], ">>") == 0))
-		{
-			if (!find_opt2(bt[nrm.i], &nrm, global))
-				return (NULL);
-		}
-		else
+		// if (!(ft_strcmp(bt[nrm.i][0], "<") == 0
+		// 	|| ft_strcmp(bt[nrm.i][0], "<<") == 0
+		// 	|| ft_strcmp(bt[nrm.i][0], ">") == 0
+		// 	|| ft_strcmp(bt[nrm.i][0], ">>") == 0))
+		// {
+		// 	if (!find_opt2(bt[nrm.i], &nrm, global))
+		// 		return (NULL);
+		// }
+		// else
 			if (!find_opt3(bt, &nrm, global))
 				return (NULL);
 		nrm.k++;

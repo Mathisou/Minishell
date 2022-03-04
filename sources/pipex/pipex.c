@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 14:54:48 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/03 19:30:36 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/04 14:30:43 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,12 @@ void	close_fd(t_global *global)
 
 void	execute(t_global *global, int i)
 {
-	//printf("%s\n")
 	global->parse->big = convert_env(global->envi);
 	if (!global->parse->big)
 		exit(1);
 	if (global->parse->cmd[i]
 		!= NULL && tdm(global->parse->cmd[i]))
-		call_builtin(global, i);
-	else if (ft_strcmp(global->parse->cmd[i], "exit") == 0
-		&& count_triple_tab(global->parse->bt) > 1)
-		exit_b(global);
+		call_builtin(global, i, 1);
 	else
 	{
 		if (global->parse->cmd[i] != NULL)
