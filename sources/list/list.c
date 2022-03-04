@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 14:29:10 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/03 17:29:06 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/04 15:47:40 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	add_node_back(t_env **first, char *content, t_global *global)
 	{
 		*first = new_node(content);
 		if (!*first)
-			free_n_exit(global);	
+			free_n_exit(global);
 	}
 	else
 	{	

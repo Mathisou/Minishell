@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 14:04:11 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/04 15:35:29 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/04 15:49:37 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,12 @@ int	check_limiter(char *str)
 
 static char	***find_opt2(char **bt, t_opt *nrm, t_global *global)
 {
-	int start;
-	int z;
+	int	start;
+	int	z;
 
 	start = 0;
-	while (bt[nrm->j + start] && (check_limiter(bt[nrm->j + start]) == 0 || ft_strcmp(bt[nrm->j + start], "|") != 0))
+	while (bt[nrm->j + start] && (check_limiter(bt[nrm->j + start]) == 0
+			|| ft_strcmp(bt[nrm->j + start], "|") != 0))
 		start++;
 	nrm->cmdopt[nrm->k] = malloc(sizeof(char *) * (start + 1));
 	if (!nrm->cmdopt[nrm->k])
@@ -46,8 +47,8 @@ static char	***find_opt2(char **bt, t_opt *nrm, t_global *global)
 
 static int	is_last_here_doc(char **t)
 {
-	int i;
-	int sign;
+	int	i;
+	int	sign;
 
 	i = -1;
 	sign = 0;
@@ -64,12 +65,13 @@ static int	is_last_here_doc(char **t)
 		return (0);
 }
 
-int count_opt(char ***bt, t_opt *nrm)
+int	count_opt(char ***bt, t_opt *nrm)
 {
-	int count;
+	int	count;
 
 	count = 0;
-	while (bt[nrm->i][nrm->j + 1] && (!(check_limiter(bt[nrm->i][nrm->j + 1]) || ft_strcmp(bt[nrm->i][nrm->j + 1], "|") == 0)))
+	while (bt[nrm->i][nrm->j + 1] && (!(check_limiter(bt[nrm->i][nrm->j + 1])
+			|| ft_strcmp(bt[nrm->i][nrm->j + 1], "|") == 0)))
 		count++;
 	return (count);
 }
@@ -121,17 +123,8 @@ char	***find_opt(char ***bt, t_global *global)
 	{
 		nrm.j = 0;
 		nrm.m = 0;
-		// if (!(ft_strcmp(bt[nrm.i][0], "<") == 0
-		// 	|| ft_strcmp(bt[nrm.i][0], "<<") == 0
-		// 	|| ft_strcmp(bt[nrm.i][0], ">") == 0
-		// 	|| ft_strcmp(bt[nrm.i][0], ">>") == 0))
-		// {
-		// 	if (!find_opt2(bt[nrm.i], &nrm, global))
-		// 		return (NULL);
-		// }
-		// else
-			if (!find_opt3(bt, &nrm, global))
-				return (NULL);
+		if (!find_opt3(bt, &nrm, global))
+			return (NULL);
 		nrm.k++;
 	}
 	nrm.cmdopt[nrm.k] = NULL;
@@ -159,7 +152,8 @@ int	find_cmd(t_global *global)
 			j = j + 2;
 		if (global->parse->bt[i][j])
 			global->parse->cmd[i]
-			= findpath(ft_strdup(global->parse->bt[i][j]), global->envi, global);
+				= findpath(ft_strdup(global->parse->bt[i][j]),
+					global->envi, global);
 		else
 			global->parse->cmd[i] = NULL;
 	}

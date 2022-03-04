@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_var_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 15:13:00 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/01 14:46:41 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/04 16:50:53 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,13 @@ int	should_replace_var(char *str, int dollarindex)
 	i = -1;
 	while (str[++i])
 	{
-		if (i == dollarindex)
-			return (0);
+		if (str[i] == 39)
+		{
+			while (str[++i] && str[i] != 39)
+				;
+			if (i > dollarindex)
+				return (1);
+		}
 		else if (str[i] == 34)
 		{
 			while (str[++i] && str[i] != 34)
@@ -77,13 +82,8 @@ int	should_replace_var(char *str, int dollarindex)
 			if (i > dollarindex)
 				return (0);
 		}
-		else if (str[i] == 39)
-		{
-			while (str[++i] && str[i] != 39)
-				;
-			if (i > dollarindex)
-				return (1);
-		}
+		else if (str[i] == '$')
+			return (0);
 	}
 	return (0);
 }

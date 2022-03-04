@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:41:34 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/04 15:34:06 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/04 15:50:19 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	cmdopt_size(char **cmdopt)
 {
-	int i;
-	int start;
-	int j;
+	int	i;
+	int	start;
+	int	j;
 
 	i = -1;
 	j = 0;
@@ -26,7 +26,8 @@ int	cmdopt_size(char **cmdopt)
 		|| ft_strcmp(cmdopt[i], ">") == 0
 		|| ft_strcmp(cmdopt[i], ">>") == 0)
 		j = j + 2;
-	while (cmdopt[j + start] && (check_limiter(cmdopt[j + start]) == 0 || ft_strcmp(cmdopt[j + start], "|") != 0))
+	while (cmdopt[j + start] && (check_limiter(cmdopt[j + start]) == 0
+			|| ft_strcmp(cmdopt[j + start], "|") != 0))
 		start++;
 	return (start + 1);
 }
@@ -42,7 +43,6 @@ void	destroy_cmdopt(char ***cmdopt)
 			destroy_tab_size(cmdopt[i], cmdopt_size(cmdopt[i]));
 		free(cmdopt);
 	}
-	//bt = NULL;
 }
 
 void	destroy_big_tab_size(char ***bt, int size)
@@ -56,7 +56,6 @@ void	destroy_big_tab_size(char ***bt, int size)
 			destroy_tab_size(bt[i], size);
 		free(bt);
 	}
-	//bt = NULL;
 }
 
 void	free_end_line(t_global *global)
@@ -80,7 +79,8 @@ void	free_in_child(t_global *global)
 		destroy_tab(global->parse->t);
 		destroy_tab(global->parse->big);
 		del_list(global->envi);
-		destroy_tab_size(global->parse->cmd, count_triple_tab(global->parse->bt));
+		destroy_tab_size(global->parse->cmd,
+			count_triple_tab(global->parse->bt));
 		destroy_cmdopt(global->parse->cmdopt);
 		destroy_big_tab(global->parse->bt);
 		free(global->parse);
@@ -92,15 +92,14 @@ void	free_in_child(t_global *global)
 void	destroy_big_tab(char ***bt)
 {
 	int	i;
-	
+
 	i = -1;
 	if (bt)
 	{
 		while (bt[++i])
-				destroy_tab(bt[i]);
+			destroy_tab(bt[i]);
 		free(bt);
 	}
-	//bt = NULL;
 }
 
 int	pid_del_list(t_pid **lst)

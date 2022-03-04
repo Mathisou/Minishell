@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 13:58:29 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/03 16:01:54 by hkovac           ###   ########.fr       */
+/*   Updated: 2022/03/04 15:50:50 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,22 +71,22 @@ int	norm2(t_norm *norm)
 		&& norm->s[norm->i])
 		return (2);
 	else if (norm->s[norm->i] == 60 && norm->s[norm->i - 1]
-			&& norm->s[norm->i - 1] != ' ' && norm->s[norm->i - 1] != 60)
+		&& norm->s[norm->i - 1] != ' ' && norm->s[norm->i - 1] != 60)
 		return (3);
 	else if (norm->s[norm->i] == 62 && norm->s[norm->i - 1]
-			&& norm->s[norm->i - 1] != ' ' && norm->s[norm->i - 1] != 62)
+		&& norm->s[norm->i - 1] != ' ' && norm->s[norm->i - 1] != 62)
 		return (4);
 	else if (norm->i > 0 && norm->s[norm->i - 1] == 60
-			&& norm->s[norm->i] != 60 && norm->s[norm->i] != ' ')
+		&& norm->s[norm->i] != 60 && norm->s[norm->i] != ' ')
 		return (5);
 	else if (norm->i > 0 && norm->s[norm->i - 1] == 62
-			&& norm->s[norm->i] != 62 && norm->s[norm->i] != ' ')
+		&& norm->s[norm->i] != 62 && norm->s[norm->i] != ' ')
 		return (6);
 	else if (norm->s[norm->i] == '|' && norm->s[norm->i - 1]
-			&& norm->s[norm->i - 1] != ' ')
+		&& norm->s[norm->i - 1] != ' ')
 		return (7);
 	else if (norm->s[norm->i - 1] && norm->s[norm->i - 1] == '|'
-			&& norm->s[norm->i] != ' ')
+		&& norm->s[norm->i] != ' ')
 		return (8);
 	return (0);
 }

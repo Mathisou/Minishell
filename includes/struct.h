@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 14:16:53 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/02 22:49:02 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/04 16:04:32 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,5 +143,15 @@ typedef struct s_opt
 	int		m;
 	char	***cmdopt;
 }	t_opt;
+
+/*unset.c*/
+typedef struct s_uns
+{
+	int		i;
+	t_env	*tmp;
+	int		exitt;
+	int		sign;
+	int		j;
+}	t_uns;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/04 14:59:36 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/04 15:48:07 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	exec_one_cmd(t_global *global)
 {
 	if (parsing_redirection(global->parse->bt[0], global->sfd) == 0)
 	{
-
 		global->parse->child = fork();
 		if (global->parse->child == 0)
 		{

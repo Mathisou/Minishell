@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 12:38:27 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/04 14:41:19 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/04 15:47:52 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	here_doc(t_fd *sfd, char *limiter)
 	if (access("here_doc", F_OK) == 0)
 		unlink("here_doc");
 	sfd->infile = open("here_doc", O_RDWR | O_CREAT, 0644);
-	if (sfd->infile== -1)
+	if (sfd->infile == -1)
 	{
 		ft_putstr_fd(strerror(errno), 2);
 		close(sfd->infile);

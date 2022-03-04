@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:04:37 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/04 14:10:49 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/04 15:54:00 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,30 @@ char	*strcats(char *s1, char *s2)
 	return (new);
 }
 
+static void	norm2(t_norm3 *nrm, t_env **lst, t_global *global)
+{
+	nrm->tmp = *lst;
+	while (nrm->tmp)
+	{
+		if (ft_strncmp(nrm->tmp->var, "OLDPWD=", 7) == 0)
+		{
+			free(nrm->tmp->var);
+			nrm->tmp->var = strcats("OLDPWD=", nrm->old_pwd);
+			if (!nrm->tmp->var)
+			{
+				free(nrm->old_pwd);
+				free_n_exit(global);
+			}
+			nrm->exist++;
+			break ;
+		}
+		nrm->tmp = nrm->tmp->next;
+	}
+}
+
 static void	norm(t_norm3 *nrm, t_env **lst, t_global *global)
 {
-	char *str;
+	char	*str;
 
 	while (nrm->tmp)
 	{
@@ -62,23 +83,7 @@ static void	norm(t_norm3 *nrm, t_env **lst, t_global *global)
 		}
 		nrm->tmp = nrm->tmp->next;
 	}
-	nrm->tmp = *lst;
-	while (nrm->tmp)
-	{
-		if (ft_strncmp(nrm->tmp->var, "OLDPWD=", 7) == 0)
-		{
-			free(nrm->tmp->var);
-			nrm->tmp->var = strcats("OLDPWD=", nrm->old_pwd);
-			if (!nrm->tmp->var)
-			{
-				free(nrm->old_pwd); 
-				free_n_exit(global);
-			}
-			nrm->exist++;
-			break ;
-		}
-		nrm->tmp = nrm->tmp->next;
-	}
+	norm2(nrm, lst, global);
 }
 
 void	change_env(t_env **lst, t_global *global)
@@ -94,7 +99,7 @@ void	change_env(t_env **lst, t_global *global)
 		nrm.str = strcats("OLDPWD=", nrm.old_pwd);
 		if (!nrm.str)
 		{
-			free(nrm.old_pwd); 
+			free(nrm.old_pwd);
 			free_n_exit(global);
 		}
 		add_node_back(lst, nrm.str, global);
@@ -109,8 +114,6 @@ void	cd(char *directory, t_env **lst, t_global *global, int sign)
 	if (!directory)
 	{
 		directory = find_var(lst, "HOME");
-		//if (!directory && sign == 1)
-		//	free_in_child(global);
 		if (!directory && sign == 0)
 			return ;
 		if (chdir(directory) == -1 && sign == 1)
@@ -119,12 +122,14 @@ void	cd(char *directory, t_env **lst, t_global *global, int sign)
 			free(directory);
 	}
 	else
+	{
 		if (chdir(directory) == -1 && sign == 1)
 		{
 			perror(directory);
 			free_in_child(global);
 			exit (EXIT_FAILURE);
 		}			
+	}
 	change_env(lst, global);
 	if (sign == 1)
 	{

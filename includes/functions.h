@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:44:47 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/04 15:14:15 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/04 15:45:04 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int		count_double_tab(char **t);
 int		count_triple_tab(char ***t);
 int		find_cmd(t_global *global);
 char	*strcats(char *s1, char *s2);
-int     cmdopt_size(char **cmdopt);
+int		cmdopt_size(char **cmdopt);
 /*redirections*/
 int		parsing_redirection(char **t, t_fd *sfd);
 void	reset_stdin_stdout(t_global *global);
@@ -48,7 +48,7 @@ void	cd(char *directory, t_env **lst, t_global *global, int sign);
 void	echo_b(char **t, t_global *global);
 void	exit_b(t_global *global, int sign);
 void	env(t_env **lst, t_global *global);
-void	unset(char **to_unset, t_env **lst,t_global *global, int sign);
+void	unset(char **to_unset, t_env **lst, t_global *global, int sign);
 void	export_b(t_env **lst, char **to_export, t_global *global, int sign);
 /*own_env.c*/
 char	*statu(t_global *global);
@@ -63,7 +63,7 @@ void	add_node_back(t_env **first, char *content, t_global *global);
 int		del_list(t_env **lst);
 int		lst_size(t_env **lst);
 /*free*/
-void    destroy_big_tab_size(char ***bt, int size);
+void	destroy_big_tab_size(char ***bt, int size);
 void	destroy_big_tab(char ***bt);
 void	free_end_line(t_global *global);
 int		pid_del_list(t_pid **lst);
@@ -86,8 +86,8 @@ int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strdup(const char *s);
 int		ft_strlen(const char *s);
 int		ft_strncmp(const char *s1, const char *s2, int n);
-char    **destroy_tab_size(char **t, int size);
-char    **destroy_tab(char **t);
+char	**destroy_tab_size(char **t, int size);
+char	**destroy_tab(char **t);
 void	ft_putstr(char *str);
 void	ft_putstr_fd(char *s, int fd);
 /*split*/

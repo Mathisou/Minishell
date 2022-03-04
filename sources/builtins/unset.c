@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:04:49 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/04 13:59:35 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/04 16:02:08 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,36 +77,40 @@ static void	after(t_env *tmp)
 	}
 }
 
+void	unset2(char **to_unset, t_env **lst, t_global *global, t_uns *nrm)
+{
+	if (is_var(nrm->tmp->var, to_unset[nrm->i], global) == 0)
+	{
+		nrm->exitt++;
+		first (lst);
+	}
+	nrm->tmp = *lst;
+	while (nrm->tmp->next && is_var(nrm->tmp->next->var,
+			to_unset[nrm->i], global) == 1)
+		nrm->tmp = nrm->tmp->next;
+	if (nrm->tmp->next)
+		after (nrm->tmp);
+	else
+	{
+		if (nrm->exitt != 1 && nrm->sign == 1)
+		{
+			free_in_child(global);
+			exit(EXIT_FAILURE);
+		}
+	}
+}
+
 void	unset(char **to_unset, t_env **lst, t_global *global, int sign)
 {
-	int		i;
-	t_env	*tmp;
-	int		exitt;
+	t_uns	nrm;
 
-	tmp = *lst;
-	i = 0;
-	exitt = 0;
-	while (to_unset[++i])
+	nrm.tmp = *lst;
+	nrm.i = 0;
+	nrm.exitt = 0;
+	nrm.sign = sign;
+	while (to_unset[++nrm.i])
 	{
-		if (is_var(tmp->var, to_unset[i], global) == 0)
-		{
-			exitt++;
-			first (lst);
-		}
-		tmp = *lst;
-		while (tmp->next && is_var(tmp->next->var, to_unset[i], global) == 1)
-			tmp = tmp->next;
-		if (tmp->next)
-			after (tmp);
-		else
-		{
-			if (exitt != 1 && sign == 1)
-			{
-				free_in_child(global);
-				exit(EXIT_FAILURE);
-			}
-		}
-			
+		unset2(to_unset, lst, global, &nrm);
 	}
 	if (sign == 1)
 	{

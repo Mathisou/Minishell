@@ -1,8 +1,8 @@
 NAME		=	minishell
 CC			=	gcc
 CFLAGS		=	-Wall -Werror -Wextra -Iincludes \
--g -O0 #-fsanitize=address
-INC			=	includes/minishell.h includes/functions.h includes/define.h
+-g -O0 -fsanitize=address
+INC			=	includes/minishell.h includes/functions.h
 MAIN		=	main.c
 MAINS		=	$(addprefix sources/, $(MAIN))
 UTIL		=	split2.c split3.c split4.c check_line.c find_cmdopt.c truc_de_merde.c pipe_split.c free_all.c \
