@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 12:38:27 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/04 15:47:52 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/04 18:04:12 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,11 @@ char	*ft_strjoin(char const *s1, char const *s2)
 static char	*here_doc2(t_fd *sfd, char *limiter, char *line, char buffer[])
 {
 	sfd->is_here_doc = true;
-	while (read(0, buffer, 1) != 0)
+	while (sfd->is_sig == false && read(0, buffer, 1) != 0)
 	{
 		buffer[1] = '\0';
 		line = ft_strjoin(line, buffer);
-		if (here_doc_check_line(line, limiter) > 0 || sfd->is_sig == true)
+		if (here_doc_check_line(line, limiter) > 0)
 		{
 			line[ft_strlen(line)
 				- here_doc_check_line(line, limiter) - 1] = '\0';

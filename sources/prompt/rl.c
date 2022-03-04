@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/04 17:45:32 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/04 18:13:20 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,9 @@ void	rl(t_global *global)
 	while (42)
 	{
 		init_rl(global);
+		global->sfd->after = false;
 		global->parse->line = readline("minishell$ ");
+		global->sfd->after = true;
 		if (!global->parse->line)
 			quit(global);
 		else if (ft_strlen(global->parse->line) > 0)

@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 18:37:23 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/04 14:40:00 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/04 18:07:37 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static void	reset_stdout(t_fd *sfd)
 		dup2(sfd->save_stdout, STDOUT_FILENO);
 		close(sfd->save_stdout);
 		sfd->is_output_redirected = false;
+		sfd->is_here_doc = false;
 	}
 }
 
@@ -57,6 +58,7 @@ static void	reset_stdin(t_fd *sfd)
 		dup2(sfd->save_stdin, STDIN_FILENO);
 		close(sfd->save_stdin);
 		sfd->is_input_redirected = false;
+		sfd->is_here_doc = false;
 	}
 }
 
@@ -78,6 +80,7 @@ static int	parsing_redirection_in(char **t, t_fd *sfd, int i)
 	if (ft_strcmp(t[i], "<<") == 0 && t[i + 1])
 	{
 		reset_stdin(sfd);
+		sfd->is_here_doc = true;
 		sfd->save_stdin = dup(STDIN_FILENO);
 		here_doc(sfd, t[i + 1]);
 		sfd->is_input_redirected = true;
