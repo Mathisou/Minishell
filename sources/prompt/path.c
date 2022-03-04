@@ -6,7 +6,7 @@
 /*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 13:46:27 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/04 17:36:34 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/04 18:53:28 by maroly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,8 @@ char	*findpath(char *cmd, t_env **lst, t_global *global)
 		new = findpath2(path, global);
 		if (!new)
 			return (cmd);
+		free(cmd);
+		return (new);
 	}
-	free(cmd);
-	return (new);
+	return (cmd);
 }
