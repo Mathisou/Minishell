@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 14:54:48 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/04 18:43:11 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/07 14:53:56 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	execute(t_global *global, int i)
 		{
 			execve(global->parse->cmd[i], global->parse->cmdopt[i],
 				global->parse->big);
-			ft_putstr_fd("bash: ", 2);
+			ft_putstr_fd("minishell: ", 2);
 			ft_putstr_fd(global->parse->cmdopt[i][0], 2);
 			ft_putstr_fd(": command not found\n", 2);
 		}

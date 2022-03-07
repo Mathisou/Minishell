@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 17:10:11 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/04 18:00:18 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/07 15:20:11 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,24 @@ static void	startchildprocess2(t_global *global, int i)
 	}
 }
 
+int	is_a_directory(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str[i])
+		while (str[i + 1])
+			i++;
+	if (str[i] == '/')
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(str, 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		return (1);
+	}
+	return (0);
+}
+
 void	startchildprocess(t_global *global)
 {
 	int	i;
@@ -39,9 +57,12 @@ void	startchildprocess(t_global *global)
 	close_fd(global);
 	while (global->parse->bt[++i])
 	{
-		if (parsing_redirection(global->parse->bt[i], global->sfd) == 0)
+		if (ft_strlen(global->parse->cmdopt[i][0]) > 0
+			&& parsing_redirection(global->parse->bt[i], global->sfd) == 0
+			&& is_a_directory(global->parse->cmdopt[i][0]) == 0)
 		{
-			if (global->sfd->is_here_doc == true && global->sfd->is_sig == true)
+			if ((global->sfd->is_here_doc == true
+					&& global->sfd->is_sig == true))
 				break ;
 			startchildprocess2(global, i);
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rl2.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 17:44:18 by maroly            #+#    #+#             */
-/*   Updated: 2022/03/04 17:45:35 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/07 15:21:59 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,14 @@ int	check_line_redirection(char **t)
 		else if ((ft_strcmp(t[i], ">") == 0 || ft_strcmp(t[i], ">>") == 0
 				|| ft_strcmp(t[i], "<") == 0 || ft_strcmp(t[i], "<<") == 0
 				|| ft_strcmp(t[i], "|") == 0) && ft_strcmp(t[i + 1], "|") == 0)
-			return (1);
+			return (2);
+		else if ((ft_strcmp(t[i], ">") == 0 || ft_strcmp(t[i], ">>") == 0
+				|| ft_strcmp(t[i], "<") == 0 || ft_strcmp(t[i], "<<") == 0
+				|| ft_strcmp(t[i], "|") == 0) && (ft_strcmp(t[i + 1], ">") == 0
+				|| ft_strcmp(t[i + 1], ">>") == 0
+				|| ft_strcmp(t[i + 1], "<") == 0
+				|| ft_strcmp(t[i + 1], "<<") == 0))
+			return (3);
 		i++;
 	}
 	return (0);

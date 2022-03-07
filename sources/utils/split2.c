@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 13:58:29 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/04 15:50:50 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/07 14:15:26 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,10 @@ char	*count_mall(const char *s, char c)
 
 int	norm2(t_norm *norm)
 {
-	if (norm->i == 0)
+	if (norm->i == 0 && norm->s[norm->i] != norm->c)
 		return (1);
-	else if (norm->s[norm->i - 1] == norm->c
-		&& norm->s[norm->i] != norm->c
-		&& norm->s[norm->i])
+	else if (norm->i > 0 && norm->s[norm->i - 1] == norm->c
+		&& norm->s[norm->i] != norm->c)
 		return (2);
 	else if (norm->s[norm->i] == 60 && norm->s[norm->i - 1]
 		&& norm->s[norm->i - 1] != ' ' && norm->s[norm->i - 1] != 60)
@@ -85,7 +84,7 @@ int	norm2(t_norm *norm)
 	else if (norm->s[norm->i] == '|' && norm->s[norm->i - 1]
 		&& norm->s[norm->i - 1] != ' ')
 		return (7);
-	else if (norm->s[norm->i - 1] && norm->s[norm->i - 1] == '|'
+	else if (norm->i > 0 && norm->s[norm->i - 1] && norm->s[norm->i - 1] == '|'
 		&& norm->s[norm->i] != ' ')
 		return (8);
 	return (0);

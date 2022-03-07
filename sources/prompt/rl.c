@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rl.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maroly <maroly@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkovac <hkovac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:15:28 by hkovac            #+#    #+#             */
-/*   Updated: 2022/03/04 18:13:20 by maroly           ###   ########.fr       */
+/*   Updated: 2022/03/07 15:21:13 by hkovac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,28 +55,31 @@ static void	rl3(t_global *global)
 	pid_del_list(global->pid);
 	pipe_split(global);
 	find_cmd(global);
+	global->parse->cmdopt = find_opt(global->parse->bt, global);
+	if (count_triple_tab(global->parse->bt) > 1)
+		pipex(global);
+	else if (count_triple_tab(global->parse->bt) == 1
+		&& ft_strlen(global->parse->cmdopt[0][0]) > 0
+		&& is_a_directory(global->parse->cmdopt[0][0]) == 0)
+		exec_one_cmd(global);
 }
 
 static void	rl2(t_global *global)
 {
 	add_history(global->parse->line);
-	if (check_line(global->parse->line) == 1)
+	if (check_line(global->parse->line) == 1
+		|| check_chev(global->parse->line) > 0)
 		ft_putstr_fd("Syntax error!\n", 2);
 	else
 	{
 		global->parse->t = split2(global->parse->line, ' ');
-		if (check_line_redirection(global->parse->t) == 1)
+		if (check_line_redirection(global->parse->t) > 0)
 		{
 			destroy_tab(global->parse->t);
 			ft_putstr_fd("Syntax error!\n", 2);
 			return ;
 		}
 		rl3(global);
-		global->parse->cmdopt = find_opt(global->parse->bt, global);
-		if (count_triple_tab(global->parse->bt) > 1)
-			pipex(global);
-		else if (count_triple_tab(global->parse->bt) == 1)
-			exec_one_cmd(global);
 		if (access("here_doc", F_OK) == 0)
 		{
 			close(global->sfd->infile);
